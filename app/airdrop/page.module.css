@@ -1,0 +1,150 @@
+.main {
+  /* margin-top: 80px; */
+  /* margin-bottom: 20px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.container {
+  min-width: 1012px;
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 160px;
+  background-color: var(--g);
+  position: relative;
+  overflow: visible;
+  clip-path: polygon(2% 0, 100% 0, 100% 90%, 98% 100%, 0 100%, 0 10%);
+}
+
+.left {
+  margin: 0 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 12px;
+}
+
+.leftTitle {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  overflow: visible;
+  min-width: 590px;
+}
+
+.tooltipContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip {
+  margin: -20px 0 0 122px;
+  position: absolute;
+  width: 260px;
+  /* height: 100px; */
+  display: flex;
+  padding: 12px 12px 20px;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+  text-align: center;
+  font-size: 14px;
+  clip-path: polygon(100% 0, 100% 88%, 55% 88%, 50% 100%, 45% 88%, 0 88%, 0 0);
+  z-index: 1200;
+  opacity: 0;
+  transition: visibility 0.2s, opacity 0.2s ease-in-out;
+  /* NOT SHOWING */
+  box-shadow: 0 0 12px var(--g);
+}
+
+.right {
+  margin: 0 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 12px;
+}
+
+.subline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.subtext {
+  color: #000;
+  font-size: 14px;
+}
+
+.error {
+  padding: 16px 0;
+  color: var(--r, #ff3030);
+  text-align: center;
+
+  font-size: 14px;
+}
+
+@media only screen and (max-width: 600px) {
+  .main h1 {
+    font-size: 36px;
+    line-height: 36px;
+    text-align: center;
+    margin: 0 16px;
+  }
+
+  .container {
+    min-width: 0;
+    padding: 16px 0;
+    margin: 24px 16px;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    text-align: center;
+  }
+
+  .tooltip {
+    display: none;
+  }
+
+  .left {
+    margin: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .leftTitle {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    min-width: 200px;
+  }
+
+  .leftTitle img {
+    display: none;
+  }
+
+  .leftTitle h3 {
+    font-size: 24px;
+  }
+
+  .right {
+    margin: 0 16px;
+  }
+
+  .subtext {
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,13 @@
+.main {
+  /* margin: 12px 0; */
+  color: var(--g);
+  cursor: pointer;
+}
+
+.button {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+}

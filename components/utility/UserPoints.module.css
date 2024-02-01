@@ -1,0 +1,36 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.title {
+    margin-bottom: -25px;
+    color: var(--g);
+    font-size: 14px;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.points {
+    margin: 0 -120px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    font-family: var(--connect);
+    font-size: 86px;
+    text-transform: uppercase;
+    color: var(--g);
+
+    gap: 20px;
+
+    width: 400px;
+}

@@ -1,0 +1,82 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useWallet } from "@solana/wallet-adapter-react";
+import CodeInput from "@/components/utility/CodeInput";
+import ConnectWallet from "@/components/wallet/ConnectWallet";
+
+import { isMobile } from "@/utils";
+
+import styles from "./page.module.css";
+import { on } from "events";
+
+const Page: React.FC = () => {
+  const router = useRouter();
+  const params = useSearchParams();
+  const getCode = params.get("code");
+  const { publicKey } = useWallet();
+  const [code, setCode] = useState<string | null>(null);
+  const [showTooltip, setShowTooltip] = useState<boolean>(false);
+
+  const [error, setError] = useState<string | null>(null);
+
+  const onMobile = isMobile();
+
+  useEffect(() => {
+    if (publicKey) {
+      const fetchUser = async () => {
+        const res = await fetch(`/api/users/${publicKey?.toBase58()}`);
+        const data = await res.json();
+
+        if (data.id) {
+          router.push(`/airdrop/${publicKey?.toBase58()}`);
+        }
+      };
+
+      fetchUser();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [code, publicKey]);
+
+  return (
+    <div className={styles.main}>
+      <div className={styles.tooltip} style={showTooltip ? { opacity: "1" } : {}}>
+        Airdrop based on your Solana Activity / Manlet Meter (More Degen, More G)
+      </div>
+      <h1>Solana Hunger Games</h1>
+      <h4 style={{ marginTop: "16px" }}>Coming Spring 2024</h4>
+      <div className={styles.container}>
+        <h3>Early Access is Now Closed</h3>
+        <div className={styles.subline}>
+          <Image src="/assets/icons/box-black.svg" alt="box" width={24} height={24} />
+          <span className={styles.subtext}>May the odds be ever in your favor anon</span>
+        </div>
+        {/* --- LEFT --- */}
+        {/* <div className={styles.left}>
+          <div className={styles.leftTitle}>
+            <h3>Early Access is Now Closed</h3>
+          </div>
+          <div className={styles.subline}>
+            <Image src="/assets/icons/box-black.svg" alt="box" width={24} height={24} />
+            <span className={styles.subtext}>May the odds be ever in your favor anon</span>
+          </div>
+        </div> */}
+
+        {/* --- RIGHT --- */}
+        {/* <div className={styles.right}>
+          <div className={styles.input}>
+            {!onMobile && (
+              <>
+                <p>Hello</p>
+              </>
+            )}
+          </div>
+        </div> */}
+      </div>
+    </div>
+  );
+};
+
+export default Page;

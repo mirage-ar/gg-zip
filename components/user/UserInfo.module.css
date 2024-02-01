@@ -1,0 +1,120 @@
+.main {
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 14px;
+  margin: 20px 16px;
+  z-index: 1000;
+}
+
+.userDetails {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+  color: var(--g);
+  text-transform: uppercase;
+
+  width: 400px;
+}
+
+.userIcon img {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--g);
+  border-radius: 100%;
+}
+
+.userWalletIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--g);
+  border-radius: 100%;
+}
+
+.userWalletIcon img {
+  width: 24px;
+  height: 24px;
+  border-radius: 100%;
+}
+
+.userPointsContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 8px;
+  gap: 4px;
+
+  color: var(--g);
+}
+
+.userPointsContainer img {
+  width: 24px;
+  height: 24px;
+  margin: 0 4px;
+  border-radius: 100%;
+}
+
+.userPoints {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 400px;
+  gap: 4px;
+  font-family: var(--connect);
+  font-size: 18px;
+
+  /* border: 1px solid var(--g); */
+}
+
+.userIconPlaceholder {
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--supporting-w-40, rgba(250, 245, 233, 0.4));
+  border-radius: 100%;
+}
+
+.placeholder {
+  font-family: var(--connect);
+  color: var(--supporting-w-40, rgba(250, 245, 233, 0.4));
+  font-size: 18px;
+  line-height: 18px;
+}
+
+.pointsIcon {
+  stroke: var(--g);
+}
+
+.spacer {
+  color: var(--supporting-w-20, rgba(250, 245, 233, 0.2));
+}
+
+.connectWallet {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+
+  width: 142px;
+  padding: 12px 0px;
+
+  border-radius: var(--corner4, 4px);
+  background: var(--g, #42ff60);
+  border: none;
+  color: #000;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+  .main {
+    display: none;
+  }
+}

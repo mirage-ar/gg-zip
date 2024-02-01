@@ -1,0 +1,156 @@
+/* FONTS */
+@font-face {
+  font-family: "Diatype";
+  src: url("/assets/fonts/Diatype/ABCDiatypeMono-Regular.otf");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  font-feature-settings: "ss09" on, "ss08" on, "ss17" on, "ss07" on;
+}
+
+@font-face {
+  font-family: "Connect";
+  src: url("/assets/fonts/Connect/ABCConnect-Nail-Trial.otf");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  font-feature-settings: "ss09" on, "ss08" on, "ss17" on, "ss07" on;
+}
+
+/* VARIABLES */
+:root {
+  /* fonts */
+  --diatype: "Diatype", "Courier New", monospace;
+  --connect: "Connect", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell,
+    "Helvetica Neue", sans-serif;
+
+  /* colors */
+  --g: #42ff60;
+  --p: #ff61ef;
+  --w: #faf5e9;
+  --bg: #1f1f1f;
+
+  --g3: #373737;
+  --supporting-b-8: rgba(9, 11, 12, 0.08);
+  --supporting-w-20: rgba(250, 245, 233, 0.2);
+  --supporting-w-40: rgba(250, 245, 233, 0.4);
+
+  /* sizes */
+  --corner4: 4px;
+}
+
+/* DEFAULTS */
+body {
+  background-color: #000;
+  color: #faf5e9;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: var(--diatype);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+ul li::before {
+  content: "○";
+  color: var(--supporting-w-20, rgba(250, 245, 233, 0.2));
+  display: inline-block;
+  font-size: 16px;
+  width: 20px;
+}
+
+ul li:hover::before {
+  color: var(--g);
+}
+
+@media only screen and (max-width: 600px) {
+  ul li::before {
+    display: none;
+  }
+}
+
+h1 {
+  color: var(--g);
+  text-align: center;
+  font-family: var(--connect);
+  font-size: 86px;
+  font-weight: 400;
+  line-height: 86px; /* 100% */
+  text-transform: uppercase;
+}
+
+h3 {
+  color: #000;
+  font-family: var(--connect);
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px; /* 100% */
+  text-transform: uppercase;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h3 img {
+  margin: 0 5px;
+}
+
+h4 {
+  color: var(--g);
+  text-align: center;
+  font-feature-settings: "case" on;
+  font-family: var(--connect);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px; /* 100% */
+}
+
+#background {
+  position: fixed; /* Fixed position to cover all the screen */
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -10000; /* Put the video behind the content */
+  background-size: cover;
+  overflow: hidden;
+}
+
+#mobile-graphic {
+  display: none;
+}
+
+@media only screen and (max-width: 600px) {
+  #graphic {
+    display: none;
+  }
+
+  #mobile-graphic {
+    display: block;
+  }
+}
+
+.wallet-adapter-modal-title {
+  color: var(--g) !important;
+}

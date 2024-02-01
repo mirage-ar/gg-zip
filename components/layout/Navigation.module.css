@@ -1,0 +1,52 @@
+.main {
+  /* margin: 16px 33px; */
+  color: #42ff60;
+  text-transform: uppercase;
+  font-size: 14px;
+  line-height: 16px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.logo {
+  margin: -40px 0 0 -10px;
+}
+
+.list {
+  margin: -30px 16px;
+}
+
+.active::before {
+  content: "●";
+  color: var(--g);
+  /* font-size: 18px; */
+}
+
+.mobileNav {
+  display: none;
+}
+
+@media only screen and (max-width: 600px) {
+
+  .main {
+    width: 100vw;
+  }
+
+  .list {
+    display: none;
+  }
+  
+  .mobileNav {
+    display: block;
+    margin: 32px 16px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+  }
+
+}

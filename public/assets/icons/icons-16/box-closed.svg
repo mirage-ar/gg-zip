@@ -1,0 +1,12 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="icons-16/closed box">
+<mask id="mask0_18096_66132" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
+<rect id="Rectangle 167" width="16" height="16" fill="#C4C4C4"/>
+</mask>
+<g mask="url(#mask0_18096_66132)">
+<path id="Subtract" fill-rule="evenodd" clip-rule="evenodd" d="M14 5H2V15H4.4H8H11.6H14V5ZM5.5 10C6.32843 10 7 9.32843 7 8.5C7 7.67157 6.32843 7 5.5 7C4.67157 7 4 7.67157 4 8.5C4 9.32843 4.67157 10 5.5 10ZM12 8.5C12 9.32843 11.3284 10 10.5 10C9.67157 10 9 9.32843 9 8.5C9 7.67157 9.67157 7 10.5 7C11.3284 7 12 7.67157 12 8.5ZM4.90687 10.9304C4.59228 10.7057 4.15509 10.7785 3.93039 11.0931C3.70568 11.4077 3.77854 11.8449 4.09313 12.0696C6.43023 13.739 9.56977 13.739 11.9069 12.0696C12.2215 11.8449 12.2943 11.4077 12.0696 11.0931C11.8449 10.7785 11.4077 10.7057 11.0931 10.9304C9.24282 12.252 6.75718 12.252 4.90687 10.9304Z" fill="#FAF5E9"/>
+<path id="Union" d="M8 0H11L14 4H11L8 0Z" fill="#FAF5E9"/>
+<path id="Union_2" d="M8 0H5L2 4H5L8 0Z" fill="#FAF5E9"/>
+</g>
+</g>
+</svg>

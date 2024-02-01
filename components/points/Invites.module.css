@@ -1,0 +1,118 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 1012px;
+  flex-shrink: 0;
+  background-color: var(--g);
+  padding: 32px;
+  /* gap: 32px; */
+}
+
+.invitesContainer {
+  margin-top: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 6px 16px;
+}
+
+.inviteCode {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-basis: calc(50% - 10px);
+  width: 466px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: var(--corner4, 4px);
+  border: 1px solid var(--supporting-b-8, rgba(9, 11, 12, 0.08));
+  background: var(--supporting-b-8, rgba(9, 11, 12, 0.08));
+}
+
+.inviteCodeText {
+  margin-left: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--connect);
+  color: var(--b, #000);
+
+  font-size: 28px;
+}
+
+.inviteCodeIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  background-color: #000;
+  border-radius: 100%;
+}
+
+.inviteCodeCopy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 145.426px;
+  height: 60px;
+  flex-shrink: 0;
+  gap: 6px;
+  text-transform: uppercase;
+  font-size: 14px;
+  border-radius: var(--corner4, 4px);
+  background: #000;
+  color: var(--w, #faf5e9);
+  cursor: pointer;
+  border: none;
+}
+
+.inviteCodeUser {
+  margin-left: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  color: var(--w, #faf5e9);
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.inviteCodeUserIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  background-color: #000;
+  border-radius: 100%;
+  border: 1px solid var(--g);
+}
+
+.inviteCodeUserIcon img {
+  border-radius: 100%;
+}
+
+.inviteCodeClaimed {
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.inviteCodeClaimedText {
+  color: var(--g, #42ff60);
+  text-align: center;
+  font-family: var(--connect);
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px; /* 100% */
+}
