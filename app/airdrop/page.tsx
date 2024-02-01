@@ -32,10 +32,16 @@ const Page: React.FC = () => {
       <h1>Solana Hunger Games</h1>
       <h4 style={{ marginTop: "16px" }}>Coming Spring 2024</h4>
       <div className={styles.container}>
-        <h3>Early Access is Now Closed</h3>
+        <h3>
+          <Image src="/assets/icons/icons-24/g-invert.svg" alt="box" width={32} height={32} />
+          CLAIM SZN 1 has ended
+        </h3>
         <div className={styles.subline}>
-          <Image src="/assets/icons/box-black.svg" alt="box" width={24} height={24} />
+          <span className={styles.subtext}>This is just the beginning ... </span>
+        </div>
+        <div className={styles.subline}>
           <span className={styles.subtext}>May the odds be ever in your favor anon</span>
+          <Image src="/assets/icons/box-black.svg" alt="box" width={24} height={24} />
         </div>
         {/* --- LEFT --- */}
         {/* <div className={styles.left}>
