@@ -24,22 +24,6 @@ const Page: React.FC = () => {
 
   const onMobile = isMobile();
 
-  useEffect(() => {
-    if (publicKey) {
-      const fetchUser = async () => {
-        const res = await fetch(`/api/users/${publicKey?.toBase58()}`);
-        const data = await res.json();
-
-        if (data.id) {
-          router.push(`/airdrop/${publicKey?.toBase58()}`);
-        }
-      };
-
-      fetchUser();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code, publicKey]);
-
   return (
     <div className={styles.main}>
       <div className={styles.tooltip} style={showTooltip ? { opacity: "1" } : {}}>

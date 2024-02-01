@@ -21,28 +21,28 @@ const Page: React.FC = () => {
   const [onboarded, setOnboarded] = useState<boolean>(false);
 
   // Complex logic to handle redirects
-  useEffect(() => {
-    if (connected && !user) {
-      const fetchUser = async () => {
-        try {
-          const res = await fetch(`/api/users/${publicKey?.toBase58()}`);
-          const data = await res.json();
+  // useEffect(() => {
+  //   if (connected && !user) {
+  //     const fetchUser = async () => {
+  //       try {
+  //         const res = await fetch(`/api/users/${publicKey?.toBase58()}`);
+  //         const data = await res.json();
 
-          if (data.success === false) {
-            router.push("/");
-          } else {
-            setUser(data);
-          }
-        } catch (error: any) {
-          throw new Error("Unable to get user", error);
-        }
-      };
+  //         if (data.success === false) {
+  //           router.push("/");
+  //         } else {
+  //           setUser(data);
+  //         }
+  //       } catch (error: any) {
+  //         throw new Error("Unable to get user", error);
+  //       }
+  //     };
 
-      fetchUser();
-    }
+  //     fetchUser();
+  //   }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [connected]);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [connected]);
 
   // ONBOARDING
   useEffect(() => {
@@ -64,8 +64,8 @@ const Page: React.FC = () => {
           <UserPoints points={user?.points || 0} />
           <div className={styles.divider} />
           {!onboarded && <PointsInfo handleOnboarded={handleOnboarded} />}
-          <Boost wallet={publicKey?.toBase58() || ""} />
-          <Invites wallet={publicKey?.toBase58() || ""} />
+          {/* <Boost wallet={publicKey?.toBase58() || ""} />
+          <Invites wallet={publicKey?.toBase58() || ""} /> */}
         </>
       )}
     </div>
