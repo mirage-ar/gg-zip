@@ -32,8 +32,6 @@ const UserInfo: React.FC = () => {
 
   // set points from user object or local storage
   useEffect(() => {
-    const localPoints = localStorage.getItem("points");
-
     if (publicKey) {
       const getUserPoints = async () => {
         const res = await fetch(`/api/users/${publicKey.toBase58()}`);
@@ -44,8 +42,6 @@ const UserInfo: React.FC = () => {
       };
 
       getUserPoints();
-    } else if (localPoints) {
-      setPoints(parseInt(localPoints));
     }
   }, [publicKey]);
 
