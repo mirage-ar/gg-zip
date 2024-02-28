@@ -158,3 +158,10 @@ h4 {
 .mapboxgl-ctrl {
   display: none !important;
 }
+
+.marker {
+  width: 30px;
+  height: 30px;
+  z-index: 1000;
+  border-radius: 100%;
+}
