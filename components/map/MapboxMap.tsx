@@ -89,8 +89,8 @@ const MapboxMap: React.FC = () => {
   useEffect(() => {
     const fetchAndUpdateBoxes = async () => {
       try {
-        // TODO: add boxes API
-        const response = await fetch(`api/boxes`);
+        const time = new Date().toISOString();
+        const response = await fetch(`api/boxes/${time}`);
         const data = await response.json();
 
         // update box markers
