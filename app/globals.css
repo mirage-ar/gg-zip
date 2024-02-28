@@ -154,3 +154,7 @@ h4 {
 .wallet-adapter-modal-title {
   color: var(--g) !important;
 }
+
+.mapboxgl-ctrl {
+  display: none !important;
+}

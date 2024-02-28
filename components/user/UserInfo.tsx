@@ -34,7 +34,7 @@ const UserInfo: React.FC = () => {
   useEffect(() => {
     if (publicKey) {
       const getUserPoints = async () => {
-        const res = await fetch(`/api/users/${publicKey.toBase58()}`);
+        const res = await fetch(`/api/points/${publicKey.toBase58()}`);
         const data = await res.json();
         if (data.points) {
           setPoints(data.points);

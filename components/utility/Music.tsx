@@ -6,7 +6,8 @@ import Image from "next/image";
 import styles from "./Music.module.css";
 
 const Music: React.FC = () => {
-  const [isMuted, setIsMuted] = useState(false);
+  // TODO: turn on music
+  const [isMuted, setIsMuted] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const toggleMute = () => {

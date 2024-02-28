@@ -25,3 +25,14 @@ export type User = {
     rank: number;
     invitedBy: string;
   }
+
+  export type LocationData = {
+    id: string;
+    image: string;
+    latitude: number;
+    longitude: number;
+    accuracy: number;
+    altitude: number | null;
+    altitudeAccuracy: number | null;
+    timestamp: number;
+  };

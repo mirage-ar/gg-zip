@@ -18,7 +18,7 @@ const LeaderboardUser: React.FC = () => {
     if (!publicKey) return;
 
     const fetchUser = async () => {
-      const res = await fetch(`/api/users/${publicKey?.toBase58()}`);
+      const res = await fetch(`/api/points/${publicKey?.toBase58()}`);
       const data = await res.json();
       if (data.id) {
         setUser(data);

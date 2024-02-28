@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import leaderboardStats from "@/utils/leaderboard.json";
+import leaderboardStats from "@/data/leaderboard.json";
 
 import LeaderboardItem from "@/components/leaderboard/LeaderboardItem";
 import LeaderboardUser from "@/components/leaderboard/LeaderboardUser";

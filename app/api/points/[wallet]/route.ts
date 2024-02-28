@@ -4,20 +4,9 @@ import prisma from "@/utils/prisma";
 export async function GET(request: Request, { params }: { params: { wallet: string } }) {
   const wallet = params.wallet;
 
-  const user = await prisma.user.findUnique({
+  const user = await prisma.points.findUnique({
     where: {
       wallet: wallet,
-    },
-    include: {
-      Referrer: {
-        include: {
-          referrer: {
-            select: {
-              name: true,
-            },
-          },
-        },
-      },
     },
   });
 
