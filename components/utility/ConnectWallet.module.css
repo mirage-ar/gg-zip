@@ -1,0 +1,12 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 347px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: var(--corner4, 4px);
+  background: #000;
+  text-transform: uppercase;
+  cursor: pointer;
+}
