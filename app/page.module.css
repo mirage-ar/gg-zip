@@ -1,8 +1,149 @@
 .main {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  /* flex-direction: column; */
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+}
+
+.leftCard {
+  width: 498px;
+  height: 696px;
+  background-color: var(--g);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  clip-path: polygon(3% 0, 100% 0, 100% 97%, 97% 100%, 0 100%, 0 3%);
+}
+
+.rightCard {
+  width: 498px;
+  height: 696px;
+  border: 1px solid var(--g);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* clip-path: polygon(3% 0, 100% 0, 100% 97%, 97% 100%, 0 100%, 0 3%); */
+
+  background-image: url("/assets/graphics/hunter.gif");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.topContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px;
+  width: 100%;
+}
+
+.topContent h1 {
+  font-size: 64px;
+  color: var(--b);
+}
+
+.topContent h2 {
+  font-size: 14px;
+  color: var(--b);
+  text-align: center;
+}
+
+.topContent p {
+  color: var(--b);
+  font-size: 14px;
+}
+
+.roundedCard {
+  display: flex;
+  padding: 12px 24px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--connect);
+  background-color: var(--b);
+  color: var(--g);
+  font-size: 28px;
+  text-transform: uppercase;
+  border-radius: 80px;
+}
+
+.bottomContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 36px 0;
+  width: 100%;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-transform: uppercase;
+}
+
+.bottomCard {
+  margin: 0 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 24px;
+  gap: 6px;
+  background-color: var(--b);
+  color: var(--p);
+  font-size: 14px;
+  clip-path: polygon(3% 0, 100% 0, 100% 88%, 97% 100%, 0 100%, 0 12%);
+}
+
+.tagline {
+  font-size: 14px;
+  color: var(--b);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.button {
+  border-radius: var(--corner4, 4px);
+  background: var(--g, #42ff60);
+  border: none;
+  padding: 22px 77px;
+  color: var(--b, #000);
+  font-size: 14px;
+  font-family: var(--diatype);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 0 30px var(--p);
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 5px var(--p);
+  }
+  50% {
+    box-shadow: 0 0 30px var(--p);
+  }
+  100% {
+    box-shadow: 0 0 5px var(--p);
+  }
 }
