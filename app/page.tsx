@@ -10,20 +10,26 @@ export default function Home() {
       <div className={styles.container}>
         <div className={styles.leftCard}>
           <div className={styles.topContent}>
-            <Image src="/assets/graphics/beta.gif" alt="Beta" width={89} height={2} />
+            <Image src="/assets/graphics/beta.gif" alt="Beta" width={89} height={26} />
             <h1>The Reaping</h1>
             <h2>
               The hunt will begin in NYC march 23rd
               <br />@ NOON Est
             </h2>
-            <p>DATE</p>
-            <div className={styles.roundedCard}>March 23rd</div>
-            <p>LOCATION</p>
-            <div className={styles.roundedCard}>TBA</div>
-            <p>PRIZE</p>
-            <div className={styles.roundedCard}>
-              1,000,000
-              <Image src="/assets/icons/icons-24/g.svg" alt="Coin" width={24} height={24} />
+            <div className={styles.content}>
+              <p>DATE</p>
+              <div className={styles.roundedCard}>March 23rd</div>
+            </div>
+            <div className={styles.content}>
+              <p>LOCATION</p>
+              <div className={styles.roundedCard}>TBA</div>
+            </div>
+            <div className={styles.content}>
+              <p>PRIZE</p>
+              <div className={styles.roundedCard}>
+                1,000,000
+                <Image src="/assets/icons/icons-24/g.svg" alt="Coin" width={24} height={24} />
+              </div>
             </div>
           </div>
           <div className={styles.bottomContent}>

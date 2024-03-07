@@ -30,7 +30,7 @@
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  padding: 32px;
+  padding: 32px 0 0;
   width: 100%;
 }
 
@@ -48,6 +48,13 @@
 .topContent p {
   color: var(--b);
   font-size: 14px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
 .roundedCard {
@@ -127,24 +134,24 @@
   border: none;
   padding: 22px 77px;
   color: var(--b, #000);
-  font-size: 14px;
+  font-size: 16px;
   font-family: var(--diatype);
   text-transform: uppercase;
   display: flex;
   align-items: center;
   gap: 8px;
   box-shadow: 0 0 30px var(--p);
-  animation: pulse 2s infinite ease-in-out;
+  /* animation: pulse 2s infinite ease-in-out; */
+
+  transition: transform 0.2s;
+  animation: pulse 1s ease-in-out infinite;
 }
 
 @keyframes pulse {
-  0% {
-    box-shadow: 0 0 5px var(--p);
+  0%, 100% {
+    transform: scale(1);
   }
   50% {
-    box-shadow: 0 0 30px var(--p);
-  }
-  100% {
-    box-shadow: 0 0 5px var(--p);
+    transform: scale(1.05); /* Adjust scale value for bigger/smaller pulse */
   }
 }
