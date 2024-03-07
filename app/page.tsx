@@ -13,16 +13,15 @@ export default function Home() {
             <Image src="/assets/graphics/beta.gif" alt="Beta" width={89} height={26} />
             <h1>The Reaping</h1>
             <h2>
-              The hunt will begin in NYC march 23rd
-              <br />@ NOON Est
+              Only 25 degens will be selected for the first hunt
             </h2>
             <div className={styles.content}>
               <p>DATE</p>
-              <div className={styles.roundedCard}>March 23rd</div>
+              <div className={`${styles.roundedCard} ${styles.blur}`}>March 23rd</div>
             </div>
             <div className={styles.content}>
               <p>LOCATION</p>
-              <div className={styles.roundedCard}>TBA</div>
+              <div className={styles.roundedCard}>NYC</div>
             </div>
             <div className={styles.content}>
               <p>PRIZE</p>

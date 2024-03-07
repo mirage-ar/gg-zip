@@ -71,6 +71,10 @@
   border-radius: 80px;
 }
 
+.blur {
+  filter: blur(5px);
+}
+
 .bottomContent {
   display: flex;
   flex-direction: column;
