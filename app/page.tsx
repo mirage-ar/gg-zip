@@ -10,7 +10,7 @@ export default function Home() {
       <div className={styles.container}>
         <div className={styles.leftCard}>
           <div className={styles.topContent}>
-            <Image src="/assets/icons/beta.svg" alt="Beta" width={78} height={18} />
+            <Image src="/assets/graphics/beta.gif" alt="Beta" width={89} height={2} />
             <h1>The Reaping</h1>
             <h2>
               The hunt will begin in NYC march 23rd
@@ -35,16 +35,17 @@ export default function Home() {
 
               <Timer date={launchDate} />
             </div>
-            <div className={styles.tagline}>
-              <Image src="/assets/icons/box-black.svg" alt="Arrow" width={20} height={20} />
-              May the odds be ever in your favor anon
-            </div>
           </div>
         </div>
         <div className={styles.rightCard}>
+          <div className={styles.spacer} />
           <Link className={styles.button} href={"https://6ofx9bdms6c.typeform.com/hunter"}>
             Volunteer as tribute
           </Link>
+          <div className={styles.tagline}>
+            <Image src="/assets/icons/icons-24/box-green.svg" alt="Arrow" width={24} height={24} />
+            May the odds be ever in your favor anon
+          </div>
         </div>
       </div>
     </div>

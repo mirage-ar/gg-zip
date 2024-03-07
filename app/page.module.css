@@ -25,22 +25,6 @@
   clip-path: polygon(3% 0, 100% 0, 100% 97%, 97% 100%, 0 100%, 0 3%);
 }
 
-.rightCard {
-  width: 498px;
-  height: 696px;
-  border: 1px solid var(--g);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  /* clip-path: polygon(3% 0, 100% 0, 100% 97%, 97% 100%, 0 100%, 0 3%); */
-
-  background-image: url("/assets/graphics/hunter.gif");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
 .topContent {
   display: flex;
   flex-direction: column;
@@ -98,7 +82,7 @@
 }
 
 .bottomCard {
-  margin: 0 22px;
+  /* margin: 0 0 32px;; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -110,9 +94,26 @@
   clip-path: polygon(3% 0, 100% 0, 100% 88%, 97% 100%, 0 100%, 0 12%);
 }
 
+.rightCard {
+  width: 498px;
+  height: 696px;
+  border: 1px solid var(--g);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  /* clip-path: polygon(3% 0, 100% 0, 100% 97%, 97% 100%, 0 100%, 0 3%); */
+
+  background-image: url("/assets/graphics/hunter.gif");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .tagline {
+  margin: 0 0 36px 0;
   font-size: 14px;
-  color: var(--b);
+  color: var(--g);
   text-align: center;
   display: flex;
   align-items: center;
