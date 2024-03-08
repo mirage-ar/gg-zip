@@ -39,7 +39,7 @@ export default function Home() {
             <p>
               Only 25 degens will be selected for the hunt in NYC.
               <br />
-              Colunteer before the deadline
+              Volunteer before the deadline
               <br />
               @March 11 NOON EST.
             </p>
