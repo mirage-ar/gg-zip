@@ -4,7 +4,7 @@ import Timer from "@/components/utility/Timer";
 import Link from "next/link";
 
 export default function Home() {
-  const launchDate = new Date("2024-03-11T12:00:00Z");
+  const launchDate = new Date("2024-03-11T17:00:00Z");
 
   return (
     <div className={styles.main}>
