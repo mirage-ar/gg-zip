@@ -26,6 +26,22 @@ export type User = {
     invitedBy: string;
   }
 
+  export type LiveLeaderboardItem = {
+    id: string;
+    username: string;
+    image: string;
+    wallet: string | null;
+    points: number;
+    box: number;
+  };
+
+  export type ChatMessage = {
+    message: string;
+    timestamp: number;
+    username: string;
+    image: string;
+  };
+
   export type LocationData = {
     id: string;
     image: string;

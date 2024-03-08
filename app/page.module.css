@@ -181,11 +181,19 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 0 30px var(--p);
+  box-shadow: 0 0 50px var(--p);
   /* animation: pulse 2s infinite ease-in-out; */
 
   transition: transform 0.2s;
   animation: pulse 1s ease-in-out infinite;
+}
+
+.borderPulse {
+  /* padding: 22px 22px; */
+  /* border: 1px solid var(--g); */
+
+  transition: transform 0.2s;
+  animation: pulse2 2s linear infinite;
 }
 
 @keyframes pulse {
@@ -195,6 +203,16 @@
   }
   50% {
     transform: scale(1.05); /* Adjust scale value for bigger/smaller pulse */
+  }
+}
+
+@keyframes pulse2 {
+  0%,
+  100% {
+    padding: 0px 0px;
+  }
+  50% {
+    padding: 24px 24px;
   }
 }
 

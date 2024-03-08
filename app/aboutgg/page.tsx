@@ -57,7 +57,7 @@ const Page: React.FC = () => {
           </p>
         </div>
       </div>
-      <div className={styles.box}>
+      {/* <div className={styles.box}>
         <div className={styles.boxTitle}>Invite System</div>
         <div className={styles.boxContent}>
           <h2>GG is invite-only</h2>
@@ -157,7 +157,7 @@ const Page: React.FC = () => {
         <Image src="/assets/graphics/about/2.svg" alt="graphic icons" width={165} height={40} />
         <p>And +10% from<br />their friend&apos;s claimed G!</p>
         </div>
-      </div>
+      </div> */}
 
       <div className={styles.box}>
         <div className={styles.noticeContainer}>

@@ -52,9 +52,11 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.rightCard}>
-          <Link target="_blank" className={styles.button} href={"https://gg-zip.typeform.com/hunter"}>
-            Volunteer as tribute
-          </Link>
+          <div className={styles.borderPulse}>
+            <Link target="_blank" className={styles.button} href={"https://gg-zip.typeform.com/hunter"}>
+              Volunteer as tribute
+            </Link>
+          </div>
         </div>
       </div>
     </div>

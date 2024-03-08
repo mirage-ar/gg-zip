@@ -58,3 +58,7 @@ I just claimed ${points}🇬 #gg`;
 
   return twitterIntentUrl;
 }
+
+export const withCommas = (x: number | string): string => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
