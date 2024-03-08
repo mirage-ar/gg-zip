@@ -175,7 +175,7 @@
   border: none;
   padding: 22px 77px;
   color: var(--b, #000);
-  font-size: 16px;
+  font-size: 20px;
   font-family: var(--diatype);
   text-transform: uppercase;
   display: flex;
