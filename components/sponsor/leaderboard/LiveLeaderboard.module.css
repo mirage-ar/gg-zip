@@ -1,0 +1,82 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  margin: 0 16px;
+  padding: 0 0 9px;
+  font-family: var(--connect);
+  color: var(--g);
+  font-size: 18px;
+  border-bottom: 1px solid #292929;
+}
+
+.leftColumn {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.rightColumn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 100px;
+}
+
+.leaderboardRow {
+  margin: 10px 16px;
+  display: flex;
+  height: 40px;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.playerInfo {
+  display: flex;
+  align-items: center;
+  width: 300px;
+}
+
+.playerRank {
+  color: var(--g);
+  font-family: var(--connect);
+  font-style: normal;
+  font-weight: 400;
+  width: 50px;
+}
+
+.playerImage {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 20px;
+  border: 1px solid var(--g);
+}
+
+.playerName {
+  color: var(--w, #faf5e9);
+  font-family: var(--diatype);
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.playerBoxes {
+  color: var(--w, #faf5e9);
+  text-align: right;
+  font-family: var(--connect);
+  font-size: 18px;
+  width: 100px;
+}
+
+.playerScore {
+  color: var(--w, #faf5e9);
+  text-align: right;
+  font-family: var(--connect);
+  font-size: 18px;
+  width: 124px;
+
+}

@@ -1,14 +1,27 @@
 import type { Metadata } from "next";
 import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css";
 
 import Navigation from "@/components/layout/Navigation";
 import Footer from "@/components/layout/Footer";
 
+export function generateViewport() {
+  return {
+    themeColor: "#000",
+    initialScale: 1,
+    maximumScale: 1,
+    minimumScale: 1,
+    width: "device-width",
+    height: "device-height",
+    userScalable: false,
+    colorScheme: "dark",
+  };
+}
+
 export const metadata: Metadata = {
   title: "GG",
   description: "GG",
+  themeColor: "#000000",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -22,7 +35,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <Footer />
         <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );

@@ -6,8 +6,7 @@ import Image from "next/image";
 import styles from "./Music.module.css";
 
 const Music: React.FC = () => {
-  // TODO: turn on music
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const toggleMute = () => {
@@ -34,7 +33,7 @@ const Music: React.FC = () => {
 
   return (
     <div className={styles.main}>
-      <audio ref={audioRef} src={"/assets/audio/russian-ecstasy.mp3"} autoPlay muted={isMuted} />
+      <audio ref={audioRef} src={"/assets/audio/hope-hell-never-die.mp3"} autoPlay muted={isMuted} />
       <div className={styles.button} onClick={toggleMute}>
         <Image
           src={isMuted ? "/assets/icons/icons-24/sound-off.svg" : "/assets/icons/icons-24/sound-on.svg"}

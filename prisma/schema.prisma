@@ -14,7 +14,7 @@ model User {
   id        String   @id @default(uuid())
   twitterId String   @unique
   username  String   @unique
-  wallet    String   @unique
+  wallet    String?   @unique
   image     String?
   points    Int      @default(0) // Calculated field based on Box.points
   createdAt DateTime @default(now())
@@ -50,4 +50,12 @@ model Points {
   points    Int        @default(0)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+}
+
+model Code {
+  id        String   @id @default(uuid())
+  code      String   @unique
+  claimed   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

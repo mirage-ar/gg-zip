@@ -1,8 +1,235 @@
 .main {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  /* flex-direction: column; */
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+}
+
+.leftCard {
+  width: 498px;
+  height: 696px;
+  background-color: var(--g);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  clip-path: polygon(3% 0, 100% 0, 100% 97%, 97% 100%, 0 100%, 0 3%);
+}
+
+.topContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 0 0;
+  width: 100%;
+}
+
+.topContent h1 {
+  font-size: 64px;
+  line-height: 64px;
+  color: var(--b);
+}
+
+.centerContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.boxContainer {
+  display: flex;
+  gap: 4px;
+}
+
+.boxContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.boxContent h2 {
+  font-size: 14px;
+  color: var(--b);
+}
+
+.leftBox {
+  width: 231px;
+  height: 60px;
+  background-color: var(--b);
+  border-radius: var(--corner4, 4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--connect);
+  color: var(--g);
+  font-size: 28px;
+  clip-path: polygon(5% 0, 100% 0, 100% 100%, 100% 100%, 0 100%, 0 20%);
+}
+
+.rightBox {
+  display: flex;
+  gap: 4px;
+  width: 231px;
+  height: 60px;
+  background-color: var(--b);
+  border-radius: var(--corner4, 4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--connect);
+  color: var(--g);
+  font-size: 28px;
+
+  clip-path: polygon(0 0, 100% 0, 100% 80%, 95% 100%, 0 100%, 0 0);
+}
+
+.timer {
+  display: flex;
+  justify-content: center;
+  width: 466px;
+  padding: 20px 0 12px;
+  background-color: var(--b);
+  border-radius: var(--corner4, 4px);
+  color: var(--p);
+  clip-path: polygon(3% 0, 100% 0, 100% 88%, 97% 100%, 0 100%, 0 12%);
+}
+
+.centerContent p {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--b);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.spacer {
+  height: 70px;
+}
+
+.bottomContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 0 0 32px;
+  width: 100%;
+  color: var(--b);
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+/* .bottomCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 24px;
+  gap: 6px;
+  background-color: var(--b);
+  color: var(--p);
+  font-size: 14px;
+  clip-path: polygon(3% 0, 100% 0, 100% 88%, 97% 100%, 0 100%, 0 12%);
+} */
+
+.rightCard {
+  width: 498px;
+  height: 696px;
+  border: 1px solid var(--g);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* clip-path: polygon(3% 0, 100% 0, 100% 97%, 97% 100%, 0 100%, 0 3%); */
+
+  background-image: url("/assets/graphics/hunter.gif");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.tagline {
+  margin: 0 0 36px 0;
+  font-size: 14px;
+  color: var(--g);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.button {
+  border-radius: var(--corner4, 4px);
+  background: var(--g, #42ff60);
+  border: none;
+  padding: 22px 77px;
+  color: var(--b, #000);
+  font-size: 20px;
+  font-family: var(--diatype);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 0 50px var(--p);
+  /* animation: pulse 2s infinite ease-in-out; */
+
+  transition: transform 0.2s;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.button:hover {
+  animation: unset;
+  animation: shake 0.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05); /* Adjust scale value for bigger/smaller pulse */
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+@media only screen and (max-width: 1166px) {
+  .container {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .rightCard {
+    border: none;
+  }
+
+  .topContent h1 {
+    font-size: 50px;
+  }
+
+  .centerContent p {
+    font-size: 12px;
+  }
 }

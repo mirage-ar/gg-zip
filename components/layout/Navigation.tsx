@@ -12,10 +12,10 @@ const Navigation: React.FC = () => {
   const pathName = usePathname();
   const url = pathName.split("/")[1];
 
-  const [active, setActive] = useState<number | null>(null);
+  const [active, setActive] = useState<number | null>(0);
 
   const items = useMemo(() => [
-    { id: 0, name: "airdrop", path: "/airdrop" },
+    { id: 0, name: "hunt", path: "/" },
     { id: 1, name: "leaderboard", path: "/leaderboard" },
     { id: 2, name: "about", path: "/aboutgg" },
   ], []);
@@ -50,7 +50,7 @@ const Navigation: React.FC = () => {
       <div className={styles.mobileNav}>
         {items.map(
           (item) =>
-            item.name != "airdrop" && (
+            item.name != "hunt" && (
               <Link key={item.id} onClick={(e) => setActive(item.id)} href={`${item.path}`}>
                 {item.name}
               </Link>
