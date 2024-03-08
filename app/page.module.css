@@ -188,12 +188,9 @@
   animation: pulse 1s ease-in-out infinite;
 }
 
-.borderPulse {
-  /* padding: 22px 22px; */
-  /* border: 1px solid var(--g); */
-
-  transition: transform 0.2s;
-  animation: pulse2 2s linear infinite;
+.button:hover {
+  animation: unset;
+  animation: shake 0.5s infinite ease-in-out;
 }
 
 @keyframes pulse {
@@ -206,17 +203,19 @@
   }
 }
 
-@keyframes pulse2 {
-  0%,
-  100% {
-    padding: 0px 0px;
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
   }
-  50% {
-    padding: 24px 24px;
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
   }
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 1166px) {
   .container {
     flex-direction: column;
     gap: 24px;
@@ -228,5 +227,9 @@
 
   .topContent h1 {
     font-size: 50px;
+  }
+
+  .centerContent p {
+    font-size: 12px;
   }
 }
