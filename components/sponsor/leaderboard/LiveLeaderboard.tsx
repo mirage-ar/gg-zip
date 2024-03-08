@@ -4,14 +4,18 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 import styles from "./LiveLeaderboard.module.css";
-import { LeaderboardItem, LiveLeaderboardItem } from "@/types";
+import { LiveLeaderboardItem } from "@/types";
 import { rand, withCommas } from "@/utils";
 
 const LiveLeaderboard: React.FC = () => {
   const [leaderboardData, setLeaderboardData] = useState<LiveLeaderboardItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // TODO: create loading state for leaderboard
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const response = await fetch(`/api/leaderboard/${rand(1, 100)}`);
         const data = await response.json();

@@ -1,14 +1,20 @@
 import { useState, useEffect } from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 
 import { User } from "@/types";
 
 export default function useUser() {
-  const [ user, setUser ] = useState<User | null>(null);
+  const { publicKey } = useWallet();
+  const { setVisible } = useWalletModal();
 
-  useEffect(() => {
+  const connectWallet = async () => {
+    try {
+      setVisible(true);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-
-  }, []);
-
-  return user;
+  return {connectWallet, publicKey};
 }

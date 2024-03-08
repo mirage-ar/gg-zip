@@ -62,11 +62,7 @@ export default function Home() {
         </div>
 
         {/* ----- COMPONENTS ----- */}
-        {tab === Tab.LEADERBOARD ? (
-          <LiveLeaderboard />
-        ) : (
-          <Chat />
-        )}
+        <div className={styles.componentContainer}>{tab === Tab.LEADERBOARD ? <LiveLeaderboard /> : <Chat />}</div>
       </div>
     </div>
   );

@@ -8,9 +8,10 @@ import styles from "./Chat.module.css";
 
 import { ChatMessage } from "@/types";
 import { GET_MESSAGES_URL, CHAT_SOCKET_URL } from "@/utils/constants";
+import { formatWalletAddress } from "@/utils";
 
 const Chat: React.FC = () => {
-  const user = useUser();
+  const { publicKey, connectWallet } = useUser();
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
@@ -52,8 +53,8 @@ const Chat: React.FC = () => {
       const messageData: ChatMessage = {
         message: inputMessage,
         timestamp: Date.now(),
-        username: user?.username || "Anonymous",
-        image: user?.image || "",
+        username: publicKey ? formatWalletAddress(publicKey.toBase58()) : "Anonymous",
+        image: "https://gg.zip/assets/graphics/koji.png",
       };
       webSocket.current.send(JSON.stringify({ action: "sendmessage", data: messageData }));
       setInputMessage("");
@@ -122,12 +123,12 @@ const Chat: React.FC = () => {
             onChange={(e) => setInputMessage(e.target.value)}
             placeholder="Type a message..."
           />
-          {user ? (
+          {publicKey ? (
             <button onClick={handleFormSubmit} className={styles.chatSendButton}>
               SEND
             </button>
           ) : (
-            <button onClick={() => console.log("COnnect wallet")} className={styles.chatSendButton}>
+            <button onClick={connectWallet} className={styles.chatSendButton}>
               Connect Wallet
             </button>
           )}

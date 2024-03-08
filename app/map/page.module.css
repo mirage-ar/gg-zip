@@ -4,7 +4,7 @@
   right: 0;
   width: 530px;
   height: 100%;
-  padding: 90px 0;
+  padding: 90px 0 0;
   background-color: var(--b);
   z-index: 100;
   display: flex;
@@ -67,4 +67,8 @@
 .selected {
   background: var(--g, #42ff60);
   color: var(--b);
+}
+
+.componentContainer {
+  overflow-y: auto;
 }
