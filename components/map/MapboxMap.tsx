@@ -28,8 +28,7 @@ const MapboxMap: React.FC = () => {
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current as HTMLElement,
-      // TODO: update to new york and zoomed out
-      center: [-73.9517496113865, 40.72023363137955],
+      center: [-71.14373900852445, 42.35727058925982],
       zoom: 14,
       pitch: 25,
       attributionControl: false,
@@ -43,6 +42,10 @@ const MapboxMap: React.FC = () => {
     });
 
     map.on("load", function () {
+      
+      // FETCH INITIAL BOXES
+      fetchAndUpdateBoxes();
+
       map.addSource("boxes-source", {
         type: "geojson",
         data: {
@@ -86,27 +89,26 @@ const MapboxMap: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const fetchAndUpdateBoxes = async () => {
-      try {
-        const time = new Date().toISOString();
-        const response = await fetch(`api/boxes/${time}`);
-        const data = await response.json();
+  const fetchAndUpdateBoxes = async () => {
+    try {
+      const time = new Date().toISOString();
+      const response = await fetch(`api/boxes/${time}`);
+      const data = await response.json();
 
-        // update box markers
-        const map = mapRef.current;
-        if (map && map.getSource("boxes-source")) {
-          const boxesSource = map.getSource("boxes-source") as mapboxgl.GeoJSONSource;
-          if (boxesSource) {
-            boxesSource.setData(data.boxes);
-          }
+      // update box markers
+      const map = mapRef.current;
+      if (map && map.getSource("boxes-source")) {
+        const boxesSource = map.getSource("boxes-source") as mapboxgl.GeoJSONSource;
+        if (boxesSource) {
+          boxesSource.setData(data.boxes);
         }
-      } catch (error) {
-        console.error("Error fetching boxes:", error);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching boxes:", error);
+    }
+  };
 
-    // TODO: update time to fetch boxes
+  useEffect(() => {
     const timer = setInterval(fetchAndUpdateBoxes, 5000);
 
     return () => {
