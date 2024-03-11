@@ -2,13 +2,20 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import Timer from "@/components/utility/Timer";
 import Link from "next/link";
+import MapboxMap from "@/components/map/MapboxMap";
 
 export default function Home() {
   const launchDate = new Date("2024-03-11T17:00:00Z");
 
   return (
     <div className={styles.main}>
-      <div className={styles.container}>
+      <div className={styles.map}>
+        <MapboxMap />
+      </div>
+      <div className={styles.fill}>
+        <img src="/assets/graphics/hunt.svg" alt="Details" />
+      </div>
+      {/* <div className={styles.container}>
         <div className={styles.leftCard}>
           <div className={styles.topContent}>
             <Image src="/assets/graphics/beta.gif" alt="Beta" width={89} height={26} />
@@ -58,7 +65,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

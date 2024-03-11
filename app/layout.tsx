@@ -52,9 +52,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <video autoPlay muted loop id="background">
+        {/* <video autoPlay muted loop id="background">
           <source src="/assets/video/bg.mp4" type="video/mp4" />
-        </video>
+        </video> */}
         <Navigation />
         {children}
         <Footer />

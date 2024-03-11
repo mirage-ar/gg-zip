@@ -1,9 +1,32 @@
 .main {
   display: flex;
-  /* flex-direction: column; */
+  flex-direction: column;
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
+}
+
+.fill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.map {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  filter: blur(8px);
+  z-index: -10000;
+}
+
+.fill img {
+  margin: 0 auto;
+  width: 100%;
+  height: auto;
 }
 
 .container {
@@ -204,13 +227,21 @@
 }
 
 @keyframes shake {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0);
   }
-  10%, 30%, 50%, 70%, 90% {
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
     transform: translateX(-5px);
   }
-  20%, 40%, 60%, 80% {
+  20%,
+  40%,
+  60%,
+  80% {
     transform: translateX(5px);
   }
 }
