@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     url: "https://gg.zip",
     images: [
       {
-        url: "https://gg.zip/og.png",
+        url: "https://gg.zip/og.jpg",
         width: 1200,
         height: 630,
       },
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     description: "GG",
     images: [
       {
-        url: "https://gg.zip/og.png",
+        url: "https://gg.zip/og.jpg",
         width: 1200,
         height: 630,
       },
