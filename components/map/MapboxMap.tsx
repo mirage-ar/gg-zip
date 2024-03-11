@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import mapboxgl from "mapbox-gl";
+import mapboxgl, { LngLat } from "mapbox-gl";
 
 import { useUser } from "@/hooks";
 
@@ -9,6 +9,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 
 import type { LocationData } from "@/types";
 import { LOCATION_SOCKET_URL } from "@/utils/constants";
+import DropForm from "../admin/DropForm";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string;
 
@@ -24,12 +25,14 @@ const MapboxMap: React.FC = () => {
   const markersSocket = useRef<WebSocket | null>(null);
   const markersRef = useRef<MarkersObject>({});
 
+  const [dropzone, setDropzone] = useState<LngLat | null>(null);
+
   // SETUP MAP
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current as HTMLElement,
       // TODO: update to new york and zoomed out
-      center: [-73.9517496113865, 40.72023363137955],
+      center: [-71.1432953183599, 42.35719485250052],
       zoom: 14,
       pitch: 25,
       attributionControl: false,
@@ -79,6 +82,17 @@ const MapboxMap: React.FC = () => {
       });
     });
 
+    // DROP BOXES ON CLICK
+    map.on("click", function (e) {
+      // e.lngLat is the longitude, latitude of the clicked point
+      const lngLat = e.lngLat;
+      setDropzone(lngLat);
+      console.log(`Clicked location: Longitude: ${lngLat.lng}, Latitude: ${lngLat.lat}`);
+
+      // Here you can call any function you want with lngLat.lng and lngLat.lat
+      // For example: yourFunction(lngLat.lng, lngLat.lat);
+    });
+
     mapRef.current = map;
 
     return () => {
@@ -86,26 +100,26 @@ const MapboxMap: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const fetchAndUpdateBoxes = async () => {
-      try {
-        const time = new Date().toISOString();
-        const response = await fetch(`api/boxes/${time}`);
-        const data = await response.json();
+  const fetchAndUpdateBoxes = async () => {
+    try {
+      const time = new Date().toISOString();
+      const response = await fetch(`api/boxes/${time}`);
+      const data = await response.json();
 
-        // update box markers
-        const map = mapRef.current;
-        if (map && map.getSource("boxes-source")) {
-          const boxesSource = map.getSource("boxes-source") as mapboxgl.GeoJSONSource;
-          if (boxesSource) {
-            boxesSource.setData(data.boxes);
-          }
+      // update box markers
+      const map = mapRef.current;
+      if (map && map.getSource("boxes-source")) {
+        const boxesSource = map.getSource("boxes-source") as mapboxgl.GeoJSONSource;
+        if (boxesSource) {
+          boxesSource.setData(data.boxes);
         }
-      } catch (error) {
-        console.error("Error fetching boxes:", error);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching boxes:", error);
+    }
+  };
 
+  useEffect(() => {
     // TODO: update time to fetch boxes
     const timer = setInterval(fetchAndUpdateBoxes, 5000);
 
@@ -178,6 +192,7 @@ const MapboxMap: React.FC = () => {
 
   return (
     <>
+      <DropForm latitude={dropzone?.lat} longitude={dropzone?.lng} fetchBoxes={fetchAndUpdateBoxes} />
       <div
         ref={mapContainerRef}
         style={{
