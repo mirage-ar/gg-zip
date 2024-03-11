@@ -31,8 +31,7 @@ const MapboxMap: React.FC = () => {
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current as HTMLElement,
-      // TODO: update to new york and zoomed out
-      center: [-71.1432953183599, 42.35719485250052],
+      center: [-71.14373900852445, 42.35727058925982],
       zoom: 14,
       pitch: 25,
       attributionControl: false,
@@ -46,6 +45,10 @@ const MapboxMap: React.FC = () => {
     });
 
     map.on("load", function () {
+      
+      // FETCH INITIAL BOXES
+      fetchAndUpdateBoxes();
+
       map.addSource("boxes-source", {
         type: "geojson",
         data: {
@@ -120,7 +123,6 @@ const MapboxMap: React.FC = () => {
   };
 
   useEffect(() => {
-    // TODO: update time to fetch boxes
     const timer = setInterval(fetchAndUpdateBoxes, 5000);
 
     return () => {

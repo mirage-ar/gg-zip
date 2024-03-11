@@ -11,21 +11,24 @@ const LiveLeaderboard: React.FC = () => {
   const [leaderboardData, setLeaderboardData] = useState<LiveLeaderboardItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // TODO: create loading state for leaderboard
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/leaderboard/${rand(1, 100)}`);
+      const data = await response.json();
+      setLeaderboardData(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(`/api/leaderboard/${rand(1, 100)}`);
-        const data = await response.json();
-        setLeaderboardData(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     fetchData();
+    const interval = setInterval(() => {
+      fetchData();
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -48,19 +51,22 @@ const LiveLeaderboard: React.FC = () => {
 
       {/* ----- LEADERBOARD ------ */}
       {leaderboardData.length > 0 &&
-            leaderboardData.map((player, index) => (
-              <div className={styles.leaderboardRow} key={player.id}>
-                <div className={styles.playerInfo}>
-                  <div className={styles.playerRank}>{index + 1}</div>
-                  {/* <div className={styles.playerMarker}> */}
-                  <Image className={styles.playerImage} src={player.image} alt="User Image" width={150} height={150} />
-                  {/* </div> */}
-                  <div className={styles.playerName}>@{player.username}</div>
-                </div>
-                <div className={styles.playerBoxes}>{withCommas(player.box)}</div>
-                <div className={styles.playerScore}>{withCommas(player.points)}</div>
+        leaderboardData.map((player, index) => (
+          <div className={`${index < 5 ? styles.green : ""}`} key={player.id}>
+            <div className={styles.leaderboardRow}>
+              <div className={styles.playerInfo}>
+                <div className={styles.playerRank}>{index + 1}</div>
+                {/* <div className={styles.playerMarker}> */}
+                <Image className={styles.playerImage} src={player.image} alt="User Image" width={150} height={150} />
+                {/* </div> */}
+                <div className={styles.playerName}>@{player.username}</div>
               </div>
-            ))}
+              <div className={styles.playerBoxes}>{withCommas(player.boxes)}</div>
+              <div className={styles.playerScore}>{withCommas(player.points)}</div>
+            </div>
+            {index === 4 && <div className={styles.spacer} />}
+          </div>
+        ))}
     </div>
   );
 };

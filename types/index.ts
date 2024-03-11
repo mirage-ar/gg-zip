@@ -32,7 +32,7 @@ export type User = {
     image: string;
     wallet: string | null;
     points: number;
-    box: number;
+    boxes: number;
   };
 
   export type ChatMessage = {

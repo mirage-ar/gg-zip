@@ -58,14 +58,14 @@
 }
 
 .playerName {
-  color: var(--w, #faf5e9);
+  /* color: var(--w, #faf5e9); */
   font-family: var(--diatype);
   font-size: 14px;
   text-transform: uppercase;
 }
 
 .playerBoxes {
-  color: var(--w, #faf5e9);
+  /* color: var(--w, #faf5e9); */
   text-align: right;
   font-family: var(--connect);
   font-size: 18px;
@@ -73,10 +73,19 @@
 }
 
 .playerScore {
-  color: var(--w, #faf5e9);
+  /* color: var(--w, #faf5e9); */
   text-align: right;
   font-family: var(--connect);
   font-size: 18px;
   width: 124px;
 
+}
+
+.spacer {
+  margin: 10px 16px;
+  border-bottom: 1px dotted var(--g3, #373737);
+}
+
+.green {
+  color: var(--g);
 }
