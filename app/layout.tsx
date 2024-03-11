@@ -22,6 +22,30 @@ export const metadata: Metadata = {
   title: "GG",
   description: "GG",
   themeColor: "#000000",
+  openGraph: {
+    title: "GG",
+    description: "GG",
+    url: "https://gg.zip",
+    images: [
+      {
+        url: "https://gg.zip/og.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "GG",
+    description: "GG",
+    images: [
+      {
+        url: "https://gg.zip/og.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
