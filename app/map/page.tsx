@@ -7,14 +7,12 @@ import React, { useRef } from "react";
 import LiveLeaderboard from "@/components/sponsor/leaderboard/LiveLeaderboard";
 import Chat from "@/components/sponsor/chat/Chat";
 
+import { MarkersObject } from "@/types";
+
 enum Tab {
   LEADERBOARD = 0,
   CHAT = 1,
 }
-
-type MarkersObject = {
-  [id: string]: mapboxgl.Marker;
-};
 
 export default function Home() {
   const [tab, setTab] = React.useState(Tab.LEADERBOARD);

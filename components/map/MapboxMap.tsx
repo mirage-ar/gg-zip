@@ -7,14 +7,14 @@ import { useUser } from "@/hooks";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import type { LocationData } from "@/types";
+import type { LocationData, MarkersObject } from "@/types";
 import { LOCATION_SOCKET_URL } from "@/utils/constants";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string;
 
 interface MapboxMapProps {
   mapRef: React.MutableRefObject<mapboxgl.Map | null>;
-  markersRef: React.MutableRefObject<{ [id: string]: mapboxgl.Marker }>;
+  markersRef: React.MutableRefObject<MarkersObject>;
 }
 
 const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef }) => {
