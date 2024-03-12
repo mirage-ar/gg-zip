@@ -29,8 +29,8 @@ const MapboxMap: React.FC = () => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current as HTMLElement,
       center: [-71.14373900852445, 42.35727058925982],
-      zoom: 14,
-      pitch: 25,
+      zoom: 3,
+      pitch: 0,
       attributionControl: false,
     });
 
