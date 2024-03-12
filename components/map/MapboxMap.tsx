@@ -12,17 +12,16 @@ import { LOCATION_SOCKET_URL } from "@/utils/constants";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string;
 
-type MarkersObject = {
-  [id: string]: mapboxgl.Marker;
-};
+interface MapboxMapProps {
+  mapRef: React.MutableRefObject<mapboxgl.Map | null>;
+  markersRef: React.MutableRefObject<{ [id: string]: mapboxgl.Marker }>;
+}
 
-const MapboxMap: React.FC = () => {
+const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef }) => {
   const user = useUser();
 
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
-  const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersSocket = useRef<WebSocket | null>(null);
-  const markersRef = useRef<MarkersObject>({});
 
   // SETUP MAP
   useEffect(() => {
@@ -42,7 +41,6 @@ const MapboxMap: React.FC = () => {
     });
 
     map.on("load", function () {
-      
       // FETCH INITIAL BOXES
       fetchAndUpdateBoxes();
 
@@ -139,8 +137,9 @@ const MapboxMap: React.FC = () => {
       };
 
       markersSocket.current.onclose = () => {
-        console.log("WebSocket Disconnected");
-        // Initiate a reconnect attempt
+        console.log("WebSocket Disconnected, attempting to reconnect...");
+        navigator.geolocation.clearWatch(watchId);
+        setTimeout(connectWebSocket, 3000); // Attempt to reconnect after 3 seconds
       };
     };
 

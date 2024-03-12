@@ -7,6 +7,7 @@ export async function GET(request: Request) {
     orderBy: {
       points: "desc",
     },
+    take: 500,
   });
 
   return Response.json(leaderboard);

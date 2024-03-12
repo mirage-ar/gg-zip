@@ -7,12 +7,14 @@ import styles from "./LiveLeaderboard.module.css";
 import { LiveLeaderboardItem } from "@/types";
 import { rand, withCommas } from "@/utils";
 
-const LiveLeaderboard: React.FC = () => {
+interface LiveLeaderboardProps {
+  flyToMarker: (markerId: string) => void;
+}
+
+const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker }) => {
   const [leaderboardData, setLeaderboardData] = useState<LiveLeaderboardItem[]>([]);
-  const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
-    setLoading(true);
     try {
       const response = await fetch(`/api/leaderboard/${rand(1, 100)}`);
       const data = await response.json();
@@ -54,7 +56,7 @@ const LiveLeaderboard: React.FC = () => {
         leaderboardData.map((player, index) => (
           <div className={`${index < 5 ? styles.green : ""}`} key={player.id}>
             <div className={styles.leaderboardRow}>
-              <div className={styles.playerInfo}>
+              <div className={styles.playerInfo} onClick={() => flyToMarker(player.id)}>
                 <div className={styles.playerRank}>{index + 1}</div>
                 {/* <div className={styles.playerMarker}> */}
                 <Image className={styles.playerImage} src={player.image} alt="User Image" width={150} height={150} />
