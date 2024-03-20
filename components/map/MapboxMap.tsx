@@ -144,7 +144,7 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef }) => {
     };
 
     // Initial connection
-    connectWebSocket();
+    // connectWebSocket();
 
     return () => {
       markersSocket.current?.close();
