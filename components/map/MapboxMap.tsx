@@ -137,14 +137,12 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef }) => {
       };
 
       markersSocket.current.onclose = () => {
-        console.log("WebSocket Disconnected, attempting to reconnect...");
-        navigator.geolocation.clearWatch(watchId);
-        setTimeout(connectWebSocket, 3000); // Attempt to reconnect after 3 seconds
+        console.log("WebSocket Disconnected");
       };
     };
 
     // Initial connection
-    // connectWebSocket();
+    connectWebSocket();
 
     return () => {
       markersSocket.current?.close();
