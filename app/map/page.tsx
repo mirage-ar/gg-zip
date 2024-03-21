@@ -3,9 +3,11 @@
 import Image from "next/image";
 import MapboxMap from "@/components/map/MapboxMap";
 import styles from "./page.module.css";
-import React from "react";
+import React, { useRef } from "react";
 import LiveLeaderboard from "@/components/sponsor/leaderboard/LiveLeaderboard";
 import Chat from "@/components/sponsor/chat/Chat";
+
+import { MarkersObject } from "@/types";
 
 enum Tab {
   LEADERBOARD = 0,
@@ -13,15 +15,29 @@ enum Tab {
 }
 
 export default function Home() {
-  const tabs = [Tab.LEADERBOARD, Tab.CHAT];
   const [tab, setTab] = React.useState(Tab.LEADERBOARD);
+  const mapRef = useRef<mapboxgl.Map | null>(null);
+  const markersRef = useRef<MarkersObject>({});
+
+  // FLY TO USER LOCATION
+  const flyToMarker = (markerId: string) => {
+    const map = mapRef.current;
+    const marker = markersRef.current[markerId];
+    if (marker && map) {
+      map.flyTo({
+        center: marker.getLngLat(),
+        zoom: 15,
+        essential: true,
+      });
+    }
+  };
 
   return (
     <div className={styles.main}>
-      <MapboxMap />
+      <MapboxMap mapRef={mapRef} markersRef={markersRef} />
       <div className={styles.overlay}>
         {/* ----- PRIZE INFO ----- */}
-        <div className={styles.prizeTotal}>
+        {/* <div className={styles.prizeTotal}>
           <div className={styles.prizeTotalLabel}> Prize Pool</div>
           <div className={styles.prizeContainer}>
             <Image src="/assets/icons/point-container-left.svg" alt="Prize graphic" width={153} height={109} />
@@ -31,7 +47,7 @@ export default function Home() {
             </div>
             <Image src="/assets/icons/point-container-right.svg" alt="Prize graphic" width={153} height={109} />
           </div>
-        </div>
+        </div> */}
 
         {/* ----- NAVIGATION ----- */}
         <div className={styles.navContainer}>
@@ -62,7 +78,7 @@ export default function Home() {
         </div>
 
         {/* ----- COMPONENTS ----- */}
-        <div className={styles.componentContainer}>{tab === Tab.LEADERBOARD ? <LiveLeaderboard /> : <Chat />}</div>
+        <div className={styles.componentContainer}>{tab === Tab.LEADERBOARD ? <LiveLeaderboard flyToMarker={flyToMarker} /> : <Chat />}</div>
       </div>
     </div>
   );

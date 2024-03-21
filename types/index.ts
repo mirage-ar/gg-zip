@@ -52,3 +52,7 @@ export type User = {
     altitudeAccuracy: number | null;
     timestamp: number;
   };
+
+  export type MarkersObject = {
+    [id: string]: mapboxgl.Marker;
+  };

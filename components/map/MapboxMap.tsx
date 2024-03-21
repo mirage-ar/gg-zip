@@ -7,23 +7,22 @@ import { useUser } from "@/hooks";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import type { LocationData } from "@/types";
+import type { LocationData, MarkersObject } from "@/types";
 import { LOCATION_SOCKET_URL } from "@/utils/constants";
 import DropForm from "../admin/DropForm";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string;
 
-type MarkersObject = {
-  [id: string]: mapboxgl.Marker;
-};
+interface MapboxMapProps {
+  mapRef: React.MutableRefObject<mapboxgl.Map | null>;
+  markersRef: React.MutableRefObject<MarkersObject>;
+}
 
-const MapboxMap: React.FC = () => {
+const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef }) => {
   const user = useUser();
 
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
-  const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersSocket = useRef<WebSocket | null>(null);
-  const markersRef = useRef<MarkersObject>({});
 
   const [dropzone, setDropzone] = useState<LngLat | null>(null);
 
@@ -32,8 +31,8 @@ const MapboxMap: React.FC = () => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current as HTMLElement,
       center: [-71.14373900852445, 42.35727058925982],
-      zoom: 14,
-      pitch: 25,
+      zoom: 3,
+      pitch: 0,
       attributionControl: false,
     });
 
@@ -45,7 +44,6 @@ const MapboxMap: React.FC = () => {
     });
 
     map.on("load", function () {
-      
       // FETCH INITIAL BOXES
       fetchAndUpdateBoxes();
 
@@ -154,7 +152,6 @@ const MapboxMap: React.FC = () => {
 
       markersSocket.current.onclose = () => {
         console.log("WebSocket Disconnected");
-        // Initiate a reconnect attempt
       };
     };
 
