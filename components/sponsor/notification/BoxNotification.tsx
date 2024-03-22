@@ -13,6 +13,7 @@ const BoxNotification: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [points, setPoints] = useState<number>(0);
   const [show, setShow] = useState<boolean>(false);
+  const hideTimeoutId = useRef<NodeJS.Timeout | null>(null); // State to manage the timeout ID
 
   const fetchLatestBox = async () => {
     const res = await fetch(`/api/notification/${boxId.current}`);
@@ -23,6 +24,17 @@ const BoxNotification: React.FC = () => {
       boxId.current = data.id;
       setPoints(data.points);
       setUser(data.collector);
+
+      // Clear any existing timeout to prevent early hiding
+      if (hideTimeoutId.current) {
+        clearTimeout(hideTimeoutId.current);
+      }
+
+      // Hide the notification after a few seconds
+      hideTimeoutId.current = setTimeout(() => {
+        setShow(false);
+        hideTimeoutId.current = null; // Reset the timeout ID
+      }, 5000); // Adjust the duration as needed
     }
   };
 
@@ -33,33 +45,34 @@ const BoxNotification: React.FC = () => {
 
     return () => {
       clearInterval(getBoxNotification);
+      if (hideTimeoutId.current) {
+        clearTimeout(hideTimeoutId.current);
+      }
     };
   }, []);
 
   const icon = "assets/icons/icons-24/box-opened-green.svg";
   return (
     show && (
-      <>
-        <div className={styles.container}>
-          <div className={styles.left}>
-            <div className={styles.icon}>
-              <Image src={user?.image || icon} alt="User Icon" width={32} height={32} />
-            </div>
-            <Image src="/assets/icons/icons-24/box-opened-green.svg" alt="Box Opened" width={24} height={24} />
-            <p>Claimed!</p>
+      <div className={styles.container}>
+        <div className={styles.left}>
+          <div className={styles.icon}>
+            <Image src={user?.image || icon} alt="User Icon" width={32} height={32} />
           </div>
+          <Image src="/assets/icons/icons-24/box-opened-green.svg" alt="Box Opened" width={24} height={24} />
+          <p>Claimed!</p>
+        </div>
 
-          <div className={styles.right}>
-            <div className={styles.points}>{withCommas(points)}</div>
+        <div className={styles.right}>
+          <div className={styles.points}>{withCommas(points)}</div>
 
-            <Image src="/assets/icons/icons-24/g-points.svg" alt="Coin Icon" width={24} height={24} />
+          <Image src="/assets/icons/icons-24/g-points.svg" alt="Coin Icon" width={24} height={24} />
 
-            <div className={styles.pin}>
-              <Image src="/assets/icons/icons-24/pin.svg" alt="Pin" width={24} height={24} />
-            </div>
+          <div className={styles.pin}>
+            <Image src="/assets/icons/icons-24/pin.svg" alt="Pin" width={24} height={24} />
           </div>
         </div>
-      </>
+      </div>
     )
   );
 };
