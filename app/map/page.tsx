@@ -5,6 +5,7 @@ import MapboxMap from "@/components/map/MapboxMap";
 import styles from "./page.module.css";
 import React, { useRef } from "react";
 import LiveLeaderboard from "@/components/sponsor/leaderboard/LiveLeaderboard";
+import BoxNotification from "@/components/sponsor/notification/BoxNotification";
 import Chat from "@/components/sponsor/chat/Chat";
 
 import { MarkersObject } from "@/types";
@@ -35,6 +36,7 @@ export default function Home() {
   return (
     <div className={styles.main}>
       <MapboxMap mapRef={mapRef} markersRef={markersRef} />
+      {/* <BoxNotification /> */}
       <div className={styles.overlay}>
         {/* ----- PRIZE INFO ----- */}
         {/* <div className={styles.prizeTotal}>

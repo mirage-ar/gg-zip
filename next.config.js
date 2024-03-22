@@ -10,6 +10,11 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "abs.twimg.com",
+        port: "",
+      },
+      {
+        protocol: "https",
         hostname: "gg.zip",
         port: "",
       },
