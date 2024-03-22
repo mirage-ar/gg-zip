@@ -20,9 +20,6 @@ const BoxNotification: React.FC = () => {
 
     if (data.success !== false) {
       setShow(true);
-      setTimeout(() => {
-        setShow(false);
-      }, 5000);
       boxId.current = data.id;
       setPoints(data.points);
       setUser(data.collector);

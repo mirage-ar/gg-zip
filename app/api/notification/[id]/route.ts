@@ -4,8 +4,6 @@ import prisma from "@/utils/prisma";
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   const boxId = params.id;
 
-  console.log(boxId);
-
   const latestBox = await prisma.box.findFirst({
     where: {
       collectorId: {
