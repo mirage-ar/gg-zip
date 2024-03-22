@@ -17,23 +17,6 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersR
   const [leaderboardData, setLeaderboardData] = useState<LiveLeaderboardItem[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
 
-  useEffect(() => {
-    const checkOnlineUsers = () => {
-      if (markersRef.current) {
-        const markers = markersRef.current;
-        const onlineUsers = Object.keys(markers);
-        setOnlineUsers(onlineUsers);
-        console.log(onlineUsers);
-      }
-    };
-
-    checkOnlineUsers();
-
-    setInterval(() => {
-      checkOnlineUsers();
-    }, 5000);
-  }, [markersRef]);
-
   const fetchData = async () => {
     try {
       const response = await fetch(`/api/leaderboard/${rand(1, 100)}`);
@@ -44,10 +27,20 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersR
     }
   };
 
+  const checkOnlineUsers = () => {
+    if (markersRef.current) {
+      const markers = markersRef.current;
+      const onlineUsers = Object.keys(markers);
+      setOnlineUsers(onlineUsers);
+      console.log(onlineUsers);
+    }
+  };
+
   useEffect(() => {
     fetchData();
     const interval = setInterval(() => {
       fetchData();
+      checkOnlineUsers();
     }, 5000);
 
     return () => clearInterval(interval);
