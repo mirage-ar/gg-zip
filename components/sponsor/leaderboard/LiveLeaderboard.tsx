@@ -4,15 +4,35 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 import styles from "./LiveLeaderboard.module.css";
-import { LiveLeaderboardItem } from "@/types";
+import { LiveLeaderboardItem, MarkersObject } from "@/types";
 import { rand, withCommas } from "@/utils";
+import { set } from "date-fns";
 
 interface LiveLeaderboardProps {
   flyToMarker: (markerId: string) => void;
+  markersRef: any;
 }
 
-const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker }) => {
+const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersRef }) => {
   const [leaderboardData, setLeaderboardData] = useState<LiveLeaderboardItem[]>([]);
+  const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
+
+  useEffect(() => {
+    const checkOnlineUsers = () => {
+      if (markersRef.current) {
+        const markers = markersRef.current;
+        const onlineUsers = Object.keys(markers);
+        setOnlineUsers(onlineUsers);
+        console.log(onlineUsers);
+      }
+    };
+
+    checkOnlineUsers();
+
+    setInterval(() => {
+      checkOnlineUsers();
+    }, 5000);
+  }, [markersRef]);
 
   const fetchData = async () => {
     try {
@@ -58,9 +78,16 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker }) => {
             <div className={styles.leaderboardRow}>
               <div className={styles.playerInfo} onClick={() => flyToMarker(player.id)}>
                 <div className={styles.playerRank}>{index + 1}</div>
-                {/* <div className={styles.playerMarker}> */}
-                <Image className={styles.playerImage} src={player.image} alt="User Image" width={150} height={150} />
-                {/* </div> */}
+                <div className={styles.playerMarker}>
+                {onlineUsers.includes(player.id) && <div className={styles.onlineMarker} />}
+                  <Image
+                    className={`${styles.playerImage} ${onlineUsers.includes(player.id) && styles.online}`}
+                    src={player.image}
+                    alt="User Image"
+                    width={150}
+                    height={150}
+                  />
+                </div>
                 <div className={styles.playerName}>@{player.username}</div>
               </div>
               <div className={styles.playerBoxes}>{withCommas(player.boxes)}</div>

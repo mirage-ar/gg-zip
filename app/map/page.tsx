@@ -80,7 +80,7 @@ export default function Home() {
         </div>
 
         {/* ----- COMPONENTS ----- */}
-        <div className={styles.componentContainer}>{tab === Tab.LEADERBOARD ? <LiveLeaderboard flyToMarker={flyToMarker} /> : <Chat />}</div>
+        <div className={styles.componentContainer}>{tab === Tab.LEADERBOARD ? <LiveLeaderboard flyToMarker={flyToMarker} markersRef={markersRef}/> : <Chat />}</div>
       </div>
     </div>
   );
