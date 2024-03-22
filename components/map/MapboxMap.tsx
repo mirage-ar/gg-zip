@@ -156,8 +156,6 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef }) => {
     if (map && message.id && message.latitude && message.longitude) {
       const existingMarker = markersRef.current[message.id];
 
-      console.log(`Updating marker: ${message.id}`);
-
       if (existingMarker) {
         // Marker exists, update its position
         existingMarker.setLngLat([message.longitude, message.latitude]);
