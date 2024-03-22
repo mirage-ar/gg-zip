@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 380px;
+  height: 52px;
+  flex-shrink: 0;
+
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+
+  box-shadow: 0 0 20px var(--g);
+}
+
+.left {
+  margin-left: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  color: var(--g);
+  text-transform: uppercase;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon img {
+  width: 32px;
+  height: 32px;
+  margin-right: 16px;
+  border-radius: 100%;
+  border: 1px solid var(--g);
+}
+
+.right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.points {
+  color: var(--g);
+  font-size: 18px;
+  font-family: var(--connect);
+}
+
+.pin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 16px;
+}

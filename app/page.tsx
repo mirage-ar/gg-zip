@@ -6,6 +6,7 @@ import styles from "./page.module.css";
 import Timer from "@/components/utility/Timer";
 import Link from "next/link";
 import MapboxMap from "@/components/map/MapboxMap";
+import BoxNotification from "@/components/sponsor/notification/BoxNotification";
 
 import { MarkersObject } from "@/types";
 
