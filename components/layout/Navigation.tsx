@@ -15,8 +15,8 @@ const Navigation: React.FC = () => {
   const [active, setActive] = useState<number | null>(0);
 
   const items = useMemo(() => [
-    { id: 0, name: "hunt", path: "/" },
-    { id: 1, name: "leaderboard", path: "/leaderboard" },
+    { id: 0, name: "home", path: "/" },
+    // { id: 1, name: "leaderboard", path: "/leaderboard" },
     { id: 2, name: "about", path: "/aboutgg" },
   ], []);
 

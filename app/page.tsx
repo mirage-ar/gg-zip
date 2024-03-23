@@ -1,79 +1,87 @@
 "use client";
 
-import React, { useRef } from "react";
 import Image from "next/image";
-import styles from "./page.module.css";
-import Timer from "@/components/utility/Timer";
-import Link from "next/link";
 import MapboxMap from "@/components/map/MapboxMap";
+import styles from "./page.module.css";
+import React, { useRef } from "react";
+import LiveLeaderboard from "@/components/sponsor/leaderboard/LiveLeaderboard";
 import BoxNotification from "@/components/sponsor/notification/BoxNotification";
+import Chat from "@/components/sponsor/chat/Chat";
 
 import { MarkersObject } from "@/types";
 
+enum Tab {
+  LEADERBOARD = 0,
+  CHAT = 1,
+}
+
 export default function Home() {
-  const launchDate = new Date("2024-03-11T17:00:00Z");
+  const [tab, setTab] = React.useState(Tab.LEADERBOARD);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<MarkersObject>({});
 
+  // FLY TO USER LOCATION
+  const flyToMarker = (markerId: string) => {
+    const map = mapRef.current;
+    const marker = markersRef.current[markerId];
+    if (marker && map) {
+      map.flyTo({
+        center: marker.getLngLat(),
+        zoom: 15,
+        essential: true,
+      });
+    }
+  };
+
   return (
     <div className={styles.main}>
-      <div className={styles.map}>
-        <MapboxMap mapRef={mapRef} markersRef={markersRef} />
-      </div>
-      <div className={styles.fill}>
-        <img src="/assets/graphics/hunt.svg" alt="Details" />
-      </div>
-      {/* <div className={styles.container}>
-        <div className={styles.leftCard}>
-          <div className={styles.topContent}>
-            <Image src="/assets/graphics/beta.gif" alt="Beta" width={89} height={26} />
-            <h1>
-              The Reaping
-              <br />
-              NYC
-            </h1>
-          </div>
-          <div className={styles.centerContent}>
-            <div className={styles.boxContainer}>
-              <div className={styles.boxContent}>
-                <h2>DATE TBA</h2>
-                <div className={styles.leftBox}>********</div>
-              </div>
-              <div className={styles.boxContent}>
-                <h2>PRIZE</h2>
-                <div className={styles.rightBox}>
-                  1,000,000
-                  <Image src="/assets/icons/icons-24/g.svg" alt="Coin Icon" width={24} height={24} />
-                </div>
-              </div>
+      <MapboxMap mapRef={mapRef} markersRef={markersRef} />
+      <BoxNotification />
+      <div className={styles.overlay}>
+        {/* ----- PRIZE INFO ----- */}
+        {/* <div className={styles.prizeTotal}>
+          <div className={styles.prizeTotalLabel}> Prize Pool</div>
+          <div className={styles.prizeContainer}>
+            <Image src="/assets/icons/point-container-left.svg" alt="Prize graphic" width={153} height={109} />
+            <div className={styles.prizeTotalAmount}>
+              1,000,000
+              <Image src="/assets/icons/icons-24/g.svg" alt="G icon" width={36} height={36} />
             </div>
-            <div className={styles.timer}>
-              <Timer date={launchDate} />
-            </div>
-
-            <p>
-              Only 25 degens will be selected for the hunt in NYC.
-              <br />
-              Volunteer before the deadline
-              <br />
-              @March 11 NOON EST.
-            </p>
+            <Image src="/assets/icons/point-container-right.svg" alt="Prize graphic" width={153} height={109} />
           </div>
+        </div> */}
 
-          <div className={styles.spacer} />
-          <div className={styles.bottomContent}>
-            <Image src="/assets/icons/box-black.svg" alt="Koji" width={24} height={24} />
-            <p>Hunters Announced Next Week</p>
+        {/* ----- NAVIGATION ----- */}
+        <div className={styles.navContainer}>
+          <div
+            className={`${styles.navButton} ${tab === Tab.LEADERBOARD ? styles.selected : ""}`}
+            onClick={() => setTab(Tab.LEADERBOARD)}
+          >
+            <Image
+              src={`/assets/icons/icons-24/leaderboard-${tab === Tab.LEADERBOARD ? "black" : "white"}.svg`}
+              alt="Leaderboard"
+              width={24}
+              height={24}
+            />
+            Leaderboard
+          </div>
+          <div
+            className={`${styles.navButton} ${tab === Tab.CHAT ? styles.selected : ""}`}
+            onClick={() => setTab(Tab.CHAT)}
+          >
+            <Image
+              src={`/assets/icons/icons-24/chat-${tab === Tab.CHAT ? "black" : "white"}.svg`}
+              alt="Leaderboard"
+              width={24}
+              height={24}
+            />
+            Chat
           </div>
         </div>
-        <div className={styles.rightCard}>
-          <div className={styles.borderPulse}>
-            <Link target="_blank" className={styles.button} href={"https://gg-zip.typeform.com/hunter"}>
-              Volunteer as tribute
-            </Link>
-          </div>
-        </div>
-      </div> */}
+
+        {/* ----- COMPONENTS ----- */}
+        <div className={styles.componentContainer}>{tab === Tab.LEADERBOARD ? <LiveLeaderboard flyToMarker={flyToMarker} markersRef={markersRef}/> : <Chat />}</div>
+      </div>
     </div>
   );
 }
