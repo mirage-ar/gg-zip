@@ -81,6 +81,14 @@ const Chat: React.FC = () => {
     resetZoom();
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); // Prevent the default action to avoid newline in textarea
+      sendMessage();
+      resetZoom(); // Assuming you want to keep the resetZoom functionality here as well
+    }
+  };
+
   function resetZoom() {
     const viewport = document.querySelector("meta[name=viewport]") as HTMLMetaElement;
     if (viewport) {
@@ -121,6 +129,7 @@ const Chat: React.FC = () => {
             className={styles.chatInput}
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
+            onKeyDown={handleKeyPress}
             placeholder="Type a message..."
           />
           {publicKey ? (
