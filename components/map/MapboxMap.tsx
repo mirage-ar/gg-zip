@@ -42,7 +42,8 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef }) => {
 
     map.on("load", function () {
       // FETCH INITIAL BOXES
-      fetchAndUpdateBoxes();
+      fetchBoxes();
+      console.log("MAP LOADED");
 
       map.addSource("boxes-source", {
         type: "geojson",
@@ -87,10 +88,10 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef }) => {
     };
   }, []);
 
-  const fetchAndUpdateBoxes = async () => {
+  const fetchBoxes = async () => {
     try {
       const time = new Date().toISOString();
-      const response = await fetch(`api/boxes/${time}`);
+      const response = await fetch(`/api/box/${time}`);
       const data = await response.json();
 
       // update box markers
@@ -107,11 +108,11 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef }) => {
   };
 
   useEffect(() => {
-    const timer = setInterval(fetchAndUpdateBoxes, 5000);
+    const timer = setInterval(() => {
+      fetchBoxes;
+    }, 5000);
 
-    return () => {
-      clearInterval(timer);
-    };
+    return () => clearInterval(timer);
   }, []);
 
   // Markers Socket
