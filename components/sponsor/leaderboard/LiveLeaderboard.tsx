@@ -37,12 +37,18 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersR
   };
 
   useEffect(() => {
-    fetchData();
-    const interval = setInterval(() => {
+    const fetchDataAndCheckUsers = () => {
       fetchData();
       checkOnlineUsers();
+    };
+  
+    fetchDataAndCheckUsers();
+    const interval = setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        fetchDataAndCheckUsers();
+      }
     }, 5000);
-
+  
     return () => clearInterval(interval);
   }, []);
 
