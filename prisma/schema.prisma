@@ -18,6 +18,7 @@ model User {
   image     String?
   points    Int      @default(0)
   boxes     Int      @default(0)
+  airdrop   Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Box       Box[]
@@ -49,14 +50,6 @@ model Points {
   wallet    String   @unique
   boost     Float    @default(0.0)
   points    Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Code {
-  id        String   @id @default(uuid())
-  code      String   @unique
-  attempts  Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
