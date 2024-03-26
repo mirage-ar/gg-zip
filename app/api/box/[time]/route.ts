@@ -29,6 +29,6 @@ export async function GET(request: Request) {
       boxes: geoJSON,
     });
   } catch (error) {
-    throw new Error(`Failed to fetch boxes: ${error}`);
+    throw new Error(`BOXES ERROR: ${error}`);
   }
 }

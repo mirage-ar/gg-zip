@@ -13,6 +13,6 @@ export async function GET(request: Request) {
 
     return Response.json(leaderboard);
   } catch (error) {
-    throw new Error(`Failed to fetch leaderboard: ${error}`);
+    throw new Error(`LEADERBOARD ERROR: ${error}`);
   }
 }
