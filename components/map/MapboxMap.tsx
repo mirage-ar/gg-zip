@@ -91,7 +91,7 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef }) => {
   const fetchBoxes = async () => {
     try {
       const time = new Date().toISOString();
-      const response = await fetch(`/api/boxes/${time}`);
+      const response = await fetch(`/api/box/${time}`);
       const data = await response.json();
 
       // update box markers
