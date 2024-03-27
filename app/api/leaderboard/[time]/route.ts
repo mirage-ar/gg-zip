@@ -9,6 +9,9 @@ export async function GET(request: Request) {
         points: "desc",
       },
       take: 500,
+      cacheStrategy: {
+        ttl: 5,
+      },
     });
 
     return Response.json(leaderboard);
