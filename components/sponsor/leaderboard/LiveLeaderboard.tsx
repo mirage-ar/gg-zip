@@ -41,14 +41,14 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersR
       fetchData();
       checkOnlineUsers();
     };
-  
+
     fetchDataAndCheckUsers();
     const interval = setInterval(() => {
-      if (document.visibilityState === 'visible') {
+      if (document.visibilityState === "visible") {
         fetchDataAndCheckUsers();
       }
     }, 5000);
-  
+
     return () => clearInterval(interval);
   }, []);
 
@@ -72,29 +72,32 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersR
 
       {/* ----- LEADERBOARD ------ */}
       {leaderboardData.length > 0 &&
-        leaderboardData.map((player, index) => (
-          <div className={`${index < 5 ? styles.green : ""}`} key={player.id}>
-            <div className={styles.leaderboardRow}>
-              <div className={styles.playerInfo} onClick={() => flyToMarker(player.id)}>
-                <div className={styles.playerRank}>{index + 1}</div>
-                <div className={styles.playerMarker}>
-                {onlineUsers.includes(player.id) && <div className={styles.onlineMarker} />}
-                  <Image
-                    className={`${styles.playerImage} ${onlineUsers.includes(player.id) && styles.online}`}
-                    src={player.image}
-                    alt="User Image"
-                    width={150}
-                    height={150}
-                  />
+        leaderboardData.map(
+          (player, index) =>
+            (player.points > 0 || onlineUsers.includes(player.id)) && (
+              <div className={`${index < 5 ? styles.green : ""}`} key={player.id}>
+                <div className={styles.leaderboardRow}>
+                  <div className={styles.playerInfo} onClick={() => flyToMarker(player.id)}>
+                    <div className={styles.playerRank}>{index + 1}</div>
+                    <div className={styles.playerMarker}>
+                      {onlineUsers.includes(player.id) && <div className={styles.onlineMarker} />}
+                      <Image
+                        className={`${styles.playerImage} ${onlineUsers.includes(player.id) && styles.online}`}
+                        src={player.image}
+                        alt="User Image"
+                        width={150}
+                        height={150}
+                      />
+                    </div>
+                    <div className={styles.playerName}>@{player.username}</div>
+                  </div>
+                  <div className={styles.playerBoxes}>{withCommas(player.boxes)}</div>
+                  <div className={styles.playerScore}>{withCommas(player.points)}</div>
                 </div>
-                <div className={styles.playerName}>@{player.username}</div>
+                {index === 4 && <div className={styles.spacer} />}
               </div>
-              <div className={styles.playerBoxes}>{withCommas(player.boxes)}</div>
-              <div className={styles.playerScore}>{withCommas(player.points)}</div>
-            </div>
-            {index === 4 && <div className={styles.spacer} />}
-          </div>
-        ))}
+            )
+        )}
     </div>
   );
 };
