@@ -27,9 +27,11 @@ const Chat: React.FC = () => {
     webSocket.current.onmessage = (event: MessageEvent) => {
       const message: ChatMessage = JSON.parse(event.data);
 
+      console.log("Received message:", message);
+
       setMessages((prevMessages) => {
         const newMessages = [...prevMessages, message];
-        return newMessages.slice(-20);
+        return newMessages.slice(-500);
       });
     };
 
@@ -78,26 +80,14 @@ const Chat: React.FC = () => {
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     sendMessage();
-    resetZoom();
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault(); // Prevent the default action to avoid newline in textarea
       sendMessage();
-      resetZoom(); // Assuming you want to keep the resetZoom functionality here as well
     }
   };
-
-  function resetZoom() {
-    const viewport = document.querySelector("meta[name=viewport]") as HTMLMetaElement;
-    if (viewport) {
-      viewport.content = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0";
-      setTimeout(() => {
-        viewport.content = "width=device-width, initial-scale=1";
-      }, 300);
-    }
-  }
 
   return (
     <div className={styles.container}>

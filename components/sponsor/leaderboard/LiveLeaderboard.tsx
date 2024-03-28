@@ -19,7 +19,8 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersR
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`/api/leaderboard/${rand(1, 100)}`);
+      const time = new Date().toISOString();
+      const response = await fetch(`/api/leaderboard/${time}`);
       const data = await response.json();
       setLeaderboardData(data);
     } catch (error) {
@@ -32,17 +33,22 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersR
       const markers = markersRef.current;
       const onlineUsers = Object.keys(markers);
       setOnlineUsers(onlineUsers);
-      console.log(onlineUsers);
     }
   };
 
   useEffect(() => {
-    fetchData();
-    const interval = setInterval(() => {
+    const fetchDataAndCheckUsers = () => {
       fetchData();
       checkOnlineUsers();
+    };
+  
+    fetchDataAndCheckUsers();
+    const interval = setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        fetchDataAndCheckUsers();
+      }
     }, 5000);
-
+  
     return () => clearInterval(interval);
   }, []);
 

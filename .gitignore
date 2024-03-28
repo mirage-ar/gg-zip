@@ -40,3 +40,7 @@ next-env.d.ts
 .meta
 # Sentry Config File
 .sentryclirc
+
+.meta
+# Sentry Config File
+.sentryclirc
