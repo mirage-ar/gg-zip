@@ -109,9 +109,7 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef }) => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (document.visibilityState === "visible") {
-        fetchBoxes;
-      }
+      fetchBoxes();
     }, 5000);
 
     return () => clearInterval(timer);
