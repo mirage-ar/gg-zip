@@ -8,6 +8,9 @@ export async function GET(request: Request, { params }: { params: { wallet: stri
     where: {
       wallet: wallet,
     },
+    cacheStrategy: {
+      ttl: 60,
+    },
   });
 
   if (!user) {
