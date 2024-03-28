@@ -192,7 +192,7 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef }) => {
 
   return (
     <>
-      <DropForm latitude={dropzone?.lat} longitude={dropzone?.lng} fetchBoxes={fetchAndUpdateBoxes} />
+      <DropForm latitude={dropzone?.lat} longitude={dropzone?.lng} fetchBoxes={fetchBoxes} />
       <div
         ref={mapContainerRef}
         style={{
