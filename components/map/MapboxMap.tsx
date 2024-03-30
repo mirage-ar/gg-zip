@@ -15,10 +15,10 @@ mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string;
 interface MapboxMapProps {
   mapRef: React.MutableRefObject<mapboxgl.Map | null>;
   markersRef: React.MutableRefObject<MarkersObject>;
-  isHomePage: boolean;
+  isHomePage?: boolean;
 }
 
-const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage }) => {
+const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = false }) => {
   const user = useUser();
 
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
