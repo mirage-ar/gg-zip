@@ -15,9 +15,10 @@ mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string;
 interface MapboxMapProps {
   mapRef: React.MutableRefObject<mapboxgl.Map | null>;
   markersRef: React.MutableRefObject<MarkersObject>;
+  isHomePage: boolean;
 }
 
-const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef }) => {
+const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage }) => {
   const user = useUser();
 
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
@@ -28,7 +29,7 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef }) => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current as HTMLElement,
       center: [-71.14373900852445, 42.35727058925982],
-      zoom: 3,
+      zoom: 2,
       pitch: 0,
       attributionControl: false,
     });
@@ -143,7 +144,9 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef }) => {
     };
 
     // Initial connection
-    connectWebSocket();
+    if (!isHomePage) {
+      connectWebSocket();
+    }
 
     return () => {
       markersSocket.current?.close();

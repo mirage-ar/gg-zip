@@ -74,7 +74,7 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersR
       {leaderboardData.length > 0 &&
         leaderboardData.map(
           (player, index) =>
-            (player.points > 0 || onlineUsers.includes(player.id)) && (
+            player.points > 0 && (
               <div className={`${index < 5 ? styles.green : ""}`} key={player.id}>
                 <div className={styles.leaderboardRow}>
                   <div className={styles.playerInfo} onClick={() => flyToMarker(player.id)}>
