@@ -1,0 +1,120 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* padding: 6rem; */
+  min-height: 100vh;
+}
+
+.map {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  filter: blur(8px);
+  z-index: -10000;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  height: 100vh;
+  color: var(--p);
+  /* clip-path: polygon(3% 0, 100% 0, 100% 88%, 97% 100%, 0 100%, 0 12%); */
+}
+
+.mainContainer p {
+  color: var(--g);
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.timerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--g);
+  padding: 20px 0;
+  width: 696px;
+  clip-path: polygon(3% 0, 100% 0, 100% 88%, 97% 100%, 0 100%, 0 12%);
+}
+
+.playerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* gap: 12px; */
+  width: 696px;
+  background-color: var(--g);
+}
+
+.playerSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 12px 24px;
+  gap: 26px;
+}
+
+.playerTitle {
+  font-size: 32px;
+  font-family: var(--connect);
+  color: var(--b);
+}
+
+.connectButton {
+  display: flex;
+  width: 216px;
+  padding: 12px 12px;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--corner4, 4px);
+  background: var(--b, #000);
+  border: none;
+
+  font-size: 13px;
+  color: var(--g);
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.arrows {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.spacer {
+  width: 100%;
+  border-bottom: 2px dotted var(--b);
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .timerContainer {
+    border: none;
+  }
+
+  .playerContainer {
+    display: none;
+  }
+}

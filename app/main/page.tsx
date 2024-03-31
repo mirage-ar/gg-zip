@@ -34,7 +34,7 @@ export default function Home() {
   // Calculate initial time remaining immediately
   const calculateTimeRemaining = () => {
     const currentTime = new Date().getTime();
-    const targetTime = getNoonEasternTime(2024, 4, 7); // Month is 0-indexed, 3 = April
+    const targetTime = getNoonEasternTime(2024, 3, 31); // Month is 0-indexed, 3 = April
     return targetTime - currentTime;
   };
 
