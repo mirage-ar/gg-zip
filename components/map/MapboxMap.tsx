@@ -168,12 +168,26 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = 
         const el = document.createElement("img");
         el.className = "marker";
         el.src = message.image;
+        el.onclick = () => flyToMarker(message.id);
         // el.src = `/icons/markers/${rand(1, 5)}.svg`;
 
         const newMarker = new mapboxgl.Marker(el).setLngLat([message.longitude, message.latitude]).addTo(map);
 
         markersRef.current[message.id] = newMarker;
       }
+    }
+  };
+
+  // TODO: combine this function with one from main page
+  const flyToMarker = (markerId: string) => {
+    const map = mapRef.current;
+    const marker = markersRef.current[markerId];
+    if (marker && map) {
+      map.flyTo({
+        center: marker.getLngLat(),
+        zoom: 15,
+        essential: true,
+      });
     }
   };
 
