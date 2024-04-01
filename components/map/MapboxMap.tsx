@@ -109,6 +109,7 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = 
   };
 
   useEffect(() => {
+    if (isHomePage) return;
     const timer = setInterval(() => {
       fetchBoxes();
     }, 5000);
