@@ -56,3 +56,9 @@ export type User = {
   export type MarkersObject = {
     [id: string]: mapboxgl.Marker;
   };
+
+  export type GameDate = {
+    month: number;
+    day: number;
+    year: number;
+  }

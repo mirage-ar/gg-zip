@@ -12,6 +12,9 @@ import Timer from "@/components/utility/Timer";
 import MapboxMap from "@/components/map/MapboxMap";
 
 import { MarkersObject } from "@/types";
+import { getNoonEasternTime } from "@/utils";
+import { GAME_DATE } from "@/utils/constants";
+
 
 export default function Home() {
   const mapRef = useRef<mapboxgl.Map | null>(null);
@@ -21,20 +24,10 @@ export default function Home() {
   const { publicKey } = useWallet();
   const { setVisible } = useWalletModal();
 
-  // Calc noon eastern time
-  function getNoonEasternTime(year: number, month: number, day: number) {
-    const zeroIndexMonth = month - 1;
-    // Create a date object for 12:00 in Eastern Time (UTC-5 or UTC-4)
-    const easternTime = new Date(Date.UTC(year, zeroIndexMonth, day, 15, 0, 0));
-    // const easternTime = new Date(Date.UTC(year, zeroIndexMonth, day, 1, 33, 0)); // for testing
-
-    return easternTime.getTime(); // Use .getTime() for compatibility
-  }
-
   // Calculate initial time remaining immediately
   const calculateTimeRemaining = () => {
     const currentTime = new Date().getTime();
-    const targetTime = getNoonEasternTime(2024, 4, 7); // Month is 0-indexed, 3 = April
+    const targetTime = getNoonEasternTime(GAME_DATE); // Month is 0-indexed, 3 = April
     return targetTime - currentTime;
   };
 

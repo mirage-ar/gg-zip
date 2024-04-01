@@ -1,3 +1,4 @@
+import { GameDate } from "@/types";
 import * as DateFNS from "date-fns";
 
 export function rand(min: number, max: number) {
@@ -17,6 +18,15 @@ export function formatPoints(points: number) {
 
 export function formatWalletAddress(walletAddress: string) {
   return `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}`;
+}
+
+export function getNoonEasternTime({ year, month, day }: GameDate) {
+  const zeroIndexMonth = month - 1;
+  // Create a date object for 12:00 in Eastern Time (UTC-5 or UTC-4)
+  const easternTime = new Date(Date.UTC(year, zeroIndexMonth, day, 15, 0, 0));
+  // const easternTime = new Date(Date.UTC(year, zeroIndexMonth, day, 1, 33, 0)); // for testing
+
+  return easternTime.getTime(); // Use .getTime() for compatibility
 }
 
 export function formatDate(date: Date) {
