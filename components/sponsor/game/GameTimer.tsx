@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { getNoonEasternTime } from "@/utils";
 import { GAME_DATE, GAME_LENGTH } from "@/utils/constants";
 import Timer from "@/components/utility/Timer";
@@ -12,7 +12,7 @@ const tenMinutes = 10 * 60000;
 
 const GameTimer = () => {
   const router = useRouter();
-  const currentUrl = window.location.href;
+  const pathname = usePathname()
 
   // Calculate initial time remaining immediately
   const calculateTimeRemaining = () => {
@@ -30,7 +30,7 @@ const GameTimer = () => {
       if (timeRemaining <= 0) {
         clearInterval(interval);
 
-        if (!currentUrl.includes("gameover")) {
+        if (!pathname.includes("gameover")) {
           router.push("/gameover");
         }
       }
