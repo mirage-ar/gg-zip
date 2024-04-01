@@ -1,0 +1,64 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 530px;
+  height: 100%;
+  padding: 90px 0 0;
+  background-color: var(--b);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+}
+
+.gameOver {
+  position: fixed;
+  width: 80%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+   background-color: rgba(0, 0, 0, 0.5);
+}
+
+.gameOverTitle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--g);
+  padding: 20px 0;
+  width: 696px;
+  clip-path: polygon(3% 0, 100% 0, 100% 88%, 97% 100%, 0 100%, 0 12%);
+}
+
+.gameOverTitle h1 {
+    color: var(--p);
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 48px;
+  font-family: var(--connect);
+  color: var(--g);
+}
+
+.header h1 {
+  font-size: 44px;
+}
+
+.leftImage {
+  margin-right: -40px;
+}
+
+.rightImage {
+  margin-left: -40px;
+}
+
+.componentContainer {
+  overflow-y: auto;
+}

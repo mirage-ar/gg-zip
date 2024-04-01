@@ -6,10 +6,13 @@ import { getNoonEasternTime } from "@/utils";
 import { GAME_DATE, GAME_LENGTH } from "@/utils/constants";
 import Timer from "@/components/utility/Timer";
 
-const fiveMintues = 5 * 60000;
+import styles from "./GameTimer.module.css";
+
+const tenMinutes = 10 * 60000;
 
 const GameTimer = () => {
   const router = useRouter();
+  const currentUrl = window.location.href;
 
   // Calculate initial time remaining immediately
   const calculateTimeRemaining = () => {
@@ -26,7 +29,10 @@ const GameTimer = () => {
 
       if (timeRemaining <= 0) {
         clearInterval(interval);
-        router.push("/gameover");
+
+        if (!currentUrl.includes("gameover")) {
+          router.push("/gameover");
+        }
       }
     }, 1000);
 
@@ -34,9 +40,12 @@ const GameTimer = () => {
   }, [timeRemaining]);
 
   return (
-    timeRemaining <= fiveMintues && (
-      <div>
-        <Timer timeRemaining={timeRemaining} />
+    timeRemaining <= tenMinutes && timeRemaining > 0 && (
+      <div className={styles.main}>
+        <div className={styles.container}>
+          <p>The hunt will finish in</p>
+          <Timer timeRemaining={timeRemaining} hideDays />
+        </div>
       </div>
     )
   );

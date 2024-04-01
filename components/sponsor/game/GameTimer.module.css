@@ -1,0 +1,27 @@
+.main {
+  position: fixed;
+  top: 24px;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--g);
+  padding: 20px 0;
+  width: 696px;
+  clip-path: polygon(3% 0, 100% 0, 100% 88%, 97% 100%, 0 100%, 0 12%);
+
+  color: var(--p);
+}
+
+.main p {
+  font-size: 14px;
+  color: var(--g);
+  text-transform: uppercase;
+}

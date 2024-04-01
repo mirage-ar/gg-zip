@@ -4,6 +4,7 @@ import "./globals.css";
 
 import Navigation from "@/components/layout/Navigation";
 import Footer from "@/components/layout/Footer";
+import GameTimer from "@/components/sponsor/game/GameTimer";
 
 export function generateViewport() {
   return {
@@ -59,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <Footer />
         <Analytics />
-        {/* <GameTimer /> */}
+        <GameTimer />
       </body>
     </html>
   );

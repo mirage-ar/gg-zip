@@ -23,8 +23,8 @@ export function formatWalletAddress(walletAddress: string) {
 export function getNoonEasternTime({ year, month, day }: GameDate) {
   const zeroIndexMonth = month - 1;
   // Create a date object for 12:00 in Eastern Time (UTC-5 or UTC-4)
-  const easternTime = new Date(Date.UTC(year, zeroIndexMonth, day, 15, 0, 0));
-  // const easternTime = new Date(Date.UTC(year, zeroIndexMonth, day, 1, 33, 0)); // for testing
+  const easternTime = new Date(Date.UTC(year, zeroIndexMonth, day, 16, 0, 0));
+  // const easternTime = new Date(Date.UTC(year, zeroIndexMonth, day, 21, 32, 0)); // for testing
 
   return easternTime.getTime(); // Use .getTime() for compatibility
 }
