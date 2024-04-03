@@ -22,7 +22,7 @@ export default function Home() {
   const { setVisible } = useWalletModal();
 
   // Calc noon eastern time
-  function getNoonEasternTime(year: number, month: number, day: number) {
+  function getGameStartTime(year: number, month: number, day: number) {
     const zeroIndexMonth = month - 1;
     // Create a date object for 12:00 in Eastern Time (UTC-5 or UTC-4)
     const easternTime = new Date(Date.UTC(year, zeroIndexMonth, day, 15, 0, 0));
@@ -34,7 +34,7 @@ export default function Home() {
   // Calculate initial time remaining immediately
   const calculateTimeRemaining = () => {
     const currentTime = new Date().getTime();
-    const targetTime = getNoonEasternTime(2024, 3, 31); // Month is 0-indexed, 3 = April
+    const targetTime = getGameStartTime(2024, 3, 31); // Month is 0-indexed, 3 = April
     return targetTime - currentTime;
   };
 

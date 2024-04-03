@@ -12,7 +12,7 @@ import Timer from "@/components/utility/Timer";
 import MapboxMap from "@/components/map/MapboxMap";
 
 import { MarkersObject } from "@/types";
-import { getNoonEasternTime } from "@/utils";
+import { getGameStartTime } from "@/utils";
 import { GAME_DATE } from "@/utils/constants";
 
 
@@ -27,7 +27,7 @@ export default function Home() {
   // Calculate initial time remaining immediately
   const calculateTimeRemaining = () => {
     const currentTime = new Date().getTime();
-    const targetTime = getNoonEasternTime(GAME_DATE); // Month is 0-indexed, 3 = April
+    const targetTime = getGameStartTime(GAME_DATE); // Month is 0-indexed, 3 = April
     return targetTime - currentTime;
   };
 

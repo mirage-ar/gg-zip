@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { getNoonEasternTime } from "@/utils";
+import { getGameStartTime } from "@/utils";
 import { GAME_DATE, GAME_LENGTH } from "@/utils/constants";
 import Timer from "@/components/utility/Timer";
 
@@ -17,7 +17,7 @@ const GameTimer = () => {
   // Calculate initial time remaining immediately
   const calculateTimeRemaining = () => {
     const currentTime = new Date().getTime();
-    const gameTime = getNoonEasternTime(GAME_DATE) + GAME_LENGTH;
+    const gameTime = getGameStartTime(GAME_DATE) + GAME_LENGTH;
     return gameTime - currentTime;
   };
 
