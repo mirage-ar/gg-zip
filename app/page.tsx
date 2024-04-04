@@ -14,8 +14,7 @@ import MapboxMap from "@/components/map/MapboxMap";
 
 import { MarkersObject } from "@/types";
 import { getGameStartTime } from "@/utils";
-import { GAME_DATE } from "@/utils/constants";
-import { set } from "date-fns";
+import { GAME_DATE, PLAYER_COUNT } from "@/utils/constants";
 
 export default function Home() {
   const mapRef = useRef<mapboxgl.Map | null>(null);
@@ -97,16 +96,17 @@ export default function Home() {
           <>
             <div className={styles.playerContainer}>
               <div className={styles.progressBar}>
-                <div>{Math.min(playerCount, 250)}/250</div>
+                <div>{Math.min(playerCount, PLAYER_COUNT)}/250</div>
                 <div className={styles.progress}>
-                  <div className={styles.progressFill} style={{ width: `${(playerCount / 250) * 100}%` }}></div>
+                  <div className={styles.progressFill} style={{ width: `${(playerCount / PLAYER_COUNT) * 100}%` }}></div>
                 </div>
-                <div>{Math.max(0, 250 - playerCount)} slots left</div>
+                <div>{Math.max(0, PLAYER_COUNT - playerCount)} slots left</div>
               </div>
               <div className={styles.playerSection}>
                 <Image src="/assets/graphics/timer/hunter.svg" alt="Hunter" width={27} height={72} />
 
-                {playerCount < 250 ? (
+
+                {playerCount < PLAYER_COUNT ? (
                   <>
                     <span className={styles.playerTitle}>HUNTERS</span>
                     <div className={styles.arrows}>
@@ -141,14 +141,14 @@ export default function Home() {
             <div className={styles.playerContainerMobile}>
               <div className={styles.progressBarMobile}>
                 <div className={styles.progressBarTitle}>
-                  <div>{Math.min(playerCount, 250)}/250</div>
-                  <div>{Math.max(0, 250 - playerCount)} slots left</div>
+                  <div>{Math.min(playerCount, PLAYER_COUNT)}/250</div>
+                  <div>{Math.max(0, PLAYER_COUNT - playerCount)} slots left</div>
                 </div>
                 <div className={styles.progress}>
-                  <div className={styles.progressFill} style={{ width: `${(playerCount / 250) * 100}%` }}></div>
+                  <div className={styles.progressFill} style={{ width: `${(playerCount / PLAYER_COUNT) * 100}%` }}></div>
                 </div>
               </div>
-              {playerCount < 250 ? (
+              {playerCount < PLAYER_COUNT ? (
                 <>
                   <div className={styles.playerSection}>
                     <Image src="/assets/graphics/timer/hunter.svg" alt="Hunter" width={27} height={72} />
