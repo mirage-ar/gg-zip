@@ -19,6 +19,7 @@ model User {
   points    Int      @default(0)
   boxes     Int      @default(0)
   airdrop   Boolean  @default(false)
+  risk      Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Box       Box[]
