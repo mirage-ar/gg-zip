@@ -92,6 +92,7 @@ export default function Home() {
         </div>
 
         {/* DESKTOP PLAYER CONTAINER */}
+        {/* TODO: move this to a constant */}
         {timeRemaining <= 60000 * 5 && (
           <>
             <div className={styles.playerContainer}>
