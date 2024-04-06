@@ -8,7 +8,7 @@ export const GET_MESSAGES_URL = "https://99uikxj6pg.execute-api.us-east-1.amazon
 export const GAME_DATE = {
   year: 2024,
   month: 4,
-  day: 6,
+  day: 13,
 };
 
 export const GAME_LENGTH = 60 * 60 * 1000; // 1 hour
