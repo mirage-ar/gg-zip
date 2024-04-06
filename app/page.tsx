@@ -92,7 +92,7 @@ export default function Home() {
         </div>
 
         {/* DESKTOP PLAYER CONTAINER */}
-        {timeRemaining <= 60000 * 30 && (
+        {timeRemaining <= 60000 * 5 && (
           <>
             <div className={styles.playerContainer}>
               <div className={styles.progressBar}>
