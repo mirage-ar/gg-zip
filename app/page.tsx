@@ -14,7 +14,7 @@ import MapboxMap from "@/components/map/MapboxMap";
 
 import { MarkersObject } from "@/types";
 import { getGameStartTime } from "@/utils";
-import { GAME_DATE, PLAYER_COUNT } from "@/utils/constants";
+import { API, GAME_DATE, PLAYER_COUNT } from "@/utils/constants";
 
 export default function Home() {
   const mapRef = useRef<mapboxgl.Map | null>(null);
@@ -50,8 +50,7 @@ export default function Home() {
   useEffect(() => {
     const getPlayerCount = async () => {
       try {
-        const time = new Date().toISOString();
-        const response = await fetch(`/api/players/${time}`);
+        const response = await fetch(`${API}/players`);
         const data = await response.json();
         setPlayerCount(data);
       } catch (error) {

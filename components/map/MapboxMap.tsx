@@ -8,7 +8,7 @@ import { useUser } from "@/hooks";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 import type { LocationData, MarkersObject } from "@/types";
-import { LOCATION_SOCKET_URL } from "@/utils/constants";
+import { API, LOCATION_SOCKET_URL } from "@/utils/constants";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string;
 
@@ -91,8 +91,7 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = 
 
   const fetchBoxes = async () => {
     try {
-      const time = new Date().toISOString();
-      const response = await fetch(`/api/box/${time}`);
+      const response = await fetch(`${API}/boxes`);
       const data = await response.json();
 
       // update box markers

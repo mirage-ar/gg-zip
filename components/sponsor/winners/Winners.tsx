@@ -7,6 +7,7 @@ import styles from "./Winners.module.css";
 import { LiveLeaderboardItem, MarkersObject } from "@/types";
 import { rand, withCommas } from "@/utils";
 import { set } from "date-fns";
+import { API } from "@/utils/constants";
 
 interface LiveLeaderboardProps {
   flyToMarker: (markerId: string) => void;
@@ -19,10 +20,9 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersR
 
   const fetchData = async () => {
     try {
-      const time = new Date().toISOString();
-      const response = await fetch(`/api/leaderboard/${time}`);
+      const response = await fetch(`${API}/leaderboard`);
       const data = await response.json();
-      setLeaderboardData(data);
+      setLeaderboardData(data.leaderboard);
     } catch (error) {
       console.error(error);
     }
