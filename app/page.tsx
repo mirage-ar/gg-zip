@@ -16,6 +16,8 @@ import { MarkersObject } from "@/types";
 import { getGameStartTime } from "@/utils";
 import { API, GAME_DATE, PLAYER_COUNT } from "@/utils/constants";
 
+const FIVE_MINUTES = 1000 * 60 * 5;
+
 export default function Home() {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<MarkersObject>({});
@@ -58,14 +60,16 @@ export default function Home() {
       }
     };
 
-    getPlayerCount();
-
-    const interval = setInterval(() => {
+    if (timeRemaining <= FIVE_MINUTES) {
       getPlayerCount();
-    }, 5000);
 
-    return () => clearInterval(interval);
-  }, []);
+      const interval = setInterval(() => {
+        getPlayerCount();
+      }, 5000);
+
+      return () => clearInterval(interval);
+    }
+  }, [timeRemaining]);
 
   const handleConnectWallet = async () => {
     try {
@@ -92,19 +96,21 @@ export default function Home() {
 
         {/* DESKTOP PLAYER CONTAINER */}
         {/* TODO: move this to a constant */}
-        {timeRemaining <= 60000 * 5 && (
+        {timeRemaining <= FIVE_MINUTES && (
           <>
             <div className={styles.playerContainer}>
               <div className={styles.progressBar}>
                 <div>{Math.min(playerCount, PLAYER_COUNT)}/250</div>
                 <div className={styles.progress}>
-                  <div className={styles.progressFill} style={{ width: `${(playerCount / PLAYER_COUNT) * 100}%` }}></div>
+                  <div
+                    className={styles.progressFill}
+                    style={{ width: `${(playerCount / PLAYER_COUNT) * 100}%` }}
+                  ></div>
                 </div>
                 <div>{Math.max(0, PLAYER_COUNT - playerCount)} slots left</div>
               </div>
               <div className={styles.playerSection}>
                 <Image src="/assets/graphics/timer/hunter.svg" alt="Hunter" width={27} height={72} />
-
 
                 {playerCount < PLAYER_COUNT ? (
                   <>
@@ -145,7 +151,10 @@ export default function Home() {
                   <div>{Math.max(0, PLAYER_COUNT - playerCount)} slots left</div>
                 </div>
                 <div className={styles.progress}>
-                  <div className={styles.progressFill} style={{ width: `${(playerCount / PLAYER_COUNT) * 100}%` }}></div>
+                  <div
+                    className={styles.progressFill}
+                    style={{ width: `${(playerCount / PLAYER_COUNT) * 100}%` }}
+                  ></div>
                 </div>
               </div>
               {playerCount < PLAYER_COUNT ? (
@@ -154,7 +163,9 @@ export default function Home() {
                     <Image src="/assets/graphics/timer/hunter.svg" alt="Hunter" width={27} height={72} />
                     <span className={styles.playerTitle}>HUNTERS</span>
                   </div>
-                  <Link href="https://hunt.gg.zip" className={styles.joinButton}>Join hunt.gg.zip</Link>
+                  <Link href="https://hunt.gg.zip" className={styles.joinButton}>
+                    Join hunt.gg.zip
+                  </Link>
                 </>
               ) : (
                 <span className={styles.playerTitle}>HUNTERS LOCKED</span>
