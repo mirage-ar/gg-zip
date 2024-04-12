@@ -50,25 +50,25 @@ export default function Home() {
   }, [timeRemaining]);
 
   // TODO: turn player count on
-  // useEffect(() => {
-  //   const getPlayerCount = async () => {
-  //     try {
-  //       const response = await fetch(`${API}/players`);
-  //       const data = await response.json();
-  //       setPlayerCount(data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
+  useEffect(() => {
+    const getPlayerCount = async () => {
+      try {
+        const response = await fetch(`${API}/players`);
+        const data = await response.json();
+        setPlayerCount(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  //   getPlayerCount();
+    getPlayerCount();
 
-  //   const interval = setInterval(() => {
-  //     getPlayerCount();
-  //   }, 5000);
+    const interval = setInterval(() => {
+      getPlayerCount();
+    }, 5000);
 
-  //   return () => clearInterval(interval);
-  // }, []);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleConnectWallet = async () => {
     try {
