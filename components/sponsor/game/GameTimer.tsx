@@ -39,6 +39,7 @@ const GameTimer = () => {
     return () => clearInterval(interval);
   }, [timeRemaining]);
 
+  // TODO: this shows on the homepage, but should only show on the game page
   return (
     timeRemaining <= tenMinutes && timeRemaining > 0 && (
       <div className={styles.main}>

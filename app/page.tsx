@@ -49,7 +49,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [timeRemaining]);
 
-  // TODO: turn player count on
+  // TODO: figure out a better solution for this
   useEffect(() => {
     const getPlayerCount = async () => {
       try {
