@@ -99,7 +99,7 @@ export default function Home() {
           <>
             <div className={styles.playerContainer}>
               <div className={styles.progressBar}>
-                <div>{Math.min(playerCount, PLAYER_COUNT)}/250</div>
+                <div>{Math.min(playerCount, PLAYER_COUNT)}/150</div>
                 <div className={styles.progress}>
                   <div className={styles.progressFill} style={{ width: `${(playerCount / PLAYER_COUNT) * 100}%` }}></div>
                 </div>
@@ -144,7 +144,7 @@ export default function Home() {
             <div className={styles.playerContainerMobile}>
               <div className={styles.progressBarMobile}>
                 <div className={styles.progressBarTitle}>
-                  <div>{Math.min(playerCount, PLAYER_COUNT)}/250</div>
+                  <div>{Math.min(playerCount, PLAYER_COUNT)}/150</div>
                   <div>{Math.max(0, PLAYER_COUNT - playerCount)} slots left</div>
                 </div>
                 <div className={styles.progress}>
