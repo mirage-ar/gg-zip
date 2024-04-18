@@ -42,6 +42,7 @@ const GameTimer = () => {
   // TODO: this shows on the homepage, but should only show on the game page
   return (
     timeRemaining <= tenMinutes && timeRemaining > 0 && (
+      pathname.length > 1 &&
       <div className={styles.main}>
         <div className={styles.container}>
           <p>The hunt will finish in</p>
