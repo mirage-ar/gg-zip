@@ -1,6 +1,6 @@
 // CONSTANTS
-export const LOCATION_SOCKET_URL = "wss://mef6hdb1ee.execute-api.us-east-1.amazonaws.com/dev";
-export const CHAT_SOCKET_URL = "wss://6vko5m2zdk.execute-api.us-east-1.amazonaws.com/dev";
+export const LOCATION_SOCKET_URL = "wss://vzaf22fhq3.execute-api.us-east-1.amazonaws.com/dev";
+export const CHAT_SOCKET_URL = "wss://01vhq91ad1.execute-api.us-east-1.amazonaws.com/dev";
 export const GET_MESSAGES_URL = "https://messages.koji.im";
 
 export const API = "https://api.koji.im";
@@ -10,6 +10,8 @@ export const GAME_DATE = {
     month: 4,
     day: 20,
   };
+
+  // TODO: add game time here
   
   export const GAME_LENGTH = 60 * 60 * 1000; // 1 hour
 
