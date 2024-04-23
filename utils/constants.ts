@@ -8,11 +8,11 @@ export const API = "https://api.koji.im";
 export const GAME_DATE = {
     year: 2024,
     month: 4,
-    day: 24,
+    day: 25,
   };
 
   // TODO: add game time here
   
-  export const GAME_LENGTH = (60 + 30) * 60 * 1000; // 1 hour and 30 minutes
+  export const GAME_LENGTH = 60 * 60 * 1000; // 1 hour and 30 minutes
 
   export const PLAYER_COUNT = 150;
