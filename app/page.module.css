@@ -49,7 +49,7 @@
   border: 1px solid var(--g);
   padding: 20px 0;
   width: 696px;
-  clip-path: polygon(3% 0, 100% 0, 100% 88%, 97% 100%, 0 100%, 0 12%);
+  /* clip-path: polygon(3% 0, 100% 0, 100% 88%, 97% 100%, 0 100%, 0 12%); */
 }
 
 .playerContainer {
