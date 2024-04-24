@@ -6,13 +6,13 @@ export const GET_MESSAGES_URL = "https://messages.koji.im";
 export const API = "https://api.koji.im";
 
 export const GAME_DATE = {
-    year: 2024,
-    month: 4,
-    day: 25,
-  };
+  year: 2024,
+  month: 4,
+  day: 25,
+};
 
-  // TODO: add game time here
-  
-  export const GAME_LENGTH = 60 * 60 * 1000; // 1 hour and 30 minutes
+export const GAME_TIME = 9;
 
-  export const PLAYER_COUNT = 150;
+export const GAME_LENGTH = 60 * 60 * 1000; // 1 hour and 30 minutes
+
+export const PLAYER_COUNT = 150;
