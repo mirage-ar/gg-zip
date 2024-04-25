@@ -7,8 +7,8 @@ export const API = "https://api.koji.im";
 
 export const GAME_DATE = {
   year: 2024,
-  month: 4,
-  day: 25,
+  month: 5,
+  day: 9,
 };
 
 export const GAME_TIME = 9;
