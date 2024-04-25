@@ -12,7 +12,5 @@ export const GAME_DATE = {
 };
 
 export const GAME_TIME = 9;
-
-export const GAME_LENGTH = 60 * 60 * 1000; // 1 hour and 30 minutes
-
+export const GAME_LENGTH = 60 * 60 * 1000;
 export const PLAYER_COUNT = 150;
