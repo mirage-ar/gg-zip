@@ -3,7 +3,7 @@ export const LOCATION_SOCKET_URL = "wss://vzaf22fhq3.execute-api.us-east-1.amazo
 export const CHAT_SOCKET_URL = "wss://01vhq91ad1.execute-api.us-east-1.amazonaws.com/dev";
 export const GET_MESSAGES_URL = "https://messages.koji.im";
 
-export const API = "https://api.koji.im";
+export const API = "https://api2.koji.im";
 
 export const GAME_DATE = {
   year: 2024,
