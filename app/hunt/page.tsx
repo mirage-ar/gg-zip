@@ -1,14 +1,16 @@
 "use client";
 
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 import MapboxMap from "@/components/map/MapboxMap";
+
 import styles from "./page.module.css";
-import React, { useRef } from "react";
 import LiveLeaderboard from "@/components/sponsor/leaderboard/LiveLeaderboard";
 import BoxNotification from "@/components/sponsor/notification/BoxNotification";
 import Chat from "@/components/sponsor/chat/Chat";
 
 import { MarkersObject } from "@/types";
+import UserInfo from "@/components/user/UserInfo";
 
 enum Tab {
   LEADERBOARD = 0,
@@ -16,7 +18,8 @@ enum Tab {
 }
 
 export default function Home() {
-  const [tab, setTab] = React.useState(Tab.LEADERBOARD);
+  const [tab, setTab] = useState(Tab.LEADERBOARD);
+  const [closed, setClosed] = useState(false);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<MarkersObject>({});
 
@@ -33,13 +36,22 @@ export default function Home() {
     }
   };
 
+  const handleClose = () => {
+    setClosed(!closed);
+  };
+
   return (
-    <div className={styles.main}>
-      <MapboxMap mapRef={mapRef} markersRef={markersRef} />
-      {/* <BoxNotification /> */}
-      <div className={styles.overlay}>
-        {/* ----- PRIZE INFO ----- */}
-        {/* <div className={styles.prizeTotal}>
+    <>
+      <UserInfo closed={closed} />
+      <div className={styles.main}>
+        <MapboxMap mapRef={mapRef} markersRef={markersRef} />
+        {/* <BoxNotification /> */}
+        <div className={styles.overlay} style={closed ? { marginRight: "-480px" } : { marginRight: "0" }}>
+          <div className={styles.close} onClick={handleClose}>
+            <Image src="/assets/icons/icons-16/close.svg" alt="Left Image" width={16} height={16} />
+          </div>
+          {/* ----- PRIZE INFO ----- */}
+          {/* <div className={styles.prizeTotal}>
           <div className={styles.prizeTotalLabel}> Prize Pool</div>
           <div className={styles.prizeContainer}>
             <Image src="/assets/icons/point-container-left.svg" alt="Prize graphic" width={153} height={109} />
@@ -51,37 +63,46 @@ export default function Home() {
           </div>
         </div> */}
 
-        {/* ----- NAVIGATION ----- */}
-        <div className={styles.navContainer}>
-          <div
-            className={`${styles.navButton} ${tab === Tab.LEADERBOARD ? styles.selected : ""}`}
-            onClick={() => setTab(Tab.LEADERBOARD)}
-          >
-            <Image
-              src={`/assets/icons/icons-24/leaderboard-${tab === Tab.LEADERBOARD ? "black" : "white"}.svg`}
-              alt="Leaderboard"
-              width={24}
-              height={24}
-            />
-            Leaderboard
-          </div>
-          <div
-            className={`${styles.navButton} ${tab === Tab.CHAT ? styles.selected : ""}`}
-            onClick={() => setTab(Tab.CHAT)}
-          >
-            <Image
-              src={`/assets/icons/icons-24/chat-${tab === Tab.CHAT ? "black" : "white"}.svg`}
-              alt="Leaderboard"
-              width={24}
-              height={24}
-            />
-            Chat
+          {/* ----- NAVIGATION ----- */}
+          <div style={closed ? {marginLeft: "100px"} : {}}>
+            <div className={styles.navContainer}>
+              <div
+                className={`${styles.navButton} ${tab === Tab.LEADERBOARD ? styles.selected : ""}`}
+                onClick={() => setTab(Tab.LEADERBOARD)}
+              >
+                <Image
+                  src={`/assets/icons/icons-24/leaderboard-${tab === Tab.LEADERBOARD ? "black" : "white"}.svg`}
+                  alt="Leaderboard"
+                  width={24}
+                  height={24}
+                />
+                Leaderboard
+              </div>
+              <div
+                className={`${styles.navButton} ${tab === Tab.CHAT ? styles.selected : ""}`}
+                onClick={() => setTab(Tab.CHAT)}
+              >
+                <Image
+                  src={`/assets/icons/icons-24/chat-${tab === Tab.CHAT ? "black" : "white"}.svg`}
+                  alt="Leaderboard"
+                  width={24}
+                  height={24}
+                />
+                Chat
+              </div>
+            </div>
+
+            {/* ----- COMPONENTS ----- */}
+            <div className={styles.componentContainer}>
+              {tab === Tab.LEADERBOARD ? (
+                <LiveLeaderboard flyToMarker={flyToMarker} markersRef={markersRef} />
+              ) : (
+                <Chat />
+              )}
+            </div>
           </div>
         </div>
-
-        {/* ----- COMPONENTS ----- */}
-        <div className={styles.componentContainer}>{tab === Tab.LEADERBOARD ? <LiveLeaderboard flyToMarker={flyToMarker} markersRef={markersRef}/> : <Chat />}</div>
       </div>
-    </div>
+    </>
   );
 }

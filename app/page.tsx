@@ -15,6 +15,7 @@ import MapboxMap from "@/components/map/MapboxMap";
 import { MarkersObject } from "@/types";
 import { getGameStartTime } from "@/utils";
 import { API, GAME_DATE, PLAYER_COUNT } from "@/utils/constants";
+import UserInfo from "@/components/user/UserInfo";
 
 const FIVE_MINUTES = 1000 * 60 * 5;
 
@@ -83,6 +84,8 @@ export default function Home() {
   };
 
   return (
+    <>
+    <UserInfo />
     <div className={styles.main}>
       <div className={styles.map}>
         <MapboxMap mapRef={mapRef} markersRef={markersRef} isHomePage />
@@ -176,5 +179,6 @@ export default function Home() {
         <Image src="/assets/icons/icons-24/box-green.svg" alt="Arrow down" width={24} height={24} />
       </div>
     </div>
+    </>
   );
 }

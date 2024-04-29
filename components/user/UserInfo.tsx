@@ -10,7 +10,11 @@ import styles from "./UserInfo.module.css";
 import { User } from "@/types";
 import { formatWalletAddress, formatPoints } from "@/utils";
 
-const UserInfo: React.FC = () => {
+interface UserInfoProps {
+  closed?: boolean;
+}
+
+const UserInfo: React.FC<UserInfoProps> = ({ closed }) => {
   const { publicKey } = useWallet();
   const { setVisible } = useWalletModal();
 
@@ -54,7 +58,7 @@ const UserInfo: React.FC = () => {
 
   if (!publicKey) {
     return (
-      <div className={styles.main}>
+      <div className={styles.main} style={closed ? { marginRight: "50px"} : {}}>
         <button className={styles.connectWallet} onClick={handleConnectWallet}>
           Connect Wallet
         </button>

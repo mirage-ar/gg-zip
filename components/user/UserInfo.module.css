@@ -10,6 +10,8 @@
   line-height: 14px;
   margin: 20px 16px;
   z-index: 1000;
+
+  transition: margin 0.3s ease;
 }
 
 .userDetails {

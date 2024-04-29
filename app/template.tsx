@@ -24,7 +24,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
       <ConnectionProvider endpoint={endpoint}>
         <WalletProvider wallets={wallets} autoConnect>
           <WalletModalProvider>
-            <UserInfo />
+            {/* <UserInfo /> */}
             {children}
           </WalletModalProvider>
         </WalletProvider>

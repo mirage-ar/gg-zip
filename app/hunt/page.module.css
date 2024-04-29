@@ -4,12 +4,20 @@
   right: 0;
   width: 530px;
   height: 100%;
-  padding: 90px 0 0;
+  /* padding: 90px 0 0; */
   background-color: var(--b);
   z-index: 100;
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
+
+  transition: margin 0.3s ease;
+}
+
+.close {
+  /* margin-top: -90px; */
+  padding: 20px;
+  height: 90px;
 }
 
 .prizeTotal {
