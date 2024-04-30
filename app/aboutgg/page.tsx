@@ -20,25 +20,24 @@ const Page: React.FC = () => {
           <div className={styles.infoGraphic}>
             <div className={styles.leftGraphic}>
               <Image src="/assets/graphics/about/left.png" alt="graphic icons" width={143} height={200} />
-              <p>GG is the world’s first AR crypto game where users race to win SOL</p>
+              <p>GG is the world’s first AR crypto game where users race to win G</p>
             </div>
             <video className={styles.video} src="/assets/video/about.mp4" muted autoPlay loop />
             {/* <Image src="/assets/graphics/about/phone.svg" alt="graphic icons" width={325} height={661} /> */}
             <div className={styles.rightGraphic}>
               <Image src="/assets/graphics/about/right.png" alt="graphic icons" width={150} height={155} />
               <p>
-                Find and collect GBoxes in your city or bet on your friends online, everyone has a chance to win the
-                Jackpot
+                Find and collect GBoxes in your city or bet on your friends online
               </p>
             </div>
           </div>
-          <Image
+          {/* <Image
             style={{ margin: "52px" }}
             src="/assets/graphics/about/bottom.svg"
             alt="graphic icons"
             width={400}
             height={300}
-          />
+          /> */}
         </div>
       </div>
 

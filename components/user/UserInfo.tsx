@@ -58,7 +58,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ closed }) => {
 
   if (!publicKey) {
     return (
-      <div className={styles.main} style={closed ? { marginRight: "50px"} : {}}>
+      <div className={styles.main} style={closed ? { marginRight: "70px"} : {}}>
         <button className={styles.connectWallet} onClick={handleConnectWallet}>
           Connect Wallet
         </button>

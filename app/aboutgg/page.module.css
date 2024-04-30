@@ -9,6 +9,7 @@
 }
 
 .box {
+  padding: 0 0 32px;
   display: flex;
   flex-direction: row;
   width: 1012px;
