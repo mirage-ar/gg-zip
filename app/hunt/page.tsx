@@ -64,7 +64,7 @@ export default function Home() {
         </div> */}
 
           {/* ----- NAVIGATION ----- */}
-          <div className={styles.closed} style={closed ? {marginLeft: "100px"} : {}}>
+          {/* <div className={styles.closed} style={closed ? {marginLeft: "100px"} : {}}> */}
             <div className={styles.navContainer}>
               <div
                 className={`${styles.navButton} ${tab === Tab.LEADERBOARD ? styles.selected : ""}`}
@@ -102,7 +102,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
+      {/* </div> */}
     </>
   );
 }
