@@ -80,3 +80,7 @@
 .componentContainer {
   overflow-y: auto;
 }
+
+.closed {
+  overflow-y: auto;
+}
