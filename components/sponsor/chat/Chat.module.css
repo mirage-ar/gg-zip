@@ -26,8 +26,8 @@
   position: relative;
 
   /* Apply a mask for the fade effect */
-  -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%);
-  mask-image: linear-gradient(to bottom, transparent, black 10%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 100px);
+  mask-image: linear-gradient(to bottom, transparent, black 100px);
 }
 
 .chatMessageContainer {
