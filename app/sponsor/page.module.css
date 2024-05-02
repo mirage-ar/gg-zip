@@ -1,0 +1,92 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 530px;
+  height: 100%;
+  background-color: var(--b);
+  z-index: 100;
+  transition: margin 0.3s ease;
+}
+
+.titleBar {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  gap: 16px;
+}
+
+.title {
+  font-family: var(--connect);
+  color: var(--g);
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.componentContainer {
+  overflow: auto;
+}
+
+.prizeTotal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 0 0;
+}
+
+.prizeTotalLabel {
+  font-size: 14px;
+  color: var(--g);
+  margin-bottom: -18px;
+  text-transform: uppercase;
+}
+
+.prizeContainer {
+  display: flex;
+  align-items: center;
+}
+
+.prizeTotalAmount {
+  margin: 0 -60px;
+  display: flex;
+  align-items: center;
+  font-family: var(--connect);
+  font-size: 42px;
+  color: var(--g);
+  gap: 12px;
+}
+
+.navContainer {
+  margin: 32px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 247px;
+  height: 52px;
+  flex-shrink: 0;
+  border-radius: var(--corner4, 4px);
+  background: #1f1f1f;
+  font-family: var(--connect);
+  text-transform: uppercase;
+  color: var(--w);
+  cursor: pointer;
+}
+
+.selected {
+  background: var(--g, #42ff60);
+  color: var(--b);
+}

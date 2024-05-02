@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 import styles from "./Winners.module.css";
-import { LiveLeaderboardItem, MarkersObject } from "@/types";
+import { Player, MarkersObject } from "@/types";
 import { rand, withCommas } from "@/utils";
 import { set } from "date-fns";
 import { API } from "@/utils/constants";
@@ -15,7 +15,7 @@ interface LiveLeaderboardProps {
 }
 
 const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersRef }) => {
-  const [leaderboardData, setLeaderboardData] = useState<LiveLeaderboardItem[]>([]);
+  const [leaderboardData, setLeaderboardData] = useState<Player[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
 
   const fetchData = async () => {
@@ -23,7 +23,7 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersR
       const response = await fetch(`${API}/leaderboard`);
       const data = await response.json();
       // TODO: move to endpoint
-      const leaderboard = data.leaderboard.sort((a: LiveLeaderboardItem, b: LiveLeaderboardItem) => b.points - a.points);
+      const leaderboard = data.leaderboard.sort((a: Player, b: Player) => b.points - a.points);
       setLeaderboardData(leaderboard);
     } catch (error) {
       console.error(error);

@@ -125,7 +125,6 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = 
       markersSocket.current = new WebSocket(LOCATION_SOCKET_URL);
 
       markersSocket.current.onopen = () => {
-        console.log("WebSocket Connected");
       };
 
       markersSocket.current.onmessage = (event: MessageEvent) => {
@@ -136,10 +135,6 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = 
 
       markersSocket.current.onerror = (error) => {
         console.error("WebSocket Error", error);
-      };
-
-      markersSocket.current.onclose = () => {
-        console.log("WebSocket Disconnected");
       };
     };
 

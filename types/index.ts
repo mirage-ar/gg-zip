@@ -26,7 +26,7 @@ export type User = {
     invitedBy: string;
   }
 
-  export type LiveLeaderboardItem = {
+  export type Player = {
     id: string;
     username: string;
     image: string;
@@ -61,4 +61,11 @@ export type User = {
     month: number;
     day: number;
     year: number;
+  }
+
+  export enum Page {
+    LEADERBOARD,
+    TRANSACTIONS,
+    CHAT,
+    POWERUPS
   }

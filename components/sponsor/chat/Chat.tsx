@@ -35,10 +35,6 @@ const Chat: React.FC = () => {
       });
     };
 
-    webSocket.current.onclose = () => {
-      console.log("WebSocket Disconnected");
-    };
-
     return () => {
       webSocket.current?.close();
     };
@@ -91,47 +87,45 @@ const Chat: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.chatContainer}>
-        <div className={styles.chatMessages}>
-          {messages.map((message, index) => (
-            <div key={index} className={styles.chatMessageContainer}>
-              <div className={styles.chatMessageInfo}>
-                <Image
-                  src={message.image}
-                  alt={message.username}
-                  width={20}
-                  height={20}
-                  className={styles.chatMessageImage}
-                />
-                <p className={styles.chatMessageName}>{message.username}</p>
-                <p className={styles.chatMessageTimestamp}>
-                  {DateFNS.formatDistance(new Date(message.timestamp), new Date(), { addSuffix: true })}
-                </p>
-              </div>
-              <p className={styles.chatMessage}>{message.message}</p>
+      <div className={styles.chatMessages}>
+        {messages.map((message, index) => (
+          <div key={index} className={styles.chatMessageContainer}>
+            <div className={styles.chatMessageInfo}>
+              <Image
+                src={message.image}
+                alt={message.username}
+                width={20}
+                height={20}
+                className={styles.chatMessageImage}
+              />
+              <p className={styles.chatMessageName}>{message.username}</p>
+              <p className={styles.chatMessageTimestamp}>
+                {DateFNS.formatDistance(new Date(message.timestamp), new Date(), { addSuffix: true })}
+              </p>
             </div>
-          ))}
-          <div ref={messagesEndRef} />
-        </div>
+            <p className={styles.chatMessage}>{message.message}</p>
+          </div>
+        ))}
+        <div ref={messagesEndRef} />
+      </div>
 
-        <div className={styles.chatInputContainer}>
-          <textarea
-            className={styles.chatInput}
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-            onKeyDown={handleKeyPress}
-            placeholder="Type a message..."
-          />
-          {publicKey ? (
-            <button onClick={handleFormSubmit} className={styles.chatSendButton}>
-              SEND
-            </button>
-          ) : (
-            <button onClick={connectWallet} className={styles.chatSendButton}>
-              Connect Wallet
-            </button>
-          )}
-        </div>
+      <div className={styles.chatInputContainer}>
+        <textarea
+          className={styles.chatInput}
+          value={inputMessage}
+          onChange={(e) => setInputMessage(e.target.value)}
+          onKeyDown={handleKeyPress}
+          placeholder="Type a message..."
+        />
+        {publicKey ? (
+          <button onClick={handleFormSubmit} className={styles.chatSendButton}>
+            SEND
+          </button>
+        ) : (
+          <button onClick={connectWallet} className={styles.chatSendButton}>
+            Connect Wallet
+          </button>
+        )}
       </div>
     </div>
   );

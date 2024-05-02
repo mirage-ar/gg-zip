@@ -1,0 +1,62 @@
+.main {
+  position: fixed;
+  bottom: 0;
+  right: 540px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 14px;
+  margin: 64px 16px;
+  z-index: 1000;
+  transition: right 0.3s ease;
+}
+
+.nav {
+  position: relative;
+  width: 110px; /* Adjust based on the size you want */
+  height: 110px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--b);
+}
+
+.navIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 1px solid var(--g);
+}
+
+.navButton {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--b);
+  color: black;
+  border: none;
+  cursor: pointer;
+}
+
+.navButton:nth-child(1) {
+  transform: translate(-50%, -50%) rotate(295deg) translate(78px) rotate(-295deg);
+}
+.navButton:nth-child(2) {
+  transform: translate(-50%, -50%) rotate(230deg) translate(59px) rotate(-230deg);
+}
+.navButton:nth-child(3) {
+  transform: translate(-50%, -50%) rotate(160deg) translate(75px) rotate(-160deg);
+}
+.navButton:nth-child(4) {
+  transform: translate(-50%, -50%) rotate(114deg) translate(109px) rotate(-114deg);
+}

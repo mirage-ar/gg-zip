@@ -1,28 +1,15 @@
 /* Chat.module.css */
 
 .container {
+  margin: 20px 0;
   padding: 0 16px 22px;
-}
-
-.chatContainer {
-  /* display: flex;
-    flex-direction: column;
-    height: 90%;
-    width: 100vw;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 1000;
-    color: #fff;
-    font-family: var(--diatype); */
 }
 
 .chatMessages {
   overflow-y: auto;
-  height: 90%;
   width: 100%;
   padding: 10px;
-  padding-bottom: 50px;
+  padding-bottom: 100px;
   position: relative;
 
   /* Apply a mask for the fade effect */
