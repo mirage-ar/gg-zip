@@ -42,29 +42,30 @@ export default function Home() {
 
   return (
     <>
-      <UserInfo closed={closed} />
       <div className={styles.main}>
+        <UserInfo closed={closed} />
         <MapboxMap mapRef={mapRef} markersRef={markersRef} />
-        {/* <BoxNotification /> */}
+
         <div className={styles.overlay} style={closed ? { marginRight: "-480px" } : { marginRight: "0" }}>
-          <div className={styles.close} onClick={handleClose}>
+          <div className={styles.closeButton} onClick={handleClose}>
             <Image src="/assets/icons/icons-16/close.svg" alt="Left Image" width={16} height={16} />
           </div>
-          {/* ----- PRIZE INFO ----- */}
-          {/* <div className={styles.prizeTotal}>
-          <div className={styles.prizeTotalLabel}> Prize Pool</div>
-          <div className={styles.prizeContainer}>
-            <Image src="/assets/icons/point-container-left.svg" alt="Prize graphic" width={153} height={109} />
-            <div className={styles.prizeTotalAmount}>
-              1,000,000
-              <Image src="/assets/icons/icons-24/g.svg" alt="G icon" width={36} height={36} />
-            </div>
-            <Image src="/assets/icons/point-container-right.svg" alt="Prize graphic" width={153} height={109} />
-          </div>
-        </div> */}
 
-          {/* ----- NAVIGATION ----- */}
-          {/* <div className={styles.closed} style={closed ? {marginLeft: "100px"} : {}}> */}
+          <div className={styles.content} style={closed ? { marginLeft: "100px"} : {}}>
+            {/* ----- PRIZE INFO ----- */}
+            {/* <div className={styles.prizeTotal}>
+              <div className={styles.prizeTotalLabel}>Total Points</div>
+              <div className={styles.prizeContainer}>
+                <Image src="/assets/icons/point-container-left.svg" alt="Prize graphic" width={153} height={109} />
+                <div className={styles.prizeTotalAmount}>
+                  1,000,000
+                  <Image src="/assets/icons/icons-24/g.svg" alt="G icon" width={36} height={36} />
+                </div>
+                <Image src="/assets/icons/point-container-right.svg" alt="Prize graphic" width={153} height={109} />
+              </div>
+            </div> */}
+
+            {/* ----- NAVIGATION ----- */}
             <div className={styles.navContainer}>
               <div
                 className={`${styles.navButton} ${tab === Tab.LEADERBOARD ? styles.selected : ""}`}
@@ -102,7 +103,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      {/* </div> */}
+      </div>
     </>
   );
 }

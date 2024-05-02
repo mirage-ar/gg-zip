@@ -4,20 +4,23 @@
   right: 0;
   width: 530px;
   height: 100%;
-  /* padding: 90px 0 0; */
   background-color: var(--b);
   z-index: 100;
-  display: flex;
-  flex-direction: column;
-  /* justify-content: center; */
-
   transition: margin 0.3s ease;
 }
 
-.close {
-  /* margin-top: -90px; */
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.componentContainer {
+  overflow: auto;
+}
+
+.closeButton {
   padding: 20px;
-  height: 90px;
 }
 
 .prizeTotal {
@@ -25,6 +28,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 50px 0 0;
 }
 
 .prizeTotalLabel {
@@ -75,12 +79,4 @@
 .selected {
   background: var(--g, #42ff60);
   color: var(--b);
-}
-
-.componentContainer {
-  overflow-y: auto;
-}
-
-.closed {
-  overflow-y: auto;
 }
