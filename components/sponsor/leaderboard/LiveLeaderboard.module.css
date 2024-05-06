@@ -20,8 +20,7 @@
 .rightColumn {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 100px;
+  margin-right: 118px;
 }
 
 .leaderboardRow {
@@ -38,9 +37,9 @@
 .playerInfo {
   display: flex;
   align-items: center;
-  width: 300px;
-
   cursor: pointer;
+
+  /* border: 1px solid red; */
 }
 
 .playerRank {
@@ -77,6 +76,24 @@
   float: right;
 }
 
+.playerNameContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 2px;
+
+}
+
+.playerScoreContainer {
+  display: flex;
+  /* align-items: center; */
+  gap: 10px;
+
+  color: var(--g);
+
+}
+
 .playerName {
   /* color: var(--w, #faf5e9); */
   font-family: var(--diatype);
@@ -86,18 +103,18 @@
 
 .playerBoxes {
   /* color: var(--w, #faf5e9); */
-  text-align: right;
+  /* text-align: right; */
   font-family: var(--connect);
   font-size: 18px;
-  width: 100px;
+  /* width: 100px; */
 }
 
 .playerScore {
   /* color: var(--w, #faf5e9); */
-  text-align: right;
+  /* text-align: right; */
   font-family: var(--connect);
   font-size: 18px;
-  width: 124px;
+  /* width: 124px; */
 }
 
 .spacer {

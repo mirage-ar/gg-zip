@@ -11,16 +11,11 @@ import { API } from "@/utils/constants";
 interface LiveLeaderboardProps {
   flyToMarker: (markerId: string) => void;
   markersRef: any;
-  displaySponsorCards?: boolean;
+  displaySponsorCards: boolean;
   sponsorHoldings?: string[];
 }
 
-const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
-  flyToMarker,
-  markersRef,
-  displaySponsorCards = false,
-  sponsorHoldings,
-}) => {
+const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersRef, displaySponsorCards, sponsorHoldings }) => {
   const [leaderboardData, setLeaderboardData] = useState<Player[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
 
@@ -67,15 +62,14 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
         <div className={styles.leftColumn}>
           <span>Rank</span>
           <span>Name</span>
-          <span>
-            <Image src="/assets/icons/icons-24/g.svg" alt="Coin Icon" width={24} height={24} />
-          </span>
+        </div>
+        <div className={styles.rightColumn}>
           <span>
             <Image src="/assets/icons/icons-24/box-opened-green.svg" alt="Coin Icon" width={24} height={24} />
           </span>
-        </div>
-        <div className={styles.rightColumn}>
-          <span>Price</span>
+          <span>
+            <Image src="/assets/icons/icons-24/g.svg" alt="Coin Icon" width={24} height={24} />
+          </span>
         </div>
       </div>
 
@@ -84,7 +78,7 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
         leaderboardData.map(
           (player, index) =>
             player.points > 0 && (
-              <div key={player.id}>
+              <div className={`${index < 5 ? styles.green : ""}`} key={player.id}>
                 <div className={styles.leaderboardRow}>
                   <div className={styles.playerInfo} onClick={() => flyToMarker(player.id)}>
                     <div className={styles.playerRank}>{index + 1}</div>
@@ -98,14 +92,10 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
                         height={150}
                       />
                     </div>
-                    <div className={styles.playerNameContainer}>
-                      <div className={styles.playerName}>@{player.username}</div>
-                      <div className={styles.playerScoreContainer}>
-                        <div className={styles.playerScore}>{withCommas(player.points)}</div>
-                        <div className={styles.playerBoxes}>{withCommas(player.boxes)}</div>
-                      </div>
-                    </div>
+                    <div className={styles.playerName}>@{player.username}</div>
                   </div>
+                  <div className={styles.playerBoxes}>{withCommas(player.boxes)}</div>
+                  <div className={styles.playerScore}>{withCommas(player.points)}</div>
                 </div>
                 {index === 4 && <div className={styles.spacer} />}
               </div>

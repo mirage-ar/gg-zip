@@ -5,7 +5,7 @@ import Image from "next/image";
 import MapboxMap from "@/components/map/MapboxMap";
 
 import styles from "./page.module.css";
-import LiveLeaderboard from "@/components/sponsor/leaderboard/LiveLeaderboard";
+import LiveLeaderboardOld from "@/components/sponsor/leaderboard/LiveLeaderboard";
 import BoxNotification from "@/components/sponsor/notification/BoxNotification";
 import Chat from "@/components/sponsor/chat/Chat";
 
@@ -96,7 +96,7 @@ export default function Home() {
             {/* ----- COMPONENTS ----- */}
             <div className={styles.componentContainer}>
               {tab === Tab.LEADERBOARD ? (
-                <LiveLeaderboard flyToMarker={flyToMarker} markersRef={markersRef} />
+                <LiveLeaderboardOld flyToMarker={flyToMarker} markersRef={markersRef} />
               ) : (
                 <Chat />
               )}
