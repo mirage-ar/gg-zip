@@ -3,29 +3,28 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
-import styles from "./LiveLeaderboard.module.css";
+import styles from "./LiveLeaderboardOld.module.css";
 import { Player, MarkersObject } from "@/types";
 import { rand, withCommas } from "@/utils";
+import { set } from "date-fns";
 import { API } from "@/utils/constants";
 
 interface LiveLeaderboardProps {
   flyToMarker: (markerId: string) => void;
   markersRef: any;
-  displaySponsorCards: boolean;
-  sponsorHoldings?: string[];
 }
 
-const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersRef, displaySponsorCards, sponsorHoldings }) => {
+const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersRef }) => {
   const [leaderboardData, setLeaderboardData] = useState<Player[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
 
-  const fetchData = async (displaySponsorCards: boolean) => {
+  const fetchData = async () => {
     try {
       const response = await fetch(`${API}/leaderboard`);
       const data = await response.json();
+      // TODO: move to endpoint
       const leaderboard = data.leaderboard.sort((a: Player, b: Player) => b.points - a.points);
-      const holdingPlayers = leaderboard.filter((player: Player) => sponsorHoldings?.includes(player.id));
-      setLeaderboardData(displaySponsorCards ? holdingPlayers : leaderboard);
+      setLeaderboardData(leaderboard);
     } catch (error) {
       console.error(error);
     }
@@ -41,7 +40,7 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersR
 
   useEffect(() => {
     const fetchDataAndCheckUsers = () => {
-      fetchData(displaySponsorCards);
+      fetchData();
       checkOnlineUsers();
     };
 
@@ -53,7 +52,7 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersR
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [displaySponsorCards]);
+  }, []);
 
   return (
     <div>
