@@ -22,7 +22,6 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersR
     try {
       const response = await fetch(`${API}/leaderboard`);
       const data = await response.json();
-      // TODO: move to endpoint
       const leaderboard = data.leaderboard.sort((a: Player, b: Player) => b.points - a.points);
       setLeaderboardData(leaderboard);
     } catch (error) {

@@ -1,0 +1,119 @@
+{
+  "version": "0.1.0",
+  "name": "gg",
+  "instructions": [
+    {
+      "name": "initialize",
+      "accounts": [
+        { "name": "pot", "isMut": true, "isSigner": false },
+        { "name": "protocol", "isMut": true, "isSigner": false },
+        { "name": "authority", "isMut": true, "isSigner": true },
+        { "name": "systemProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": []
+    },
+    {
+      "name": "mint",
+      "accounts": [
+        { "name": "mint", "isMut": true, "isSigner": false },
+        { "name": "protocol", "isMut": true, "isSigner": false },
+        { "name": "authority", "isMut": true, "isSigner": true },
+        { "name": "systemProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": []
+    },
+    {
+      "name": "buyShares",
+      "accounts": [
+        { "name": "token", "isMut": true, "isSigner": false },
+        { "name": "mint", "isMut": true, "isSigner": false },
+        { "name": "protocol", "isMut": true, "isSigner": false },
+        { "name": "pot", "isMut": true, "isSigner": false },
+        { "name": "authority", "isMut": true, "isSigner": true },
+        { "name": "systemProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "subject", "type": "publicKey" },
+        { "name": "amount", "type": "u64" }
+      ]
+    },
+    {
+      "name": "sellShares",
+      "accounts": [
+        { "name": "token", "isMut": true, "isSigner": false },
+        { "name": "mint", "isMut": true, "isSigner": false },
+        { "name": "protocol", "isMut": true, "isSigner": false },
+        { "name": "pot", "isMut": true, "isSigner": false },
+        { "name": "authority", "isMut": true, "isSigner": true },
+        { "name": "systemProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "subject", "type": "publicKey" },
+        { "name": "amount", "type": "u64" }
+      ]
+    },
+    {
+      "name": "withdrawFromProtocol",
+      "accounts": [
+        { "name": "protocol", "isMut": true, "isSigner": false },
+        { "name": "authority", "isMut": true, "isSigner": true },
+        { "name": "systemProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": []
+    },
+    {
+      "name": "withdrawFromPot",
+      "accounts": [
+        { "name": "pot", "isMut": true, "isSigner": false },
+        { "name": "authority", "isMut": true, "isSigner": true },
+        { "name": "systemProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": []
+    },
+    {
+      "name": "withdrawFromMint",
+      "accounts": [
+        { "name": "mint", "isMut": true, "isSigner": false },
+        { "name": "authority", "isMut": true, "isSigner": true },
+        { "name": "rent", "isMut": false, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    { "name": "PotAccount", "type": { "kind": "struct", "fields": [{ "name": "authority", "type": "publicKey" }] } },
+    {
+      "name": "ProtocolAccount",
+      "type": { "kind": "struct", "fields": [{ "name": "authority", "type": "publicKey" }] }
+    },
+    {
+      "name": "MintAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "subject", "type": "publicKey" },
+          { "name": "amount", "type": "u64" }
+        ]
+      }
+    },
+    {
+      "name": "TokenAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "owner", "type": "publicKey" },
+          { "name": "subject", "type": "publicKey" },
+          { "name": "amount", "type": "u64" }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    { "code": 6000, "name": "Unauthorized", "msg": "You are not authorized to perform this action." },
+    { "code": 6001, "name": "InvalidSupply", "msg": "Supply must be greater than 0." },
+    { "code": 6002, "name": "InsufficientMintAmount", "msg": "You must pay at least 1 SOL to mint a token." },
+    { "code": 6003, "name": "InsufficientFunds", "msg": "Insufficient funds." },
+    { "code": 6004, "name": "InsufficientShares", "msg": "Insufficient shares." }
+  ]
+}

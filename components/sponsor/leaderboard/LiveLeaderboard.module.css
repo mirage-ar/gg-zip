@@ -87,7 +87,8 @@
 
 .playerScoreContainer {
   display: flex;
-  /* align-items: center; */
+  align-items: center;
+  justify-content: center;
   gap: 10px;
 
   color: var(--g);
@@ -117,6 +118,38 @@
   /* width: 124px; */
 }
 
+.priceContainer {
+  width: 250px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+}
+
+.price {
+  width: 100px;
+  font-family: var(--connect);
+  font-size: 18px;
+  color: var(--g);
+  text-align: right;
+}
+
+.tradeButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 40px;
+  background-color: var(--g);
+  color: var(--b);
+  border-radius: 5px;
+  font-family: var(--diatype);
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  text-transform: uppercase;
+}
+
 .spacer {
   margin: 10px 16px;
   border-bottom: 1px dotted var(--g3, #373737);
@@ -124,4 +157,11 @@
 
 .green {
   color: var(--g);
+}
+
+.dot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--g2)
 }

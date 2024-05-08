@@ -26,7 +26,7 @@ export default function Home() {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<MarkersObject>({});
 
-  const [sponsorHoldings, setSponsorHoldings] = useState<string[]>([]); // players that the sponsor is holding cards for
+  const [sponsorHoldings, setSponsorHoldings] = useState<string[]>([]);
 
   // FLY TO USER LOCATION
   const flyToMarker = (markerId: string) => {
@@ -48,11 +48,13 @@ export default function Home() {
 
   return (
     <>
+      {/* ----- MAIN ----- */}
       <div className={styles.main}>
         <UserInfo closed={closed} />
         <MapboxMap mapRef={mapRef} markersRef={markersRef} />
         <SponsorNavigation page={page} setPage={setPage} closed={closed} setClosed={setClosed} />
 
+        {/* ----- OVERLAY ----- */}
         <div className={styles.overlay} style={closed ? { marginRight: "-480px" } : { marginRight: "0" }}>
           <div className={styles.titleBar}>
             <div className={styles.closeButton} onClick={() => setClosed(!closed)}>

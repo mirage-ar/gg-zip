@@ -10,7 +10,7 @@ import UserInfo from "@/components/user/UserInfo";
 import '@solana/wallet-adapter-react-ui/styles.css';
 
 export default function Template({ children }: { children: React.ReactNode }) {
-  const network = WalletAdapterNetwork.Mainnet;
+  const network = WalletAdapterNetwork.Devnet;
   const endpoint = clusterApiUrl(network);
 
   const wallets = useMemo(

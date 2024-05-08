@@ -17,8 +17,6 @@ const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, cl
     setClosed(false);
   };
 
-  console.log(page);
-
   return (
     <div className={styles.main} style={closed ? { right: "50px" } : {}}>
       <div className={styles.nav}>

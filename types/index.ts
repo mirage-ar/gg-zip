@@ -30,9 +30,12 @@ export type User = {
     id: string;
     username: string;
     image: string;
-    wallet: string | null;
+    wallet: string;
     points: number;
     boxes: number;
+    rank?: number;
+    buyPrice?: number;
+    sellPrice?: number;
   };
 
   export type ChatMessage = {

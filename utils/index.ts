@@ -68,5 +68,13 @@ I just claimed ${points}🇬 #gg`;
 }
 
 export const withCommas = (x: number | string): string => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  if (typeof x === "number" && x < 1) {
+    return x.toString();
+  }
+
+  if (typeof x === "string" && Number(x) < 1) {
+    return x.toString();
+  }
+
+  return x.toLocaleString();
 };

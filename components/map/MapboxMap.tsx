@@ -44,7 +44,6 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = 
     map.on("load", function () {
       // FETCH INITIAL BOXES
       fetchBoxes();
-      console.log("MAP LOADED");
 
       map.addSource("boxes-source", {
         type: "geojson",

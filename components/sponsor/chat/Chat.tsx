@@ -27,8 +27,6 @@ const Chat: React.FC = () => {
     webSocket.current.onmessage = (event: MessageEvent) => {
       const message: ChatMessage = JSON.parse(event.data);
 
-      console.log("Received message:", message);
-
       setMessages((prevMessages) => {
         const newMessages = [...prevMessages, message];
         return newMessages.slice(-500);
