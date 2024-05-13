@@ -8,9 +8,11 @@ import { ApplicationProvider } from "@/state/context";
 
 import "@solana/wallet-adapter-react-ui/styles.css";
 
+import { RPC } from "@/utils/constants";
+
 export default function Template({ children }: { children: React.ReactNode }) {
   const network = WalletAdapterNetwork.Devnet;
-  const endpoint = "https://solana-devnet.g.alchemy.com/v2/0ciOy1xReMbA60uYcFsndVgOUOFHUglZ"; // TODO: move to env variables
+  const endpoint = RPC;
 
   const wallets = useMemo(
     () => [],
