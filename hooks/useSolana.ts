@@ -3,7 +3,7 @@ import * as anchor from "@project-serum/anchor";
 
 import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
-import { SystemProgram, PublicKey, Transaction, Connection } from "@solana/web3.js";
+import { SystemProgram, PublicKey } from "@solana/web3.js";
 import { useApplicationContext } from "@/state/context";
 import { bnToNumber, getBuyPrice, getSellPrice } from "@/solana";
 import { wait } from "@/utils";
@@ -11,7 +11,6 @@ import { wait } from "@/utils";
 import { PROGRAM_ID } from "@/utils/constants";
 
 import IDL from "@/solana/idl.json";
-import { set } from "date-fns";
 
 export default function useSolana(playerWalletAddress?: string) {
   const [buyPrice, setBuyPrice] = useState<number>(0);
@@ -24,36 +23,9 @@ export default function useSolana(playerWalletAddress?: string) {
 
   const { setTransactionPending } = useApplicationContext();
 
-  // Function to fetch recent blockhash
-  async function getRecentBlockhash(connection: any) {
-    const { blockhash } = await connection.getRecentBlockhash();
-    return blockhash;
-  }
-
-  const [provider, setProvider] = useState<anchor.AnchorProvider | null>(null);
-
-  // useEffect(() => {
-  //   async function setPhantomProvider() {
-  //     if (typeof window !== "undefined") {
-  //       // @ts-ignore
-  //       const provider = window.solana;
-  //       // Check for Phantom wallet and connect
-  //       if (provider && provider.isPhantom) {
-  //         await provider.connect();
-  //         setProvider(provider);
-  //       } else {
-  //         throw new Error("Phantom wallet is not available");
-  //       }
-  //     }
-  //   }
-
-  //   setPhantomProvider();
-  // }, []);
-
   const program = useMemo(() => {
     if (anchorWallet) {
       const provider = new anchor.AnchorProvider(connection, anchorWallet, anchor.AnchorProvider.defaultOptions());
-      setProvider(provider);
       const programKey = new PublicKey(PROGRAM_ID);
       // @ts-ignore
       const program = new anchor.Program(IDL, programKey, provider);
@@ -101,51 +73,17 @@ export default function useSolana(playerWalletAddress?: string) {
       const [protocolPda] = await findProgramAddressSync([Buffer.from("PROTOCOL")], program.programId);
       const [potPda] = await findProgramAddressSync([Buffer.from("POT")], program.programId);
 
-      if (!provider) {
-        console.log("Phantom provider not available");
-        const tx = await program.methods
-          .buyShares(subjectPublicKey, new anchor.BN(1))
-          .accounts({
-            authority: publicKey,
-            token: tokenPda,
-            mint: mintPda,
-            protocol: protocolPda,
-            pot: potPda,
-            systemProgram: SystemProgram.programId,
-          })
-          .rpc();
-      } else {
-        // Fetch recent blockhash
-        const recentBlockhash = await getRecentBlockhash(connection);
-        const transaction = new Transaction()
-
-        if (!transaction) return;
-
-        transaction.recentBlockhash = recentBlockhash;
-        transaction.feePayer = publicKey;
-
-        transaction.add(
-          await program.methods
-            .buyShares(subjectPublicKey, new anchor.BN(1))
-            .accounts({
-              authority: publicKey,
-              token: tokenPda,
-              mint: mintPda,
-              protocol: protocolPda,
-              pot: potPda,
-              systemProgram: SystemProgram.programId,
-            })
-            .instruction()
-        );
-
-        try {
-          // Sign and send the transaction using Phantom
-          const signedTransaction = await provider.sendAndConfirm(transaction);
-          console.log("Transaction signature:", signedTransaction);
-        } catch (error) {
-          console.error("Error sending transaction:", error);
-        }
-      }
+      const tx = await program.methods
+        .buyShares(subjectPublicKey, new anchor.BN(1))
+        .accounts({
+          authority: publicKey,
+          token: tokenPda,
+          mint: mintPda,
+          protocol: protocolPda,
+          pot: potPda,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
 
       wait(5000); // TODO: remove when realtime update to points is fixed
       setTransactionPending(false);
