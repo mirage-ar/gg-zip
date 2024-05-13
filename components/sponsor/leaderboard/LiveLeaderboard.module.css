@@ -150,6 +150,12 @@
   text-transform: uppercase;
 }
 
+.tradeButton:disabled {
+  background-color: var(--g3);
+  cursor: not-allowed;
+}
+
+
 .spacer {
   margin: 10px 16px;
   border-bottom: 1px dotted var(--g3, #373737);

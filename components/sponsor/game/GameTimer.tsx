@@ -1,18 +1,22 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
-import { getGameStartTime } from "@/utils";
-import { GAME_DATE, GAME_LENGTH } from "@/utils/constants";
 import Timer from "@/components/utility/Timer";
 
 import styles from "./GameTimer.module.css";
+
+import { getGameStartTime } from "@/utils";
+import { GAME_DATE, GAME_LENGTH } from "@/utils/constants";
 
 const tenMinutes = 10 * 60000;
 
 const GameTimer = () => {
   const router = useRouter();
-  const pathname = usePathname()
+  const pathname = usePathname();
+
+  const isHunt = pathname === "/hunt" || pathname === "/sponsor";
 
   // Calculate initial time remaining immediately
   const calculateTimeRemaining = () => {
@@ -37,16 +41,16 @@ const GameTimer = () => {
     }, 1000);
 
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeRemaining]);
 
-  // TODO: this shows on the homepage, but should only show on the game page
   return (
-    timeRemaining <= tenMinutes && timeRemaining > 0 && (
-      pathname.length > 1 &&
+    isHunt &&
+    timeRemaining < GAME_LENGTH && timeRemaining > 0 && (
       <div className={styles.main}>
         <div className={styles.container}>
-          <p>The hunt will finish in</p>
-          <Timer timeRemaining={timeRemaining} hideDays />
+          <div style={{fontSize: "44px"}}><Timer timeRemaining={timeRemaining} hideDays /></div>
+          <Image src="/assets/icons/icons-24/timer.svg" alt="timer icon" width={24} height={24} />
         </div>
       </div>
     )

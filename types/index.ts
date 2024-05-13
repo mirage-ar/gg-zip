@@ -1,31 +1,3 @@
-export type User = {
-    id: string;
-    image: string;
-    name: string;
-    username: string;
-    wallet: string;
-    points?: number;
-    boost?: number;
-  };
-  
-  export type Invite = {
-    id: string;
-    code: string;
-    claimed: boolean;
-    claimedUsername: string | null;
-    claimedImage: string | null;
-    claimedPoints: number | null;
-  };
-
-  export type LeaderboardItem = {
-    id: string;
-    image: string;
-    name: string;
-    points: number;
-    rank: number;
-    invitedBy: string;
-  }
-
   export type Player = {
     id: string;
     username: string;
@@ -51,8 +23,8 @@ export type User = {
     latitude: number;
     longitude: number;
     accuracy: number;
-    altitude: number | null;
-    altitudeAccuracy: number | null;
+    altitude?: number;
+    altitudeAccuracy?: number;
     timestamp: number;
   };
 
@@ -71,4 +43,28 @@ export type User = {
     TRANSACTIONS,
     CHAT,
     POWERUPS
+  }
+
+  export enum Tab {
+    LEADERBOARD,
+    CARDS,
+  }
+
+  export type TransactionData = {
+    type: string;
+    amount: string;
+    subject: string;
+    buyer: string;
+    timestamp: number;
+    signature: string;
+  }
+
+  // ---------- DEPRECATED ----------
+  export type LeaderboardItem = {
+    id: string;
+    image: string;
+    name: string;
+    points: number;
+    rank: number;
+    invitedBy: string;
   }

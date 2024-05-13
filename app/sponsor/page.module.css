@@ -57,10 +57,12 @@
   margin: 0 -60px;
   display: flex;
   align-items: center;
+  justify-content: center;
   font-family: var(--connect);
   font-size: 42px;
   color: var(--g);
   gap: 12px;
+  width: 250px;
 }
 
 .navContainer {

@@ -22,7 +22,7 @@ export function generateViewport() {
 export const metadata: Metadata = {
   title: "GG",
   description: "GG",
-  themeColor: "#000000",
+  metadataBase: new URL('https://gg.zip'),
   openGraph: {
     title: "GG",
     description: "GG",

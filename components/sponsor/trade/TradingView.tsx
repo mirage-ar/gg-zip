@@ -5,7 +5,7 @@ import Link from "next/link";
 import styles from "./TradingView.module.css";
 import { Player } from "@/types";
 import { formatWalletAddress, withCommas } from "@/utils";
-import useTradePlayer from "@/hooks/useTradePlayer";
+import { useSolana } from "@/hooks";
 
 interface TradingViewProps {
   player: Player;
@@ -13,7 +13,7 @@ interface TradingViewProps {
 }
 
 const TradingView: React.FC<TradingViewProps> = ({ player, setShowOverlay }) => {
-  const { cardHoldings, sellPrice, buyPrice, buyPlayerCard, sellPlayerCard } = useTradePlayer(player.wallet);
+  const { cardHoldings, sellPrice, buyPrice, buyPlayerCard, sellPlayerCard } = useSolana(player.wallet);
 
   // Function to stop event propagation
   const handleContainerClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -81,7 +81,7 @@ const TradingView: React.FC<TradingViewProps> = ({ player, setShowOverlay }) => 
 
         {/* TRADING BUTTONS */}
         <div className={styles.buttonContainer}>
-          <button className={styles.sellButton} onClick={sellCard}>
+          <button className={styles.sellButton} disabled={cardHoldings < 1} onClick={sellCard}>
             <p>Sell</p>
             <span>{sellPrice}</span>
           </button>

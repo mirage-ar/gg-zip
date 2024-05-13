@@ -5,10 +5,10 @@ function lamportsToSol(lamports: bigint): number {
   return Number(lamports) / 1000000000;
 }
 
-export function bnToNumber(bn: BN): number | undefined {
+export function bnToNumber(bn: BN): number {
   if (bn.lt(new BN(Number.MIN_SAFE_INTEGER)) || bn.gt(new BN(Number.MAX_SAFE_INTEGER))) {
     console.error("Number out of range for JavaScript Number type");
-    return undefined; // or handle the error as you see fit
+    return 0; // or handle the error as you see fit
   }
   return bn.toNumber();
 }

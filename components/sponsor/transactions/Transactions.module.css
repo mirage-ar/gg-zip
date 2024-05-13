@@ -1,0 +1,70 @@
+.main {
+  margin: 32px 0 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  margin: 12px 24px;
+  padding: 0 0 9px;
+  font-family: var(--connect);
+  color: var(--g);
+  font-size: 18px;
+  border-bottom: 1px solid #292929;
+}
+
+.transaction {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+
+  font-size: 14px;
+  color: var(--w);
+
+  height: 50px;
+  margin: 12px 24px;
+  border-bottom: 1px solid var(--g2);
+}
+
+.walletContainer {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 4px;
+  width: 100px;
+}
+
+.walletContainer p {
+  text-transform: uppercase;
+}
+
+.walletContainer span {
+  font-size: 12px;
+  color: var(--g);
+}
+
+.userContainer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100px;
+  text-transform: uppercase;
+}
+
+.userContainer img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--g);
+}
+
+.priceContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 24px;
+  width: 100px;
+}

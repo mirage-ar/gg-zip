@@ -1,41 +1,45 @@
 import { useState, useEffect, useMemo } from "react";
 import * as anchor from "@project-serum/anchor";
+
 import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
-import { SystemProgram } from "@solana/web3.js";
+import { SystemProgram, PublicKey } from "@solana/web3.js";
+import { useApplicationContext } from "@/state/context";
 import { bnToNumber, getBuyPrice, getSellPrice } from "@/solana";
+import { wait } from "@/utils";
+
+import { PROGRAM_ID } from "@/utils/constants";
 
 import IDL from "@/solana/idl.json";
-import { PROGRAM_KEY } from "@/solana/constants";
-import { set } from "date-fns";
 
-export default function useTradePlayer(playerWalletAddress: string) {
-  const { connection } = useConnection();
-  const { publicKey } = useWallet();
-  const anchorWallet = useAnchorWallet();
-
+export default function useSolana(playerWalletAddress?: string) {
   const [buyPrice, setBuyPrice] = useState<number>(0);
   const [sellPrice, setSellPrice] = useState<number>(0);
   const [cardHoldings, setCardHoldings] = useState<number>(0);
-  const [loading, setLoading] = useState(false);
+
+  const { publicKey } = useWallet();
+  const anchorWallet = useAnchorWallet();
+  const { connection } = useConnection();
+
+  const { setTransactionPending } = useApplicationContext();
 
   const program = useMemo(() => {
     if (anchorWallet) {
       const provider = new anchor.AnchorProvider(connection, anchorWallet, anchor.AnchorProvider.defaultOptions());
+      const programKey = new PublicKey(PROGRAM_ID);
       // @ts-ignore
-      const program = new anchor.Program(IDL, PROGRAM_KEY, provider);
+      const program = new anchor.Program(IDL, programKey, provider);
       return program;
     }
   }, [connection, anchorWallet]);
 
   async function fetchPlayerCardCount() {
-    if (program === undefined) {
-      console.error("Program is undefined");
+    if (!program || !playerWalletAddress) {
       return;
     }
 
     try {
-      const walletPublicKey = new anchor.web3.PublicKey(playerWalletAddress);
+      const walletPublicKey = new PublicKey(playerWalletAddress);
       const walletBuffer = walletPublicKey.toBuffer();
 
       const [mintPda, mintBump] = await findProgramAddressSync([Buffer.from("MINT"), walletBuffer], program.programId);
@@ -50,16 +54,13 @@ export default function useTradePlayer(playerWalletAddress: string) {
   }
 
   async function buyPlayerCard() {
-    console.log("here");
-    if (!program || !publicKey) {
-      // TODO: update these errors
-      console.error("Program is undefined");
+    if (!program || !publicKey || !playerWalletAddress) {
       return;
     }
 
     try {
-      setLoading(true);
-      const subjectPublicKey = new anchor.web3.PublicKey(playerWalletAddress);
+      setTransactionPending(true);
+      const subjectPublicKey = new PublicKey(playerWalletAddress);
       const subjectBuffer = subjectPublicKey.toBuffer();
 
       // Ensure the seeds order and buffers are correctly set
@@ -69,9 +70,7 @@ export default function useTradePlayer(playerWalletAddress: string) {
       );
 
       const [mintPda] = await findProgramAddressSync([Buffer.from("MINT"), subjectBuffer], program.programId);
-
       const [protocolPda] = await findProgramAddressSync([Buffer.from("PROTOCOL")], program.programId);
-
       const [potPda] = await findProgramAddressSync([Buffer.from("POT")], program.programId);
 
       const tx = await program.methods
@@ -86,69 +85,60 @@ export default function useTradePlayer(playerWalletAddress: string) {
         })
         .rpc();
 
-      console.log(tx);
-
-      setLoading(false);
+      wait(5000); // TODO: remove when realtime update to points is fixed
+      setTransactionPending(false);
     } catch (error) {
       console.error(error);
-      setLoading(false);
+      setTransactionPending(false);
     }
   }
 
   async function sellPlayerCard() {
-    if (!program || !publicKey) {
-      // TODO: update these errors
-      console.error("Program is undefined");
+    if (!program || !publicKey || !playerWalletAddress) {
       return;
     }
 
     try {
-        setLoading(true);
-        const subjectPublicKey = new anchor.web3.PublicKey(playerWalletAddress);
-        const subjectBuffer = subjectPublicKey.toBuffer();
-  
-        // Ensure the seeds order and buffers are correctly set
-        const [tokenPda] = await findProgramAddressSync(
-          [Buffer.from("TOKEN"), publicKey.toBuffer(), subjectBuffer],
-          program.programId
-        );
-  
-        const [mintPda] = await findProgramAddressSync([Buffer.from("MINT"), subjectBuffer], program.programId);
-  
-        const [protocolPda] = await findProgramAddressSync([Buffer.from("PROTOCOL")], program.programId);
-  
-        const [potPda] = await findProgramAddressSync([Buffer.from("POT")], program.programId);
-  
-        const tx = await program.methods
-          .sellShares(subjectPublicKey, new anchor.BN(1))
-          .accounts({
-            authority: publicKey,
-            token: tokenPda,
-            mint: mintPda,
-            protocol: protocolPda,
-            pot: potPda,
-            systemProgram: SystemProgram.programId,
-          })
-          .rpc();
-  
-        console.log(tx);
-  
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-        setLoading(false);
-      }
+      setTransactionPending(true);
+      const subjectPublicKey = new PublicKey(playerWalletAddress);
+      const subjectBuffer = subjectPublicKey.toBuffer();
+
+      // Ensure the seeds order and buffers are correctly set
+      const [tokenPda] = await findProgramAddressSync(
+        [Buffer.from("TOKEN"), publicKey.toBuffer(), subjectBuffer],
+        program.programId
+      );
+
+      const [mintPda] = await findProgramAddressSync([Buffer.from("MINT"), subjectBuffer], program.programId);
+      const [protocolPda] = await findProgramAddressSync([Buffer.from("PROTOCOL")], program.programId);
+      const [potPda] = await findProgramAddressSync([Buffer.from("POT")], program.programId);
+
+      const tx = await program.methods
+        .sellShares(subjectPublicKey, new anchor.BN(1))
+        .accounts({
+          authority: publicKey,
+          token: tokenPda,
+          mint: mintPda,
+          protocol: protocolPda,
+          pot: potPda,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+
+      setTransactionPending(false);
+    } catch (error) {
+      console.error(error);
+      setTransactionPending(false);
+    }
   }
 
   async function fetchCardHoldings(): Promise<number> {
-    if (program === undefined || !publicKey) {
-      // TODO: update these errors
-      console.error("Program is undefined or no public key found");
+    if (!program || !publicKey || !playerWalletAddress) {
       return 0;
     }
 
     try {
-      const walletPublicKey = new anchor.web3.PublicKey(playerWalletAddress);
+      const walletPublicKey = new PublicKey(playerWalletAddress);
       const walletBuffer = walletPublicKey.toBuffer();
 
       const [tokenPda] = await findProgramAddressSync(
@@ -167,14 +157,38 @@ export default function useTradePlayer(playerWalletAddress: string) {
       if (error.message.includes("Account does not exist")) {
         return 0; // Return 0 if the account does not exist
       }
-      throw error;
     }
     return 0;
   }
 
+  async function fetchSponsorHoldings(): Promise<string[]> {
+    if (!program || !publicKey) {
+      return [];
+    }
+
+    try {
+      const ownerFilter = [
+        {
+          memcmp: {
+            offset: 8,
+            bytes: publicKey.toBase58(),
+          },
+        },
+      ];
+
+      const accounts = await program.account.tokenAccount.all(ownerFilter);
+      // @ts-ignore
+      const holdings = accounts.map((account) => account.account.subject.toBase58());
+
+      return holdings;
+    } catch (error) {
+      console.error("Error fetching sponsor holdings:", error);
+      return [];
+    }
+  }
+
   async function fetchPrices() {
-    if (program === undefined) {
-      console.error("Program is undefined");
+    if (!program || !playerWalletAddress) {
       return;
     }
 
@@ -197,17 +211,13 @@ export default function useTradePlayer(playerWalletAddress: string) {
 
   useEffect(() => {
     async function init() {
-      if (program === undefined) {
-        console.error("Program is undefined");
-        return;
-      }
-
       fetchPrices();
       setCardHoldings(await fetchCardHoldings());
     }
 
     init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [program]);
 
-  return { program, buyPrice, sellPrice, cardHoldings, loading, buyPlayerCard, sellPlayerCard };
+  return { program, buyPrice, sellPrice, cardHoldings, buyPlayerCard, sellPlayerCard, fetchSponsorHoldings };
 }

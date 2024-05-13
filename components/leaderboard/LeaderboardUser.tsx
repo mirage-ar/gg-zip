@@ -5,12 +5,11 @@ import Image from "next/image";
 import { useWallet } from "@solana/wallet-adapter-react";
 
 import styles from "./LeaderboardUser.module.css";
-import { User } from "@/types";
+import { Player } from "@/types";
 import { formatPoints } from "@/utils";
 
 const LeaderboardUser: React.FC = () => {
-  const { publicKey } = useWallet();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<Player | null>(null);
   const [referrer, setReferrer] = useState<string | null>(null);
   const [rank, setRank] = useState<number | null>(null);
 
@@ -37,7 +36,7 @@ const LeaderboardUser: React.FC = () => {
           {/* <div className={styles.rank}>{formatPoints(rank || 0)}</div> */}
           <div className={styles.name}>
             <Image src={user?.image || "/assets/icons/profile-user.svg"} alt="user image" width={32} height={32} />
-            {user?.name}
+            {user?.username}
           </div>
         </div>
         <div className={styles.right}>

@@ -6,11 +6,11 @@ import Image from "next/image";
 import { withCommas } from "@/utils";
 
 import styles from "./BoxNotification.module.css";
-import { User } from "@/types";
+import { Player } from "@/types";
 
 const BoxNotification: React.FC = () => {
   const boxId = useRef<string>("0");
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<Player | null>(null);
   const [points, setPoints] = useState<number>(0);
   const [show, setShow] = useState<boolean>(false);
   const hideTimeoutId = useRef<NodeJS.Timeout | null>(null); // State to manage the timeout ID

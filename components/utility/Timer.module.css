@@ -1,6 +1,6 @@
 .main {
   font-family: var(--connect);
-  font-size: 108px;
+  /* font-size: 108px; */
 }
 
 @media only screen and (max-width: 600px) {

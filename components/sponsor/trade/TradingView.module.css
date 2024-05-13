@@ -130,6 +130,11 @@
   font-family: var(--connect);
 }
 
+.sellButton:disabled {
+  background-color: var(--g3);
+  cursor: not-allowed;
+}
+
 .buyButton {
     width: 235px;
     height: 40px;

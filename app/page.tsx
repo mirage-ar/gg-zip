@@ -14,7 +14,7 @@ import MapboxMap from "@/components/map/MapboxMap";
 
 import { MarkersObject } from "@/types";
 import { getGameStartTime } from "@/utils";
-import { API, GAME_DATE, PLAYER_COUNT } from "@/utils/constants";
+import { API, GAME_DATE, PLAYER_COUNT, POLLING_TIME } from "@/utils/constants";
 import UserInfo from "@/components/user/UserInfo";
 
 const FIVE_MINUTES = 1000 * 60 * 5;
@@ -27,7 +27,7 @@ export default function Home() {
 
   const router = useRouter();
   const { publicKey } = useWallet();
-  const { setVisible } = useWalletModal();
+  const { setVisible } = useWalletModal(); // TODO: move to useUser
 
   // Calculate initial time remaining immediately
   const calculateTimeRemaining = () => {
@@ -65,8 +65,10 @@ export default function Home() {
     getPlayerCount();
 
     const interval = setInterval(() => {
-      getPlayerCount();
-    }, 5000);
+      if (document.visibilityState === "visible") {
+        getPlayerCount();
+      }
+    }, POLLING_TIME);
 
     return () => clearInterval(interval);
   }, []);
@@ -93,7 +95,7 @@ export default function Home() {
         <div className={styles.mainContainer}>
           <div className={styles.timerContainer}>
             <p>The hunt will start in</p>
-            <Timer timeRemaining={timeRemaining} />
+            <div style={{fontSize: "108px"}}><Timer timeRemaining={timeRemaining} /></div>
           </div>
 
           {/* DESKTOP PLAYER CONTAINER */}

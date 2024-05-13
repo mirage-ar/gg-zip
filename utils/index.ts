@@ -6,6 +6,10 @@ export function rand(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+export function wait(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export function isMobile() {
   if (typeof window !== "undefined") {
     return /Mobi|Android/i.test(window.navigator.userAgent);
@@ -76,5 +80,5 @@ export const withCommas = (x: number | string): string => {
     return x.toString();
   }
 
-  return x.toLocaleString();
+  return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 };

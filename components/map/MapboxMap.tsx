@@ -19,7 +19,7 @@ interface MapboxMapProps {
 }
 
 const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = false }) => {
-  const user = useUser();
+  // const user = useUser(); // TODO: remove
 
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const markersSocket = useRef<WebSocket | null>(null);
@@ -86,6 +86,7 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = 
     return () => {
       map.remove();
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchBoxes = async () => {
@@ -108,11 +109,15 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = 
 
   useEffect(() => {
     if (isHomePage) return;
-    const timer = setInterval(() => {
-      fetchBoxes();
+
+    const interval = setInterval(() => {
+      if (document.visibilityState === "visible") {
+        fetchBoxes();
+      }
     }, 5000);
 
-    return () => clearInterval(timer);
+    return () => clearInterval(interval);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Markers Socket
@@ -133,7 +138,7 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = 
       };
 
       markersSocket.current.onerror = (error) => {
-        console.error("WebSocket Error", error);
+        // console.error("WebSocket Error", error);
       };
     };
 
@@ -147,7 +152,9 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = 
       navigator.geolocation.clearWatch(watchId);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+    // TODO: used to have user here - check if still works
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // UPDATE PLAYER MARKERS
   const updateMarkers = (map: mapboxgl.Map, message: LocationData) => {
