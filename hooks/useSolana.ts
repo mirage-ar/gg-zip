@@ -3,7 +3,7 @@ import * as anchor from "@project-serum/anchor";
 
 import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
-import { SystemProgram, PublicKey } from "@solana/web3.js";
+import { SystemProgram, PublicKey, Transaction, Connection } from "@solana/web3.js";
 import { useApplicationContext } from "@/state/context";
 import { bnToNumber, getBuyPrice, getSellPrice } from "@/solana";
 import { wait } from "@/utils";
@@ -22,6 +22,28 @@ export default function useSolana(playerWalletAddress?: string) {
   const { connection } = useConnection();
 
   const { setTransactionPending } = useApplicationContext();
+
+  // Function to fetch recent blockhash
+  async function getRecentBlockhash(connection: any) {
+    const { blockhash } = await connection.getRecentBlockhash();
+    return blockhash;
+  }
+
+  // @ts-ignore
+  const provider = window.solana;
+
+  useEffect(() => {
+    async function setProvider() {
+      // Check for Phantom wallet and connect
+      if (provider && provider.isPhantom) {
+        await provider.connect();
+      } else {
+        throw new Error("Phantom wallet is not available");
+      }
+    }
+
+    setProvider();
+  }, [provider]);
 
   const program = useMemo(() => {
     if (anchorWallet) {
@@ -73,17 +95,48 @@ export default function useSolana(playerWalletAddress?: string) {
       const [protocolPda] = await findProgramAddressSync([Buffer.from("PROTOCOL")], program.programId);
       const [potPda] = await findProgramAddressSync([Buffer.from("POT")], program.programId);
 
-      const tx = await program.methods
-        .buyShares(subjectPublicKey, new anchor.BN(1))
-        .accounts({
-          authority: publicKey,
-          token: tokenPda,
-          mint: mintPda,
-          protocol: protocolPda,
-          pot: potPda,
-          systemProgram: SystemProgram.programId,
-        })
-        .rpc();
+      // Establish a connection to the Solana cluster
+      const connection = new Connection("https://solana-devnet.g.alchemy.com/v2/Ysh4YNos8gA_eIlRj23m4HY52JHuQgVW");
+
+      // Fetch recent blockhash
+      const recentBlockhash = await getRecentBlockhash(connection);
+
+      const transaction = new Transaction({
+        recentBlockhash,
+        feePayer: publicKey,
+      }).add(
+        await program.methods
+          .buyShares(subjectPublicKey, new anchor.BN(1))
+          .accounts({
+            authority: publicKey,
+            token: tokenPda,
+            mint: mintPda,
+            protocol: protocolPda,
+            pot: potPda,
+            systemProgram: SystemProgram.programId,
+          })
+          .instruction()
+      );
+
+      try {
+        // Sign and send the transaction using Phantom
+        const signedTransaction = await provider.signAndSendTransaction(transaction);
+        console.log("Transaction signature:", signedTransaction.signature);
+      } catch (error) {
+        console.error("Error sending transaction:", error);
+      }
+
+      // const tx = await program.methods
+      //   .buyShares(subjectPublicKey, new anchor.BN(1))
+      //   .accounts({
+      //     authority: publicKey,
+      //     token: tokenPda,
+      //     mint: mintPda,
+      //     protocol: protocolPda,
+      //     pot: potPda,
+      //     systemProgram: SystemProgram.programId,
+      //   })
+      //   .rpc();
 
       wait(5000); // TODO: remove when realtime update to points is fixed
       setTransactionPending(false);
