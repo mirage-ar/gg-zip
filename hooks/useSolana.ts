@@ -3,7 +3,7 @@ import * as anchor from "@project-serum/anchor";
 
 import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
-import { SystemProgram, PublicKey } from "@solana/web3.js";
+import { SystemProgram, PublicKey, Transaction } from "@solana/web3.js";
 import { useApplicationContext } from "@/state/context";
 import { bnToNumber, getBuyPrice, getSellPrice } from "@/solana";
 import { wait } from "@/utils";
@@ -17,10 +17,11 @@ export default function useSolana(playerWalletAddress?: string) {
   const [sellPrice, setSellPrice] = useState<number>(0);
   const [cardHoldings, setCardHoldings] = useState<number>(0);
 
-  const { publicKey } = useWallet();
+  const { publicKey, sendTransaction } = useWallet();
   const anchorWallet = useAnchorWallet();
   const { connection } = useConnection();
 
+  // TODO: use transaction pending from context in UI
   const { setTransactionPending } = useApplicationContext();
 
   const program = useMemo(() => {
@@ -73,17 +74,28 @@ export default function useSolana(playerWalletAddress?: string) {
       const [protocolPda] = await findProgramAddressSync([Buffer.from("PROTOCOL")], program.programId);
       const [potPda] = await findProgramAddressSync([Buffer.from("POT")], program.programId);
 
-      const tx = await program.methods
-        .buyShares(subjectPublicKey, new anchor.BN(1))
-        .accounts({
-          authority: publicKey,
-          token: tokenPda,
-          mint: mintPda,
-          protocol: protocolPda,
-          pot: potPda,
-          systemProgram: SystemProgram.programId,
-        })
-        .rpc();
+      const {
+        context: { slot: minContextSlot },
+        value: { blockhash, lastValidBlockHeight },
+      } = await connection.getLatestBlockhashAndContext();
+
+      const transaction = new Transaction().add(
+        await program.methods
+          .buyShares(subjectPublicKey, new anchor.BN(1))
+          .accounts({
+            authority: publicKey,
+            token: tokenPda,
+            mint: mintPda,
+            protocol: protocolPda,
+            pot: potPda,
+            systemProgram: SystemProgram.programId,
+          })
+          .instruction()
+      );
+
+      const signature = await sendTransaction(transaction, connection, { minContextSlot });
+      const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
+      console.log(confirmation);
 
       wait(5000); // TODO: remove when realtime update to points is fixed
       setTransactionPending(false);
@@ -113,17 +125,28 @@ export default function useSolana(playerWalletAddress?: string) {
       const [protocolPda] = await findProgramAddressSync([Buffer.from("PROTOCOL")], program.programId);
       const [potPda] = await findProgramAddressSync([Buffer.from("POT")], program.programId);
 
-      const tx = await program.methods
-        .sellShares(subjectPublicKey, new anchor.BN(1))
-        .accounts({
-          authority: publicKey,
-          token: tokenPda,
-          mint: mintPda,
-          protocol: protocolPda,
-          pot: potPda,
-          systemProgram: SystemProgram.programId,
-        })
-        .rpc();
+      const {
+        context: { slot: minContextSlot },
+        value: { blockhash, lastValidBlockHeight },
+      } = await connection.getLatestBlockhashAndContext();
+
+      const transaction = new Transaction().add(
+        await program.methods
+          .sellShares(subjectPublicKey, new anchor.BN(1))
+          .accounts({
+            authority: publicKey,
+            token: tokenPda,
+            mint: mintPda,
+            protocol: protocolPda,
+            pot: potPda,
+            systemProgram: SystemProgram.programId,
+          })
+          .instruction()
+      );
+
+      const signature = await sendTransaction(transaction, connection, { minContextSlot });
+      const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
+      console.log(confirmation);
 
       setTransactionPending(false);
     } catch (error) {
