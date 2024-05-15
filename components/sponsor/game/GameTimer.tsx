@@ -35,7 +35,7 @@ const GameTimer = () => {
   //     if (timeRemaining <= 0) {
   //       clearInterval(interval);
 
-  //       if (!pathname.includes("gameover") || !pathname.includes("aboutgg")) {
+  //       if (!pathname.includes("gameover") || !pathname.includes("aboutgg")) { // TODO: this doesn't work + let the about page through
   //         router.push("/gameover");
   //       }
   //     }
