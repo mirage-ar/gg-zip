@@ -27,22 +27,23 @@ const GameTimer = () => {
 
   const [timeRemaining, setTimeRemaining] = useState<number>(calculateTimeRemaining());
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeRemaining(calculateTimeRemaining());
+  // TODO: turn timer back on
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setTimeRemaining(calculateTimeRemaining());
 
-      if (timeRemaining <= 0) {
-        clearInterval(interval);
+  //     if (timeRemaining <= 0) {
+  //       clearInterval(interval);
 
-        if (!pathname.includes("gameover")) {
-          router.push("/gameover");
-        }
-      }
-    }, 1000);
+  //       if (!pathname.includes("gameover") || !pathname.includes("aboutgg")) {
+  //         router.push("/gameover");
+  //       }
+  //     }
+  //   }, 1000);
 
-    return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeRemaining]);
+  //   return () => clearInterval(interval);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [timeRemaining]);
 
   return (
     isHunt &&

@@ -68,12 +68,12 @@ export default function Home() {
 
   const fetchPlayerData = async (profile: boolean): Promise<Player[]> => {
     const response = await fetch(`${API}/leaderboard`);
-    // const data = await response.json();
+    const data = await response.json();
 
     // TODO: remove dummy data
-    const data: { leaderboard: Player[] } = {
-      leaderboard: accounts,
-    };
+    // const data: { leaderboard: Player[] } = {
+    //   leaderboard: accounts,
+    // };
 
     const leaderboard = data.leaderboard.sort((a: Player, b: Player) => b.points - a.points);
     let playerList: Player[] = [];
