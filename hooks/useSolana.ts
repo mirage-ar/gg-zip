@@ -74,28 +74,27 @@ export default function useSolana(playerWalletAddress?: string) {
       const [protocolPda] = await findProgramAddressSync([Buffer.from("PROTOCOL")], program.programId);
       const [potPda] = await findProgramAddressSync([Buffer.from("POT")], program.programId);
 
-      const {
-        context: { slot: minContextSlot },
-        value: { blockhash, lastValidBlockHeight },
-      } = await connection.getLatestBlockhashAndContext();
+      // const {
+      //   context: { slot: minContextSlot },
+      //   value: { blockhash, lastValidBlockHeight },
+      // } = await connection.getLatestBlockhashAndContext();
 
-      const transaction = new Transaction().add(
-        await program.methods
-          .buyShares(subjectPublicKey, new anchor.BN(1))
-          .accounts({
-            authority: publicKey,
-            token: tokenPda,
-            mint: mintPda,
-            protocol: protocolPda,
-            pot: potPda,
-            systemProgram: SystemProgram.programId,
-          })
-          .instruction()
-      );
+      const transaction = await program.methods
+        .buyShares(subjectPublicKey, new anchor.BN(1))
+        .accounts({
+          authority: publicKey,
+          token: tokenPda,
+          mint: mintPda,
+          protocol: protocolPda,
+          pot: potPda,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
 
-      const signature = await sendTransaction(transaction, connection, { minContextSlot });
-      const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
-      console.log(confirmation);
+      // const signature = await sendTransaction(transaction, connection, { minContextSlot });
+      // console.log(signature);
+      // const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
+      console.log(transaction);
 
       wait(5000); // TODO: remove when realtime update to points is fixed
       setTransactionPending(false);

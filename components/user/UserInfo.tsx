@@ -27,6 +27,14 @@ const UserInfo: React.FC<UserInfoProps> = ({ closed }) => {
       const data = await res.json();
       if (data.points) {
         setPoints(data.points);
+        setUser({
+          id: data.id,
+          username: data.username,
+          image: data.image,
+          wallet: publicKey.toBase58(),
+          points: data.points,
+          boxes: data.boxes,
+        });
       }
     };
 

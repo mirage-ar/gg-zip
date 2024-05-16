@@ -5,14 +5,6 @@ function lamportsToSol(lamports: bigint): number {
   return Number(lamports) / 1000000000;
 }
 
-export function bnToNumber(bn: BN): number {
-  if (bn.lt(new BN(Number.MIN_SAFE_INTEGER)) || bn.gt(new BN(Number.MAX_SAFE_INTEGER))) {
-    console.error("Number out of range for JavaScript Number type");
-    return 0; // or handle the error as you see fit
-  }
-  return bn.toNumber();
-}
-
 export function getPrice(supply: bigint, amount: bigint): number {
   const LAMPORTS_PER_SOL = 1000000000n; // Update this as necessary
   const factor = 1600n;
@@ -37,4 +29,12 @@ export function getBuyPrice(sharesSupply: number, amount: number): number {
 
 export function getSellPrice(sharesSupply: number, amount: number): number {
   return getPrice(BigInt(sharesSupply) - BigInt(amount), BigInt(amount));
+}
+
+export function bnToNumber(bn: BN): number {
+  if (bn.lt(new BN(Number.MIN_SAFE_INTEGER)) || bn.gt(new BN(Number.MAX_SAFE_INTEGER))) {
+    console.error("Number out of range for JavaScript Number type");
+    return 0; // or handle the error as you see fit
+  }
+  return bn.toNumber();
 }

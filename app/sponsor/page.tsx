@@ -87,6 +87,7 @@ export default function Home() {
       playerList = leaderboard;
     }
 
+    // GET PLAYER CARD PRICES
     if (program === undefined) return playerList;
     for (const player of playerList) {
       try {
@@ -146,6 +147,8 @@ export default function Home() {
       // fetch all player data and set state
       const players = await fetchPlayerData(tab === Tab.CARDS);
       setPlayerList(players);
+
+      // TODO: fetch sponsor holding value
     };
 
     fetchData();
