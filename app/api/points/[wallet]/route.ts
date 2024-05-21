@@ -22,18 +22,25 @@ export async function GET(request: Request, { params }: { params: { wallet: stri
   return Response.json(user);
 }
 
-export async function POST(request: Request, { params }: { params: { wallet: string } }) {
-  const wallet = params.wallet;
+// export async function POST(request: Request, { params }: { params: { wallet: string } }) {
+//   const wallet = params.wallet;
+//   const { points } = await request.json();
 
-  // const user = await prisma.points.findUnique({
-  //   where: {
-  //     wallet: wallet,
-  //   },
-  // });
 
-  // if (!user) {
-  //   return Response.json({ success: false, message: "User does not exist" });
-  // }
+//   const user = await prisma.points.update({
+//     where: {
+//       wallet: wallet,
+//     },
+//     data: {
+//       points: {
+//         increment: points,
+//       },
+//     },
+//   });
 
-  return Response.json({ points: 1000 });
-}
+//   if (!user) {
+//     return Response.json({ success: false, message: "User does not exist" });
+//   }
+
+//   return Response.json({ points: 1000 });
+// }

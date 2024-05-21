@@ -51,18 +51,27 @@
 .prizeContainer {
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 16px;
 }
 
-.prizeTotalAmount {
-  margin: 0 -60px;
+.prizeAmountContainer {
+  margin: 0 -130px;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 16px;
+}
+
+.prizeTotalAmount {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   font-family: var(--connect);
-  font-size: 42px;
+  font-size: 34px;
   color: var(--g);
-  gap: 12px;
-  width: 250px;
+  gap: 6px;
+  width: 200px;
 }
 
 .navContainer {

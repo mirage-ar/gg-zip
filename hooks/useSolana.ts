@@ -34,7 +34,7 @@ export default function useSolana(playerWalletAddress?: string) {
     }
   }, [connection, anchorWallet]);
 
-  async function fetchPlayerCardCount() {
+  async function fetchPlayerCardCount(playerWalletAddress: string) {
     if (!program || !playerWalletAddress) {
       return;
     }
@@ -129,23 +129,21 @@ export default function useSolana(playerWalletAddress?: string) {
         value: { blockhash, lastValidBlockHeight },
       } = await connection.getLatestBlockhashAndContext();
 
-      const transaction = new Transaction().add(
-        await program.methods
-          .sellShares(subjectPublicKey, new anchor.BN(1))
-          .accounts({
-            authority: publicKey,
-            token: tokenPda,
-            mint: mintPda,
-            protocol: protocolPda,
-            pot: potPda,
-            systemProgram: SystemProgram.programId,
-          })
-          .instruction()
-      );
+      const transaction = await program.methods
+        .sellShares(subjectPublicKey, new anchor.BN(1))
+        .accounts({
+          authority: publicKey,
+          token: tokenPda,
+          mint: mintPda,
+          protocol: protocolPda,
+          pot: potPda,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
 
-      const signature = await sendTransaction(transaction, connection, { minContextSlot });
-      const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
-      console.log(confirmation);
+      // const signature = await sendTransaction(transaction, connection, { minContextSlot });
+      // const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
+      console.log(transaction);
 
       setTransactionPending(false);
     } catch (error) {
@@ -215,7 +213,7 @@ export default function useSolana(playerWalletAddress?: string) {
     }
 
     try {
-      const playerCardCount = await fetchPlayerCardCount();
+      const playerCardCount = await fetchPlayerCardCount(playerWalletAddress);
       if (playerCardCount === undefined) {
         console.error("Player card count is undefined");
         return;
@@ -241,5 +239,5 @@ export default function useSolana(playerWalletAddress?: string) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [program]);
 
-  return { program, buyPrice, sellPrice, cardHoldings, buyPlayerCard, sellPlayerCard, fetchSponsorHoldings };
+  return { program, buyPrice, sellPrice, cardHoldings, buyPlayerCard, sellPlayerCard, fetchSponsorHoldings, fetchPlayerCardCount };
 }

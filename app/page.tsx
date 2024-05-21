@@ -14,7 +14,7 @@ import MapboxMap from "@/components/map/MapboxMap";
 
 import { MarkersObject } from "@/types";
 import { getGameStartTime } from "@/utils";
-import { API, GAME_DATE, PLAYER_COUNT, POLLING_TIME } from "@/utils/constants";
+import { GAME_API, GAME_DATE, PLAYER_COUNT, POLLING_TIME } from "@/utils/constants";
 import UserInfo from "@/components/user/UserInfo";
 
 const FIVE_MINUTES = 1000 * 60 * 5;
@@ -54,7 +54,7 @@ export default function Home() {
   useEffect(() => {
     const getPlayerCount = async () => {
       try {
-        const response = await fetch(`${API}/players`);
+        const response = await fetch(`${GAME_API}/players`);
         const data = await response.json();
         setPlayerCount(data);
       } catch (error) {

@@ -14,11 +14,11 @@ import styles from "./page.module.css";
 import { PublicKey } from "@solana/web3.js";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
 import { Page, Tab, Player, MarkersObject } from "@/types";
-import { getBuyPrice, getSellPrice, bnToNumber } from "@/solana";
+import { getBuyPrice, getSellPrice, bnToNumber, getPrice, numberToBigInt } from "@/solana";
 import { useApplicationContext } from "@/state/context";
-import { useSolana, useUser } from "@/hooks";
+import { useCollectSocket, useSolana, useUser } from "@/hooks";
 import { withCommas } from "@/utils";
-import { API } from "@/utils/constants";
+import { GAME_API } from "@/utils/constants";
 import BN from "bn.js";
 
 import accounts from "./accounts.json";
@@ -31,14 +31,16 @@ export default function Home() {
   const [closed, setClosed] = useState(false);
   const [playerList, setPlayerList] = useState<Player[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
-  const [sponsorPoints, setSponsorPoints] = useState<number>(0);
+  // const [sponsorPoints, setSponsorPoints] = useState<number>(0);
+  const [totalHoldings, setTotalHoldings] = useState<number>(0);
 
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<MarkersObject>({});
 
   const { transactionPending } = useApplicationContext();
-  const { program, fetchSponsorHoldings } = useSolana();
+  const { program, fetchSponsorHoldings, fetchPlayerCardCount } = useSolana();
   const { publicKey } = useUser();
+  const { sponsorPoints } = useCollectSocket(publicKey);
 
   // FLY TO USER LOCATION
   const flyToMarker = (markerId: string) => {
@@ -66,21 +68,60 @@ export default function Home() {
     }
   };
 
-  const fetchPlayerData = async (profile: boolean): Promise<Player[]> => {
-    const response = await fetch(`${API}/leaderboard`);
-    const data = await response.json();
+  // TODO: CLEANUP
+  // const fetchSponsorPointTotal = async (publicKey: string, playerList: Player[]): Promise<number> => {
+  //   try {
+  //     const response = await fetch(`api/points/sponsor`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ wallet: publicKey, players: playerList }),
+  //     });
+
+  //     const data = await response.json();
+  //     return data.total;
+  //   } catch (error) {
+  //     console.error("Error fetching sponsor point total:", error);
+  //     return 0;
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (!publicKey || playerList.length < 1) return;
+  //   const fetchPoints = async () => {
+  //     // fetch sponsor point total and set state
+  //     const points = await fetchSponsorPointTotal(publicKey.toBase58(), playerList);
+  //     setSponsorPoints(points);
+  //   };
+
+  //   fetchPoints();
+  // }, [publicKey, playerList, transactionPending]);
+
+  const checkOnlineUsers = (): string[] => {
+    if (markersRef.current) {
+      const markers = markersRef.current;
+      const onlineUsers = Object.keys(markers);
+      return onlineUsers;
+    }
+    return [];
+  };
+
+  const fetchPlayerData = async (profile: boolean, sponsorHoldings: string[]): Promise<Player[]> => {
+    const response = await fetch(`${GAME_API}/leaderboard`);
+    // const data = await response.json();
 
     // TODO: remove dummy data
-    // const data: { leaderboard: Player[] } = {
-    //   leaderboard: accounts,
-    // };
+    const data: { leaderboard: Player[] } = {
+      leaderboard: accounts,
+    };
 
     const leaderboard = data.leaderboard.sort((a: Player, b: Player) => b.points - a.points);
     let playerList: Player[] = [];
 
     if (profile) {
       // fetch cards the sponsor is holding
-      const sponsorHoldings = await fetchSponsorHoldings();
+
       const holdingPlayers = leaderboard.filter((player: Player) => sponsorHoldings.includes(player.wallet));
       playerList = holdingPlayers;
     } else {
@@ -94,10 +135,7 @@ export default function Home() {
         const walletPublicKey = new PublicKey(player.wallet);
         const walletBuffer = walletPublicKey.toBuffer();
 
-        const [mintPda] = await findProgramAddressSync(
-          [Buffer.from("MINT"), walletBuffer],
-          program.programId
-        );
+        const [mintPda] = await findProgramAddressSync([Buffer.from("MINT"), walletBuffer], program.programId);
 
         const playerAccount = await program.account.mintAccount.fetch(mintPda);
         const playerCardCount = bnToNumber(playerAccount.amount as BN);
@@ -111,31 +149,43 @@ export default function Home() {
     return playerList;
   };
 
-  const fetchSponsorPointTotal = async (publicKey: string, playerList: Player[]): Promise<number> => {
-    try {
-      const response = await fetch(`api/points/sponsor`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ wallet: publicKey, players: playerList }),
-      });
-
-      const data = await response.json();
-      return data.total;
-    } catch (error) {
-      console.error("Error fetching sponsor point total:", error);
+  const calculateTotalHoldings = async (playerList: Player[], sponsorHoldings: string[]): Promise<number> => {
+    if (!program || !publicKey) {
       return 0;
     }
-  };
 
-  const checkOnlineUsers = (): string[] => {
-    if (markersRef.current) {
-      const markers = markersRef.current;
-      const onlineUsers = Object.keys(markers);
-      return onlineUsers;
+    const holdingPlayers = playerList.filter((player: Player) => sponsorHoldings.includes(player.wallet));
+
+    let totalHoldings = 0;
+    for (const player of holdingPlayers) {
+      // fetch how much of each player the sponsor holds
+      const walletPublicKey = new PublicKey(player.wallet);
+      const walletBuffer = walletPublicKey.toBuffer();
+
+      const [tokenPda] = await findProgramAddressSync(
+        [Buffer.from("TOKEN"), publicKey.toBuffer(), walletBuffer],
+        program.programId
+      );
+
+      const tokenAccount = await program.account.tokenAccount.fetch(tokenPda);
+
+      const tokenTotal = await fetchPlayerCardCount(player.wallet);
+
+      if (tokenAccount && tokenTotal) {
+        const tokenCount = bnToNumber(tokenAccount.amount as BN);
+
+        let totalSellPrice: number = 0;
+
+        for (let i = 0; i < tokenCount; i++) {
+          const currentPrice = getSellPrice(tokenTotal - i, 1);
+          totalSellPrice += currentPrice;
+        }
+
+        totalHoldings += totalSellPrice;
+      }
     }
-    return [];
+
+    return totalHoldings;
   };
 
   useEffect(() => {
@@ -144,11 +194,15 @@ export default function Home() {
       const onlineUsers = checkOnlineUsers();
       setOnlineUsers(onlineUsers);
 
+      // fetch sponsor holdings
+      const sponsorHoldings = await fetchSponsorHoldings();
+
       // fetch all player data and set state
-      const players = await fetchPlayerData(tab === Tab.CARDS);
+      const players = await fetchPlayerData(tab === Tab.CARDS, sponsorHoldings);
       setPlayerList(players);
 
-      // TODO: fetch sponsor holding value
+      const holdings = await calculateTotalHoldings(players, sponsorHoldings);
+      setTotalHoldings(holdings);
     };
 
     fetchData();
@@ -163,17 +217,6 @@ export default function Home() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tab, program, publicKey]);
-
-  useEffect(() => {
-    if (!publicKey || playerList.length < 1) return;
-    const fetchPoints = async () => {
-      // fetch sponsor point total and set state
-      const points = await fetchSponsorPointTotal(publicKey.toBase58(), playerList);
-      setSponsorPoints(points);
-    };
-
-    fetchPoints();
-  }, [publicKey, playerList, transactionPending]);
 
   return (
     <>
@@ -198,9 +241,15 @@ export default function Home() {
               <div className={styles.prizeTotalLabel}>Total Points</div>
               <div className={styles.prizeContainer}>
                 <Image src="/assets/icons/point-container-left.svg" alt="Prize graphic" width={153} height={109} />
-                <div className={styles.prizeTotalAmount}>
-                  {withCommas(sponsorPoints)}
-                  <Image src="/assets/icons/icons-24/g.svg" alt="G icon" width={36} height={36} />
+                <div className={styles.prizeAmountContainer}>
+                  <div className={styles.prizeTotalAmount}>
+                    {withCommas(sponsorPoints)}
+                    <Image src="/assets/icons/icons-24/g.svg" alt="G icon" width={24} height={24} />
+                  </div>
+                  <div className={styles.prizeTotalAmount} style={{ color: "#ff61ef", justifyContent: "flex-start" }}>
+                    {withCommas(totalHoldings.toFixed(2))}
+                    <Image src="/assets/icons/icons-24/sol-pink.svg" alt="G icon" width={24} height={24} />
+                  </div>
                 </div>
                 <Image src="/assets/icons/point-container-right.svg" alt="Prize graphic" width={153} height={109} />
               </div>

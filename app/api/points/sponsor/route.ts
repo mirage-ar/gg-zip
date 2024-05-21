@@ -48,9 +48,30 @@ async function getSponsorAccounts(program: anchor.Program, wallet: string) {
   }
 }
 
+async function getTokenAccount(program: anchor.Program, wallet: string, subject: string) {
+  try {
+    const subjectPublicKey = new PublicKey(subject);
+    const subjectBuffer = subjectPublicKey.toBuffer();
+
+    const sponsorPublicKey = new PublicKey(wallet);
+    const sponsorBuffer = sponsorPublicKey.toBuffer();
+
+    const [tokenPda] = await findProgramAddressSync(
+      [Buffer.from("TOKEN"), sponsorBuffer, subjectBuffer],
+      program.programId
+    );
+
+    const tokenAccount = await program.account.tokenAccount.fetch(tokenPda);
+
+    return tokenAccount;
+  } catch (error) {
+    console.error("Error fetching account info:", error);
+  }
+}
+
 export async function POST(request: Request) {
   const data = await request.json();
-  const { wallet, players } = data;
+  const { wallet, subject, points } = data;
 
   const connection = new Connection(RPC);
   const programId = new PublicKey(PROGRAM_ID);
@@ -65,42 +86,32 @@ export async function POST(request: Request) {
   // @ts-ignore
   const program = new anchor.Program(IDL, programId, provider);
 
-  // 1. retrieve all token accounts by wallet address
-  const accounts = (await getSponsorAccounts(program, wallet)) || [];
+  const sponsorAccount = await getTokenAccount(program, wallet, subject);
 
-  let totalPoints = 0;
-
-  for (const account of accounts) {
-    // 2. for each subject, retrieve total shares
-    // @ts-ignore
-    const subject = account.account.subject.toBase58();
-    const totalShares = await getTotalShares(program, subject);
-    const sponsorShares = bnToNumber(account.account.amount as anchor.BN);
-
-    if (sponsorShares === undefined || totalShares === undefined) {
-      return Response.json({ success: false, message: "Error fetching shares" });
-    }
-
-    // 3. filter players by subject list to get point totals
-    const subjectPoints = players.find((player: Player) => player.wallet === subject)?.points || 0;
-
-    // 4. calculate what percentage per subject points to give
-    const sponsorPercentage = sponsorShares / totalShares;
-    const pointsToGive = subjectPoints * 3 * sponsorPercentage;
-
-    // 5. add point totals and return
-    totalPoints += pointsToGive;
+  if (!sponsorAccount) {
+    return Response.json({ success: false, message: "Hunter account not found" });
   }
 
-  return Response.json({ total: totalPoints.toFixed(0) });
+  console.log("Points:", points);
+  const sponsorShares = bnToNumber(sponsorAccount.amount as anchor.BN);
+  console.log("Sponsor shares:", sponsorShares);
+  const totalShares = await getTotalShares(program, subject);
+  console.log("Total shares:", totalShares);
+  const sponsorPercentage = sponsorShares / totalShares;
+  console.log("Sponsor percentage:", sponsorPercentage);
+  const pointsToGive = points * 3 * sponsorPercentage;
+  console.log("Points to give:", pointsToGive);
 
-  // const user = await prisma.points.findUnique({
-  //   where: {
-  //     wallet: wallet,
-  //   },
-  // });
+  const sponsor = await prisma.points.update({
+    where: {
+      wallet: wallet,
+    },
+    data: {
+      points: {
+        increment: pointsToGive,
+      },
+    },
+  });
 
-  // if (!user) {
-  //   return Response.json({ success: false, message: "User does not exist" });
-  // }
+  return Response.json({ success: true, points: sponsor.points });
 }

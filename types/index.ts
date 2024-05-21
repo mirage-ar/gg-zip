@@ -10,6 +10,14 @@
     sellPrice?: number;
   };
 
+  // export type Sponsor = {
+  //   id: string;
+  //   username: string;
+  //   image: string;
+  //   wallet: string;
+  //   boxes: number;
+  // };
+
   export type ChatMessage = {
     message: string;
     timestamp: number;

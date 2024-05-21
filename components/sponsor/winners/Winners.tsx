@@ -7,7 +7,7 @@ import styles from "./Winners.module.css";
 import { Player, MarkersObject } from "@/types";
 import { rand, withCommas } from "@/utils";
 import { set } from "date-fns";
-import { API } from "@/utils/constants";
+import { GAME_API } from "@/utils/constants";
 
 interface LiveLeaderboardProps {
   flyToMarker: (markerId: string) => void;
@@ -20,7 +20,7 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersR
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`${API}/leaderboard`);
+      const response = await fetch(`${GAME_API}/leaderboard`);
       const data = await response.json();
       // TODO: move to endpoint
       const leaderboard = data.leaderboard.sort((a: Player, b: Player) => b.points - a.points);

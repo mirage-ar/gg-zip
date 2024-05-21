@@ -38,3 +38,5 @@ export function bnToNumber(bn: BN): number {
   }
   return bn.toNumber();
 }
+
+export const numberToBigInt = (num: number): bigint => BigInt(num);
