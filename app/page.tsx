@@ -16,18 +16,16 @@ import { MarkersObject } from "@/types";
 import { getGameStartTime } from "@/utils";
 import { GAME_API, GAME_DATE, PLAYER_COUNT, POLLING_TIME } from "@/utils/constants";
 import UserInfo from "@/components/user/UserInfo";
+import { useUser } from "@/hooks";
 
 const FIVE_MINUTES = 1000 * 60 * 5;
 
 export default function Home() {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<MarkersObject>({});
-
   const [playerCount, setPlayerCount] = useState<number>(0);
 
-  const router = useRouter();
-  const { publicKey } = useWallet();
-  const { setVisible } = useWalletModal(); // TODO: move to useUser
+  const { connectWallet, publicKey } = useUser();
 
   // Calculate initial time remaining immediately
   const calculateTimeRemaining = () => {
@@ -50,40 +48,27 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [timeRemaining]);
 
-  // TODO: figure out a better solution for this
-  useEffect(() => {
-    const getPlayerCount = async () => {
-      try {
-        const response = await fetch(`${GAME_API}/players`);
-        const data = await response.json();
-        setPlayerCount(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  // useEffect(() => {
+  //   const getPlayerCount = async () => {
+  //     try {
+  //       const response = await fetch(`${GAME_API}/players`);
+  //       const data = await response.json();
+  //       setPlayerCount(data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
 
-    getPlayerCount();
+  //   getPlayerCount();
 
-    const interval = setInterval(() => {
-      if (document.visibilityState === "visible") {
-        getPlayerCount();
-      }
-    }, POLLING_TIME);
+  //   const interval = setInterval(() => {
+  //     if (document.visibilityState === "visible") {
+  //       getPlayerCount();
+  //     }
+  //   }, POLLING_TIME);
 
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleConnectWallet = async () => {
-    try {
-      if (!publicKey) {
-        setVisible(true);
-        return;
-      }
-      router.push("/hunt");
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //   return () => clearInterval(interval);
+  // }, []);
 
   return (
     <>
@@ -159,7 +144,7 @@ export default function Home() {
                     ))}
                   </div>
                   {/* <Image src="/assets/graphics/timer/connect.svg" alt="Connect" width={214} height={70} /> */}
-                  <button className={styles.connectButton} onClick={handleConnectWallet}>
+                  <button className={styles.connectButton} onClick={connectWallet}>
                     {publicKey ? "Click to Join" : "Connect Wallet to Join"}
                   </button>
                 </div>

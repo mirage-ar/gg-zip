@@ -14,32 +14,7 @@ interface UserInfoProps {
 }
 
 const UserInfo: React.FC<UserInfoProps> = ({ closed }) => {
-  const [user, setUser] = useState<Player | null>(null);
-  const [points, setPoints] = useState<number | null>(null);
-
-  const { publicKey, connectWallet } = useUser();
-
-  useEffect(() => {
-    if (!publicKey) return;
-
-    const getUserPoints = async () => {
-      const res = await fetch(`/api/points/${publicKey.toBase58()}`);
-      const data = await res.json();
-      if (data.points) {
-        setPoints(data.points);
-        setUser({
-          id: data.id,
-          username: data.username,
-          image: data.image,
-          wallet: publicKey.toBase58(),
-          points: data.points,
-          boxes: data.boxes,
-        });
-      }
-    };
-
-    getUserPoints();
-  }, [publicKey]);
+  const { user, points, publicKey, connectWallet } = useUser();
 
   if (!publicKey) {
     return (

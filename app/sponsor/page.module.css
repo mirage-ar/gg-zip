@@ -30,6 +30,9 @@
 }
 
 .componentContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   overflow: auto;
 }
 
@@ -75,7 +78,7 @@
 }
 
 .navContainer {
-  margin: 32px 0;
+  margin: 32px 0 0;
   display: flex;
   align-items: center;
   justify-content: center;

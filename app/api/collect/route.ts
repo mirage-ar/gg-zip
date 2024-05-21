@@ -5,7 +5,6 @@ import { bnToNumber } from "@/solana";
 
 import prisma from "@/utils/prisma";
 
-import { Player } from "@/types";
 import { RPC, PROGRAM_ID } from "@/utils/constants";
 
 import IDL from "@/solana/idl.json";
@@ -102,7 +101,19 @@ export async function POST(request: Request) {
   const pointsToGive = points * 3 * sponsorPercentage;
   console.log("Points to give:", pointsToGive);
 
-  const sponsor = await prisma.points.update({
+  // FOR SAFTEY
+  await prisma.points.update({
+    where: {
+      wallet: wallet,
+    },
+    data: {
+      points: {
+        increment: pointsToGive,
+      },
+    },
+  });
+
+  const sponsor = await prisma.user.update({
     where: {
       wallet: wallet,
     },

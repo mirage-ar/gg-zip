@@ -27,7 +27,6 @@ const useCollectSocket = (publicKey: PublicKey | null) => {
   const anchorWallet = useAnchorWallet();
   const { connection } = useConnection();
 
-  // TODO: move this to solana utils
   const program = useMemo(() => {
     if (anchorWallet) {
       const provider = new anchor.AnchorProvider(connection, anchorWallet, anchor.AnchorProvider.defaultOptions());
@@ -40,8 +39,9 @@ const useCollectSocket = (publicKey: PublicKey | null) => {
 
   const fetchSponsorPoints = async (wallet: string): Promise<number> => {
     try {
-      const response = await fetch(`api/points/${wallet}`);
-      const data = await response.json();
+      const response = await fetch(`api/user/${wallet}`);
+      const result = await response.json();
+      const data = result.data;
       return data.points;
     } catch (error) {
       console.error("Error fetching initial sponsor points:", error);
@@ -98,7 +98,7 @@ const useCollectSocket = (publicKey: PublicKey | null) => {
         return currentPoints;
       }
 
-      const response = await fetch(`api/points/sponsor`, {
+      const response = await fetch(`api/collect`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

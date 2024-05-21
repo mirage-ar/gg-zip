@@ -11,7 +11,7 @@ import Winners from "@/components/sponsor/winners/Winners";
 
 import { MarkersObject } from "@/types";
 
-export default function Home() {
+export default function GameOver() {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<MarkersObject>({});
 

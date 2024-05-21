@@ -13,22 +13,6 @@ const LeaderboardUser: React.FC = () => {
   const [referrer, setReferrer] = useState<string | null>(null);
   const [rank, setRank] = useState<number | null>(null);
 
-  // USE USE USER HOOK
-  // useEffect(() => {
-  //   if (!publicKey) return;
-
-  //   const fetchUser = async () => {
-  //     const res = await fetch(`/api/points/${publicKey?.toBase58()}`);
-  //     const data = await res.json();
-  //     if (data.id) {
-  //       setUser(data);
-  //       setReferrer(data.Referrer[0]?.referrer.name);
-  //     }
-  //   };
-
-  //   fetchUser();
-  // }, [publicKey]);
-
   return (
     user && (
       <div className={styles.main}>

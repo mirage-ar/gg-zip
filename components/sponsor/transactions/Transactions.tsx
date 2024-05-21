@@ -69,14 +69,6 @@ const Transactions: React.FC<TransactionsProps> = ({ playerList }) => {
 
     fetchTransactions();
 
-    // TODO: update transactions to websocket
-    // ISSUE: when updating transactions only the first one shows
-    // const interval = setInterval(() => {
-    //   fetchTransactions();
-    // }, 5000);
-
-    // return () => clearInterval(interval);
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [program, playerList]);
 
@@ -106,7 +98,7 @@ const Transactions: React.FC<TransactionsProps> = ({ playerList }) => {
               </div>
               <div className={styles.priceContainer}>
                 <p>{withCommas(Number(transaction.amount).toFixed(3))}</p>
-                {/* TODO: remove cluster get param on launch */}
+                {/* TODO: 2) remove cluster get param on launch */}
                 <Link href={`https://solscan.io/tx/${transaction.signature}?cluster=devnet`} target="_blank"> 
                   <Image src="/assets/icons/icons-16/transaction.svg" alt="transaction link" width={16} height={16} />
                 </Link>

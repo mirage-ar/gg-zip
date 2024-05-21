@@ -12,34 +12,15 @@ datasource db {
 
 model User {
   id        String   @id @default(uuid())
-  twitterId String   @unique
+  twitterId String?  @unique
   username  String   @unique
   wallet    String?  @unique
   image     String?
   points    Int      @default(0)
   boxes     Int      @default(0)
-  airdrop   Boolean  @default(false)
   risk      Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Box       Box[]
-  // Card      Card[]
-
-  @@index([points])
-}
-
-model Box {
-  id          String   @id @default(uuid())
-  latitude    Float
-  longitude   Float
-  geoHash     String
-  points      Int
-  collectorId String?
-  collector   User?    @relation(fields: [collectorId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([geoHash])
 }
 
 model Points {

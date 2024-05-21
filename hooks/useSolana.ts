@@ -8,6 +8,7 @@ import { useApplicationContext } from "@/state/context";
 import { bnToNumber, getBuyPrice, getSellPrice } from "@/solana";
 import { wait } from "@/utils";
 
+import type { SponsorHoldings } from "@/types";
 import { PROGRAM_ID } from "@/utils/constants";
 
 import IDL from "@/solana/idl.json";
@@ -17,11 +18,10 @@ export default function useSolana(playerWalletAddress?: string) {
   const [sellPrice, setSellPrice] = useState<number>(0);
   const [cardHoldings, setCardHoldings] = useState<number>(0);
 
-  const { publicKey, sendTransaction } = useWallet();
+  const { publicKey } = useWallet();
   const anchorWallet = useAnchorWallet();
   const { connection } = useConnection();
 
-  // TODO: use transaction pending from context in UI
   const { setTransactionPending } = useApplicationContext();
 
   const program = useMemo(() => {
@@ -96,7 +96,7 @@ export default function useSolana(playerWalletAddress?: string) {
       // const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
       console.log(transaction);
 
-      wait(5000); // TODO: remove when realtime update to points is fixed
+      wait(5000);
       setTransactionPending(false);
     } catch (error) {
       console.error(error);
@@ -181,7 +181,7 @@ export default function useSolana(playerWalletAddress?: string) {
     return 0;
   }
 
-  async function fetchSponsorHoldings(): Promise<string[]> {
+  async function fetchSponsorHoldings(): Promise<SponsorHoldings[]> {
     if (!program || !publicKey) {
       return [];
     }
@@ -197,8 +197,14 @@ export default function useSolana(playerWalletAddress?: string) {
       ];
 
       const accounts = await program.account.tokenAccount.all(ownerFilter);
-      // @ts-ignore
-      const holdings = accounts.map((account) => account.account.subject.toBase58());
+
+      const holdings = accounts.map((account) => {
+        return {
+          // @ts-ignore
+          wallet: account.account.subject.toBase58(),
+          amount: bnToNumber(account.account.amount as anchor.BN),
+        };
+      });
 
       return holdings;
     } catch (error) {
@@ -239,5 +245,14 @@ export default function useSolana(playerWalletAddress?: string) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [program]);
 
-  return { program, buyPrice, sellPrice, cardHoldings, buyPlayerCard, sellPlayerCard, fetchSponsorHoldings, fetchPlayerCardCount };
+  return {
+    program,
+    buyPrice,
+    sellPrice,
+    cardHoldings,
+    buyPlayerCard,
+    sellPlayerCard,
+    fetchSponsorHoldings,
+    fetchPlayerCardCount,
+  };
 }

@@ -19,8 +19,6 @@ interface MapboxMapProps {
 }
 
 const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = false }) => {
-  // const user = useUser(); // TODO: remove
-
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const markersSocket = useRef<WebSocket | null>(null);
 
@@ -177,7 +175,6 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = 
     }
   };
 
-  // TODO: combine this function with one from main page
   const flyToMarker = (markerId: string) => {
     const map = mapRef.current;
     const marker = markersRef.current[markerId];

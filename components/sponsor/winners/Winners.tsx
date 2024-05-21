@@ -14,7 +14,7 @@ interface LiveLeaderboardProps {
   markersRef: any;
 }
 
-const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersRef }) => {
+const Winners: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersRef }) => {
   const [leaderboardData, setLeaderboardData] = useState<Player[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
 
@@ -22,7 +22,6 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersR
     try {
       const response = await fetch(`${GAME_API}/leaderboard`);
       const data = await response.json();
-      // TODO: move to endpoint
       const leaderboard = data.leaderboard.sort((a: Player, b: Player) => b.points - a.points);
       setLeaderboardData(leaderboard);
     } catch (error) {
@@ -105,4 +104,4 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, markersR
   );
 };
 
-export default LiveLeaderboard;
+export default Winners;

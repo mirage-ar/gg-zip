@@ -24,11 +24,13 @@ export function getPrice(supply: bigint, amount: bigint): number {
 }
 
 export function getBuyPrice(sharesSupply: number, amount: number): number {
-  return getPrice(BigInt(sharesSupply), BigInt(amount));
+  const price = getPrice(BigInt(sharesSupply), BigInt(amount));
+  return Number((price + price * 0.1).toFixed(3));
 }
 
 export function getSellPrice(sharesSupply: number, amount: number): number {
-  return getPrice(BigInt(sharesSupply) - BigInt(amount), BigInt(amount));
+  const price = getPrice(BigInt(sharesSupply) - BigInt(amount), BigInt(amount));
+  return Number((price - price * 0.1).toFixed(3)); // include fees
 }
 
 export function bnToNumber(bn: BN): number {

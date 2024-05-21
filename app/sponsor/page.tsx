@@ -13,9 +13,8 @@ import styles from "./page.module.css";
 
 import { PublicKey } from "@solana/web3.js";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
-import { Page, Tab, Player, MarkersObject } from "@/types";
-import { getBuyPrice, getSellPrice, bnToNumber, getPrice, numberToBigInt } from "@/solana";
-import { useApplicationContext } from "@/state/context";
+import { Page, Tab, Player, MarkersObject, SponsorHoldings, Sort } from "@/types";
+import { getBuyPrice, getSellPrice, bnToNumber } from "@/solana";
 import { useCollectSocket, useSolana, useUser } from "@/hooks";
 import { withCommas } from "@/utils";
 import { GAME_API } from "@/utils/constants";
@@ -31,81 +30,15 @@ export default function Home() {
   const [closed, setClosed] = useState(false);
   const [playerList, setPlayerList] = useState<Player[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
-  // const [sponsorPoints, setSponsorPoints] = useState<number>(0);
   const [totalHoldings, setTotalHoldings] = useState<number>(0);
+  const [sponsorHoldings, setSponsorHoldings] = useState<SponsorHoldings[]>([]);
 
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<MarkersObject>({});
 
-  const { transactionPending } = useApplicationContext();
   const { program, fetchSponsorHoldings, fetchPlayerCardCount } = useSolana();
   const { publicKey } = useUser();
   const { sponsorPoints } = useCollectSocket(publicKey);
-
-  // FLY TO USER LOCATION
-  const flyToMarker = (markerId: string) => {
-    const map = mapRef.current;
-    const marker = markersRef.current[markerId];
-    if (marker && map) {
-      map.flyTo({
-        center: marker.getLngLat(),
-        zoom: 15,
-        essential: true,
-      });
-    }
-  };
-
-  const getPageName = (page: Page) => {
-    switch (page) {
-      case Page.LEADERBOARD:
-        return "Leaderboard";
-      case Page.TRANSACTIONS:
-        return "Transactions";
-      case Page.CHAT:
-        return "Chat";
-      case Page.POWERUPS:
-        return "Powerups";
-    }
-  };
-
-  // TODO: CLEANUP
-  // const fetchSponsorPointTotal = async (publicKey: string, playerList: Player[]): Promise<number> => {
-  //   try {
-  //     const response = await fetch(`api/points/sponsor`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ wallet: publicKey, players: playerList }),
-  //     });
-
-  //     const data = await response.json();
-  //     return data.total;
-  //   } catch (error) {
-  //     console.error("Error fetching sponsor point total:", error);
-  //     return 0;
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (!publicKey || playerList.length < 1) return;
-  //   const fetchPoints = async () => {
-  //     // fetch sponsor point total and set state
-  //     const points = await fetchSponsorPointTotal(publicKey.toBase58(), playerList);
-  //     setSponsorPoints(points);
-  //   };
-
-  //   fetchPoints();
-  // }, [publicKey, playerList, transactionPending]);
-
-  const checkOnlineUsers = (): string[] => {
-    if (markersRef.current) {
-      const markers = markersRef.current;
-      const onlineUsers = Object.keys(markers);
-      return onlineUsers;
-    }
-    return [];
-  };
 
   const fetchPlayerData = async (profile: boolean, sponsorHoldings: string[]): Promise<Player[]> => {
     const response = await fetch(`${GAME_API}/leaderboard`);
@@ -120,8 +53,6 @@ export default function Home() {
     let playerList: Player[] = [];
 
     if (profile) {
-      // fetch cards the sponsor is holding
-
       const holdingPlayers = leaderboard.filter((player: Player) => sponsorHoldings.includes(player.wallet));
       playerList = holdingPlayers;
     } else {
@@ -188,6 +119,41 @@ export default function Home() {
     return totalHoldings;
   };
 
+  // FLY TO USER LOCATION
+  const flyToMarker = (markerId: string) => {
+    const map = mapRef.current;
+    const marker = markersRef.current[markerId];
+    if (marker && map) {
+      map.flyTo({
+        center: marker.getLngLat(),
+        zoom: 15,
+        essential: true,
+      });
+    }
+  };
+
+  const getPageName = (page: Page) => {
+    switch (page) {
+      case Page.LEADERBOARD:
+        return "Leaderboard";
+      case Page.TRANSACTIONS:
+        return "Transactions";
+      case Page.CHAT:
+        return "Chat";
+      case Page.POWERUPS:
+        return "Powerups";
+    }
+  };
+
+  const checkOnlineUsers = (): string[] => {
+    if (markersRef.current) {
+      const markers = markersRef.current;
+      const onlineUsers = Object.keys(markers);
+      return onlineUsers;
+    }
+    return [];
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       // check online users and set state
@@ -196,12 +162,15 @@ export default function Home() {
 
       // fetch sponsor holdings
       const sponsorHoldings = await fetchSponsorHoldings();
+      setSponsorHoldings(sponsorHoldings);
+
+      const sponsorHoldingsWallets = sponsorHoldings.map((holding) => holding.wallet);
 
       // fetch all player data and set state
-      const players = await fetchPlayerData(tab === Tab.CARDS, sponsorHoldings);
+      const players = await fetchPlayerData(tab === Tab.CARDS, sponsorHoldingsWallets);
       setPlayerList(players);
 
-      const holdings = await calculateTotalHoldings(players, sponsorHoldings);
+      const holdings = await calculateTotalHoldings(players, sponsorHoldingsWallets);
       setTotalHoldings(holdings);
     };
 
@@ -293,9 +262,9 @@ export default function Home() {
                     return (
                       <LiveLeaderboard
                         flyToMarker={flyToMarker}
-                        markersRef={markersRef}
                         playerList={playerList}
                         onlineUsers={onlineUsers}
+                        sponsorHoldings={sponsorHoldings}
                       />
                     );
                   case Page.TRANSACTIONS:
