@@ -24,7 +24,7 @@ const Powerups: React.FC<PowerupsProps> = ({ flyToMarker, playerList, onlineUser
       description = (
         <div className={styles.description}>
           <h4>Kill Shot</h4>
-          <p>Half a Hunter's accumulated 'G' by buying out their market cap</p>
+          <p>Half a Hunter&apos;s accumulated &apos;G&apos; by buying out their market cap</p>
         </div>
       );
       break;
@@ -32,7 +32,7 @@ const Powerups: React.FC<PowerupsProps> = ({ flyToMarker, playerList, onlineUser
       description = (
         <div className={styles.description}>
           <h4>Multiplier Boost</h4>
-          <p>Purchase multipliers to increase a Hunter's 'G' box earnings</p>
+          <p>Purchase multipliers to increase a Hunter&apos;s &apos;G&apos; box earnings</p>
         </div>
       );
       break;
@@ -40,7 +40,7 @@ const Powerups: React.FC<PowerupsProps> = ({ flyToMarker, playerList, onlineUser
       description = (
         <div className={styles.description}>
           <h4>Magnetism</h4>
-          <p>Enlarge a Hunter's territory for claiming more Boxes</p>
+          <p>Enlarge a Hunter&apos;s territory for claiming more Boxes</p>
         </div>
       );
       break;
@@ -48,7 +48,7 @@ const Powerups: React.FC<PowerupsProps> = ({ flyToMarker, playerList, onlineUser
       description = (
         <div className={styles.description}>
           <h4>Kill Shot</h4>
-          <p>Half a Hunter's accumulated 'G' by buying out their market cap</p>
+          <p>Half a Hunter&apos;s accumulated &apos;G&apos; by buying out their market cap</p>
         </div>
       );
   }
