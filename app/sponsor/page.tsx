@@ -15,7 +15,7 @@ import { PublicKey } from "@solana/web3.js";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
 import { Page, Tab, Player, MarkersObject, SponsorHoldings, Sort } from "@/types";
 import { getBuyPrice, getSellPrice, bnToNumber } from "@/solana";
-import { useCollectSocket, useSolana, useUser } from "@/hooks";
+import { useSponsorPoints, useSolana, useUser } from "@/hooks";
 import { withCommas } from "@/utils";
 import { GAME_API } from "@/utils/constants";
 import BN from "bn.js";
@@ -23,22 +23,25 @@ import BN from "bn.js";
 import accounts from "./accounts.json";
 
 import { POLLING_TIME } from "@/utils/constants";
+import Powerups from "@/components/sponsor/powerups/Powerups";
+import { useApplicationContext } from "@/state/context";
 
 export default function Home() {
   const [tab, setTab] = useState(Tab.LEADERBOARD);
   const [page, setPage] = useState(Page.LEADERBOARD);
-  const [closed, setClosed] = useState(false);
   const [playerList, setPlayerList] = useState<Player[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
   const [totalHoldings, setTotalHoldings] = useState<number>(0);
   const [sponsorHoldings, setSponsorHoldings] = useState<SponsorHoldings[]>([]);
+
+  const { closed, setClosed } = useApplicationContext();
 
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<MarkersObject>({});
 
   const { program, fetchSponsorHoldings, fetchPlayerCardCount } = useSolana();
   const { publicKey } = useUser();
-  const { sponsorPoints } = useCollectSocket(publicKey);
+  const { sponsorPoints } = useSponsorPoints(publicKey);
 
   const fetchPlayerData = async (profile: boolean, sponsorHoldings: string[]): Promise<Player[]> => {
     const response = await fetch(`${GAME_API}/leaderboard`);
@@ -61,22 +64,24 @@ export default function Home() {
 
     // GET PLAYER CARD PRICES
     if (program === undefined) return playerList;
-    for (const player of playerList) {
-      try {
-        const walletPublicKey = new PublicKey(player.wallet);
-        const walletBuffer = walletPublicKey.toBuffer();
+    await Promise.all(
+      playerList.map(async (player) => {
+        try {
+          const walletPublicKey = new PublicKey(player.wallet);
+          const walletBuffer = walletPublicKey.toBuffer();
 
-        const [mintPda] = await findProgramAddressSync([Buffer.from("MINT"), walletBuffer], program.programId);
+          const [mintPda] = await findProgramAddressSync([Buffer.from("MINT"), walletBuffer], program.programId);
 
-        const playerAccount = await program.account.mintAccount.fetch(mintPda);
-        const playerCardCount = bnToNumber(playerAccount.amount as BN);
+          const playerAccount = await program.account.mintAccount.fetch(mintPda);
+          const playerCardCount = bnToNumber(playerAccount.amount as BN);
 
-        player.buyPrice = getBuyPrice(playerCardCount, 1);
-        player.sellPrice = getSellPrice(1, playerCardCount);
-      } catch (error) {
-        console.error(`Error fetching player card: ${player.wallet}`);
-      }
-    }
+          player.buyPrice = getBuyPrice(playerCardCount, 1);
+          player.sellPrice = getSellPrice(1, playerCardCount);
+        } catch (error) {
+          console.error(`Error fetching player card: ${player.wallet}`);
+        }
+      })
+    );
     return playerList;
   };
 
@@ -88,33 +93,35 @@ export default function Home() {
     const holdingPlayers = playerList.filter((player: Player) => sponsorHoldings.includes(player.wallet));
 
     let totalHoldings = 0;
-    for (const player of holdingPlayers) {
-      // fetch how much of each player the sponsor holds
-      const walletPublicKey = new PublicKey(player.wallet);
-      const walletBuffer = walletPublicKey.toBuffer();
+    await Promise.all(
+      holdingPlayers.map(async (player) => {
+        // fetch how much of each player the sponsor holds
+        const walletPublicKey = new PublicKey(player.wallet);
+        const walletBuffer = walletPublicKey.toBuffer();
 
-      const [tokenPda] = await findProgramAddressSync(
-        [Buffer.from("TOKEN"), publicKey.toBuffer(), walletBuffer],
-        program.programId
-      );
+        const [tokenPda] = await findProgramAddressSync(
+          [Buffer.from("TOKEN"), publicKey.toBuffer(), walletBuffer],
+          program.programId
+        );
 
-      const tokenAccount = await program.account.tokenAccount.fetch(tokenPda);
+        const tokenAccount = await program.account.tokenAccount.fetch(tokenPda);
 
-      const tokenTotal = await fetchPlayerCardCount(player.wallet);
+        const tokenTotal = await fetchPlayerCardCount(player.wallet);
 
-      if (tokenAccount && tokenTotal) {
-        const tokenCount = bnToNumber(tokenAccount.amount as BN);
+        if (tokenAccount && tokenTotal) {
+          const tokenCount = bnToNumber(tokenAccount.amount as BN);
 
-        let totalSellPrice: number = 0;
+          let totalSellPrice: number = 0;
 
-        for (let i = 0; i < tokenCount; i++) {
-          const currentPrice = getSellPrice(tokenTotal - i, 1);
-          totalSellPrice += currentPrice;
+          for (let i = 0; i < tokenCount; i++) {
+            const currentPrice = getSellPrice(tokenTotal - i, 1);
+            totalSellPrice += currentPrice;
+          }
+
+          totalHoldings += totalSellPrice;
         }
-
-        totalHoldings += totalSellPrice;
-      }
-    }
+      })
+    );
 
     return totalHoldings;
   };
@@ -207,7 +214,7 @@ export default function Home() {
           <div className={styles.content} style={closed ? { marginLeft: "100px" } : {}}>
             {/* ----- PRIZE INFO ----- */}
             <div className={styles.prizeTotal}>
-              <div className={styles.prizeTotalLabel}>Total Points</div>
+              <div className={styles.prizeTotalLabel}>Totals</div>
               <div className={styles.prizeContainer}>
                 <Image src="/assets/icons/point-container-left.svg" alt="Prize graphic" width={153} height={109} />
                 <div className={styles.prizeAmountContainer}>
@@ -272,7 +279,16 @@ export default function Home() {
                   case Page.CHAT:
                     return <Chat />;
                   case Page.POWERUPS:
-                    return <div>Powerups</div>;
+                    return (
+                      <Powerups
+                        flyToMarker={flyToMarker}
+                        playerList={playerList}
+                        onlineUsers={onlineUsers}
+                        sponsorHoldings={sponsorHoldings}
+                      />
+                    );
+                    case Page.PROFILE:
+                      return <div>Profile</div>;
                   default:
                     return null;
                 }

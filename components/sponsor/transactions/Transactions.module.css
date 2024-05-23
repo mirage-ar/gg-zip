@@ -1,5 +1,15 @@
 .main {
   margin: 32px 0 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: auto;
+}
+
+.transactions {
+  overflow-y: auto;
+  flex-grow: 1;
+  margin-bottom: 63px;
 }
 
 .header {

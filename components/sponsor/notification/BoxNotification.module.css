@@ -1,20 +1,25 @@
-.container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.main {
   position: fixed;
   bottom: 26px;
   left: 50%;
   transform: translateX(-50%);
+  flex-grow: 1;
+  transition: all 0.3s ease;
+}
 
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
   width: 380px;
   height: 52px;
-  flex-shrink: 0;
 
   background-color: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(3px);
 
   box-shadow: 0 0 20px var(--g);
+  transition: all 0.3s ease;
 }
 
 .left {

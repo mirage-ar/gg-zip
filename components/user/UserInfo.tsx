@@ -5,9 +5,9 @@ import Image from "next/image";
 
 import styles from "./UserInfo.module.css";
 
+import { useApplicationContext } from "@/state/context";
 import { formatWalletAddress, formatPoints } from "@/utils";
 import { useUser } from "@/hooks";
-import { Player } from "@/types";
 
 interface UserInfoProps {
   closed?: boolean;

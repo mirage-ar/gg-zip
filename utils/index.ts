@@ -82,3 +82,37 @@ export const withCommas = (x: number | string): string => {
 
   return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 };
+
+
+export const resizeImage = (file: File): Promise<string> => {
+  return new Promise((resolve) => {
+    const img = new window.Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const MAX_SIZE = 800;
+      let width = img.width;
+      let height = img.height;
+
+      // Calculate the crop dimensions
+      let cropX = 0;
+      let cropY = 0;
+      let cropSize = Math.min(width, height);
+
+      if (width > height) {
+        cropX = (width - height) / 2;
+      } else {
+        cropY = (height - width) / 2;
+      }
+
+      canvas.width = MAX_SIZE;
+      canvas.height = MAX_SIZE;
+      const ctx = canvas.getContext("2d");
+
+      // Draw the cropped and resized image on the canvas
+      ctx?.drawImage(img, cropX, cropY, cropSize, cropSize, 0, 0, MAX_SIZE, MAX_SIZE);
+      resolve(canvas.toDataURL("image/jpeg"));
+    };
+    img.src = URL.createObjectURL(file);
+  });
+};
+

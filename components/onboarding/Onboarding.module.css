@@ -1,0 +1,98 @@
+.main {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+  }
+  
+  .container {
+    background-color: #000;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    color: #fff;
+    width: 400px;
+  }
+  
+  .profilePhotoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .profilePhoto {
+    border-radius: 50%;
+    border: 1px solid #00ff00;
+  }
+  
+  .editProfilePhotoText {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    text-transform: uppercase;
+  }
+  
+  .uploadImageLabel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    color: var(--g4, #7d7b76);
+    font-size: 14px;
+  }
+  
+  .inputContainer {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  
+  .label {
+    margin-bottom: 5px;
+    color: var(--g4, #7d7b76);
+  }
+  
+  .input {
+    padding: 10px;
+    border-radius: 4px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .error {
+    color: red;
+    margin-top: 5px;
+    font-size: 12px;
+  }
+  
+  .saveContainer {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .saveButton {
+    display: flex;
+    width: 90px;
+    padding: 12px;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--corner4, 4px);
+    background: var(--g, #42ff60);
+    border: none;
+    color: var(--b);
+  }
+  
+  .saveButton:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+  }
+  

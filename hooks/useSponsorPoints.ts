@@ -6,6 +6,9 @@ import { PublicKey } from "@solana/web3.js";
 import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react";
 
 import IDL from "@/solana/idl.json";
+import { Player } from "@/types";
+import { useApplicationContext } from "@/state/context";
+import { useUser } from ".";
 
 type CollectMessage = {
   id: string;
@@ -18,14 +21,16 @@ type CollectMessage = {
   timestamp: number;
 };
 
-const useCollectSocket = (publicKey: PublicKey | null) => {
+const useSponsorPoints = (publicKey: PublicKey | null) => {
   const collectSocket = useRef<WebSocket | null>(null);
-  //   const [sponsorPoints, setSponsorPoints] = useState<number>(0);
-
   const sponsorPointsRef = useRef<number>(0);
 
   const anchorWallet = useAnchorWallet();
   const { connection } = useConnection();
+
+  const { user, points } = useUser();
+
+  const { setBoxNotification } = useApplicationContext();
 
   const program = useMemo(() => {
     if (anchorWallet) {
@@ -36,18 +41,6 @@ const useCollectSocket = (publicKey: PublicKey | null) => {
       return program;
     }
   }, [connection, anchorWallet]);
-
-  const fetchSponsorPoints = async (wallet: string): Promise<number> => {
-    try {
-      const response = await fetch(`api/user/${wallet}`);
-      const result = await response.json();
-      const data = result.data;
-      return data.points;
-    } catch (error) {
-      console.error("Error fetching initial sponsor points:", error);
-      return 0;
-    }
-  };
 
   const fetchSponsorHoldings = async (wallet: string): Promise<string[]> => {
     if (!program || !publicKey) {
@@ -76,13 +69,13 @@ const useCollectSocket = (publicKey: PublicKey | null) => {
   };
 
   useEffect(() => {
-    if (!publicKey) return;
+    if (!publicKey || !user) return;
     const fetchInitalPoints = async () => {
-      const initialPoints = await fetchSponsorPoints(publicKey.toBase58());
+      const initialPoints = points || 0;
       sponsorPointsRef.current = initialPoints;
     };
     fetchInitalPoints();
-  }, [publicKey]);
+  }, [publicKey, user]);
 
   const updateSponsorPoints = async (
     wallet: string,
@@ -132,6 +125,22 @@ const useCollectSocket = (publicKey: PublicKey | null) => {
       collectSocket.current.onmessage = async (event: MessageEvent) => {
         const message: CollectMessage = JSON.parse(event.data);
         console.log("Collect Message", message);
+
+        const messagePlayer: Player = {
+          id: message.id,
+          username: message.username,
+          image: message.image,
+          wallet: message.wallet,
+          points: 0,
+          boxes: 0,
+        };
+
+        setBoxNotification({
+          player: messagePlayer,
+          points: message.points,
+          show: true,
+        });
+
         const points = await updateSponsorPoints(publicKey.toBase58(), message, sponsorPointsRef.current);
 
         sponsorPointsRef.current = points;
@@ -152,10 +161,10 @@ const useCollectSocket = (publicKey: PublicKey | null) => {
     return () => {
       collectSocket.current?.close();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publicKey]);
 
   return { sponsorPoints: sponsorPointsRef.current };
 };
 
-export default useCollectSocket;
+export default useSponsorPoints;

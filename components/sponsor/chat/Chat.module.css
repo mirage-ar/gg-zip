@@ -32,6 +32,14 @@
 .chatMessageInfo {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.chatMessageImageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .chatMessageImage {

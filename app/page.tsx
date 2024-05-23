@@ -48,6 +48,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [timeRemaining]);
 
+  // TODO: turn player count on before next game
   // useEffect(() => {
   //   const getPlayerCount = async () => {
   //     try {

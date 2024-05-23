@@ -13,7 +13,7 @@ datasource db {
 model User {
   id        String   @id @default(uuid())
   twitterId String?  @unique
-  username  String   @unique
+  username  String   
   wallet    String?  @unique
   image     String?
   points    Int      @default(0)

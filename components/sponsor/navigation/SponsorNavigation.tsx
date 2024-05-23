@@ -69,8 +69,12 @@ const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, cl
           />
         </button>
 
-        <div className={styles.navIcon}>
-          <Image src="/assets/icons/icons-24/box-green.svg" alt="koji" width={24} height={24} />
+        <div
+          className={styles.navIcon}
+          onClick={() => handlePageChange(Page.PROFILE)}
+          style={page === Page.PROFILE ? { backgroundColor: "#42FF60" } : {}}
+        >
+          <Image src={`/assets/icons/icons-24/box-${page === Page.PROFILE ? "black" : "green"}.svg`} alt="koji" width={24} height={24} />
         </div>
       </div>
     </div>

@@ -83,11 +83,11 @@ const TradingView: React.FC<TradingViewProps> = ({ player, setShowOverlay }) => 
         <div className={styles.buttonContainer}>
           <button className={styles.sellButton} disabled={cardHoldings < 1} onClick={sellCard}>
             <p>Sell</p>
-            <span>{sellPrice}</span>
+            <span>{sellPrice.toFixed(3)}</span>
           </button>
           <button className={styles.buyButton} onClick={buyCard}>
             <p>Buy</p>
-            <span>{buyPrice}</span>
+            <span>{buyPrice.toFixed(3)}</span>
           </button>
         </div>
       </div>

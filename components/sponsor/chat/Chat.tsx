@@ -11,7 +11,7 @@ import { GET_MESSAGES_URL, CHAT_SOCKET_URL } from "@/utils/constants";
 import { formatWalletAddress } from "@/utils";
 
 const Chat: React.FC = () => {
-  const { publicKey, connectWallet } = useUser();
+  const { user, publicKey, connectWallet } = useUser();
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
@@ -20,9 +20,18 @@ const Chat: React.FC = () => {
 
   // Connect to WebSocket
   useEffect(() => {
+    console.log("here");
     fetchInitialMessages();
 
     webSocket.current = new WebSocket(CHAT_SOCKET_URL);
+
+    webSocket.current.onopen = () => {
+      console.log("Chat WebSocket connected");
+    };
+
+    webSocket.current.onerror = (error: Event) => {
+      console.error("Chat WebSocket error:", error);
+    };
 
     webSocket.current.onmessage = (event: MessageEvent) => {
       const message: ChatMessage = JSON.parse(event.data);
@@ -49,8 +58,8 @@ const Chat: React.FC = () => {
       const messageData: ChatMessage = {
         message: inputMessage,
         timestamp: Date.now(),
-        username: publicKey ? formatWalletAddress(publicKey.toBase58()) : "Anonymous",
-        image: "https://gg.zip/assets/graphics/koji.png",
+        username: user?.username || (publicKey && formatWalletAddress(publicKey.toBase58())) || "Anonymous",
+        image: user?.image || "https://gg.zip/assets/graphics/koji.png",
       };
       webSocket.current.send(JSON.stringify({ action: "sendmessage", data: messageData }));
       setInputMessage("");
@@ -89,14 +98,16 @@ const Chat: React.FC = () => {
         {messages.map((message, index) => (
           <div key={index} className={styles.chatMessageContainer}>
             <div className={styles.chatMessageInfo}>
-              <Image
-                src={message.image}
-                alt={message.username}
-                width={20}
-                height={20}
-                className={styles.chatMessageImage}
-              />
-              <p className={styles.chatMessageName}>{message.username}</p>
+              <div className={styles.chatMessageImageContainer}>
+                <Image
+                  src={message.image}
+                  alt={message.username}
+                  width={20}
+                  height={20}
+                  className={styles.chatMessageImage}
+                />
+                <p className={styles.chatMessageName}>{message.username}</p>
+              </div>
               <p className={styles.chatMessageTimestamp}>
                 {DateFNS.formatDistance(new Date(message.timestamp), new Date(), { addSuffix: true })}
               </p>

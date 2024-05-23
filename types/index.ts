@@ -15,13 +15,11 @@ export type SponsorHoldings = {
   amount: number;
 };
 
-// export type Sponsor = {
-//   id: string;
-//   username: string;
-//   image: string;
-//   wallet: string;
-//   boxes: number;
-// };
+export type BoxNotification = {
+  player?: Player | null;
+  points: number;
+  show: boolean;
+};
 
 export type ChatMessage = {
   message: string;
@@ -56,6 +54,7 @@ export enum Page {
   TRANSACTIONS,
   CHAT,
   POWERUPS,
+  PROFILE,
 }
 
 export enum Tab {
@@ -67,6 +66,12 @@ export enum Sort {
   ASCENDING,
   DESCENDING,
   NONE,
+}
+
+export enum Powerup {
+  KILL = "killshot",
+  MULTIPLIER = "boost",
+  MAGNETISM = "magnet",
 }
 
 export type TransactionData = {

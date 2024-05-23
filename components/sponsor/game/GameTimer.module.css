@@ -1,10 +1,11 @@
 .main {
   position: fixed;
   top: 24px;
-  width: 80%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all 0.3s ease;
 }
 
 .container {

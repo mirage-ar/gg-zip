@@ -5,7 +5,7 @@ import TradingView from "@/components/sponsor/trade/TradingView";
 import Image from "next/image";
 
 import styles from "./LiveLeaderboard.module.css";
-import { Player, SponsorHoldings, Sort } from "@/types";
+import { Player, SponsorHoldings, Sort, Powerup } from "@/types";
 import { withCommas } from "@/utils";
 import SearchBar from "@/components/utility/SearchBar";
 
@@ -14,9 +14,16 @@ interface LiveLeaderboardProps {
   playerList: Player[];
   onlineUsers: string[];
   sponsorHoldings: SponsorHoldings[];
+  selectedPowerup?: Powerup;
 }
 
-const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, playerList, onlineUsers, sponsorHoldings }) => {
+const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
+  flyToMarker,
+  playerList,
+  onlineUsers,
+  sponsorHoldings,
+  selectedPowerup,
+}) => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [tradingViewPlayer, setTradingViewPlayer] = useState<Player | null>(null);
 
@@ -59,6 +66,11 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, playerLi
 
   function openTradingView(player: Player, rank: number) {
     player.rank = rank;
+    setTradingViewPlayer(player);
+    setShowOverlay(true);
+  }
+
+  function openPowerupView(player: Player) {
     setTradingViewPlayer(player);
     setShowOverlay(true);
   }
@@ -118,6 +130,9 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, playerLi
     <div className={styles.container}>
       {/* ----- TRADING VIEW ----- */}
       {showOverlay && tradingViewPlayer && <TradingView player={tradingViewPlayer} setShowOverlay={setShowOverlay} />}
+      {showOverlay && selectedPowerup && tradingViewPlayer && (
+        <TradingView player={tradingViewPlayer} setShowOverlay={setShowOverlay} />
+      )}
 
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
@@ -132,14 +147,18 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, playerLi
           <span>
             <Image src="/assets/icons/icons-24/box-opened-green.svg" alt="Coin Icon" width={24} height={24} />
           </span>
-          <div className={styles.filterIcon} onClick={togglePointsSort}>{pointsIcon}</div>
+          <div className={styles.filterIcon} onClick={togglePointsSort}>
+            {pointsIcon}
+          </div>
         </div>
         <div className={styles.rightColumn}>
           <div className={styles.priceHeader}>
             <span>Price</span>
             <Image src="/assets/icons/icons-24/solana.svg" alt="Solana Icon" width={24} height={24} />
           </div>
-          <div className={styles.filterIcon} onClick={togglePriceSort}>{priceIcon}</div>
+          <div className={styles.filterIcon} onClick={togglePriceSort}>
+            {priceIcon}
+          </div>
         </div>
       </div>
 
@@ -189,17 +208,38 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({ flyToMarker, playerLi
                     </div>
 
                     <div className={styles.priceContainer}>
-                      <div className={styles.price}>{withCommas(player.buyPrice?.toFixed(3) || 0)}</div>
-                      <button
-                        className={styles.tradeButton}
-                        disabled={!player.buyPrice}
-                        onClick={() => openTradingView(player, index + 1)}
-                      >
-                        Trade
-                      </button>
+                      {!selectedPowerup ? (
+                        <>
+                          <div className={styles.price}>{withCommas(player.buyPrice?.toFixed(3) || 0)}</div>
+                          <button
+                            className={styles.tradeButton}
+                            disabled={!player.buyPrice}
+                            onClick={() => openTradingView(player, index + 1)}
+                          >
+                            Trade
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          {/* TODO: create function to get powerup price */}
+                          <div className={styles.price}>{withCommas(1000)}</div>
+                          <button
+                            className={styles.tradeButton}
+                            disabled={!player.buyPrice}
+                            onClick={() => openPowerupView(player)}
+                          >
+                            <Image
+                              src={`/assets/icons/powerups/${selectedPowerup}-black.svg`}
+                              alt="powerup icon"
+                              width={24}
+                              height={24}
+                            />
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
-                  { index !== filteredPlayers.length - 1 && <div className={styles.spacer} /> }
+                  {index !== filteredPlayers.length - 1 && <div className={styles.spacer} />}
                 </div>
               )
           )}

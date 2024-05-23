@@ -1,5 +1,5 @@
 import useUser from './useUser';
 import useSolana from './useSolana';
-import useCollectSocket from './useCollectSocket';
+import useSponsorPoints from './useSponsorPoints';
 
-export { useUser, useSolana, useCollectSocket };
+export { useUser, useSolana, useSponsorPoints };

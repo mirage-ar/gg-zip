@@ -6,65 +6,30 @@ import Image from "next/image";
 import { withCommas } from "@/utils";
 
 import styles from "./BoxNotification.module.css";
-import { Player } from "@/types";
+import { useApplicationContext } from "@/state/context";
 
 const BoxNotification: React.FC = () => {
-  const boxId = useRef<string>("0");
-  const [user, setUser] = useState<Player | null>(null);
-  const [points, setPoints] = useState<number>(0);
-  const [show, setShow] = useState<boolean>(false);
-  const hideTimeoutId = useRef<NodeJS.Timeout | null>(null); // State to manage the timeout ID
+  const { closed, boxNotification } = useApplicationContext();
 
-  const fetchLatestBox = async () => {
-    const res = await fetch(`/api/notification/${boxId.current}`);
-    const data = await res.json();
-
-    if (data.success !== false) {
-      setShow(true);
-      boxId.current = data.id;
-      setPoints(data.points);
-      setUser(data.collector);
-
-      // Clear any existing timeout to prevent early hiding
-      if (hideTimeoutId.current) {
-        clearTimeout(hideTimeoutId.current);
-      }
-
-      // Hide the notification after a few seconds
-      hideTimeoutId.current = setTimeout(() => {
-        setShow(false);
-        hideTimeoutId.current = null; // Reset the timeout ID
-      }, 5000); // Adjust the duration as needed
-    }
-  };
-
-  useEffect(() => {
-    const getBoxNotification = setInterval(() => {
-      fetchLatestBox();
-    }, 1000);
-
-    return () => {
-      clearInterval(getBoxNotification);
-      if (hideTimeoutId.current) {
-        clearTimeout(hideTimeoutId.current);
-      }
-    };
-  }, []);
-
-  const icon = "assets/icons/icons-24/box-opened-green.svg";
+  const icon = "assets/icons/icons-24/box-green.svg";
   return (
-    show && (
-      <div className={styles.container}>
+    <div className={styles.main} 
+    style={boxNotification.show ? { marginBottom: "0" } : { marginBottom: "-100px" }}
+    >
+      <div
+        className={styles.container}
+        // style={closed ? { left: "50%" } : { left: "30%" }}
+      >
         <div className={styles.left}>
           <div className={styles.icon}>
-            <Image src={user?.image || icon} alt="User Icon" width={32} height={32} />
+            <Image src={boxNotification.player?.image || icon} alt="User Icon" width={32} height={32} />
           </div>
           <Image src="/assets/icons/icons-24/box-opened-green.svg" alt="Box Opened" width={24} height={24} />
           <p>Claimed!</p>
         </div>
 
         <div className={styles.right}>
-          <div className={styles.points}>{withCommas(points)}</div>
+          <div className={styles.points}>{withCommas(boxNotification.points)}</div>
 
           <Image src="/assets/icons/icons-24/g-points.svg" alt="Coin Icon" width={24} height={24} />
 
@@ -73,7 +38,7 @@ const BoxNotification: React.FC = () => {
           </div>
         </div>
       </div>
-    )
+    </div>
   );
 };
 

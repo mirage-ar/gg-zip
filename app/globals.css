@@ -125,6 +125,8 @@ h4 {
   font-style: normal;
   font-weight: 400;
   line-height: 18px; /* 100% */
+
+  text-transform: uppercase;
 }
 
 #background {

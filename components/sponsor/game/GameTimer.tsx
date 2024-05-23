@@ -9,12 +9,15 @@ import styles from "./GameTimer.module.css";
 
 import { getGameStartTime } from "@/utils";
 import { GAME_DATE, GAME_LENGTH } from "@/utils/constants";
+import { useApplicationContext } from "@/state/context";
 
 const tenMinutes = 10 * 60000;
 
 const GameTimer = () => {
   const router = useRouter();
   const pathname = usePathname();
+
+  const { closed, setClosed } = useApplicationContext();
 
   const isHunt = pathname === "/hunt" || pathname === "/sponsor";
 
@@ -27,30 +30,32 @@ const GameTimer = () => {
 
   const [timeRemaining, setTimeRemaining] = useState<number>(calculateTimeRemaining());
 
-  // TODO: turn timer back on
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setTimeRemaining(calculateTimeRemaining());
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeRemaining(calculateTimeRemaining());
 
-  //     if (timeRemaining <= 0) {
-  //       clearInterval(interval);
+      if (timeRemaining <= 0) {
+        clearInterval(interval);
 
-  //       if (!pathname.includes("gameover") || !pathname.includes("aboutgg")) { // TODO: this doesn't work + let the about page through
-  //         router.push("/gameover");
-  //       }
-  //     }
-  //   }, 1000);
+        if (pathname === "/hunt") {
+          router.push("/gameover");
+        }
+      }
+    }, 1000);
 
-  //   return () => clearInterval(interval);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [timeRemaining]);
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeRemaining, pathname]);
 
   return (
     isHunt &&
-    timeRemaining < GAME_LENGTH && timeRemaining > 0 && (
-      <div className={styles.main}>
+    timeRemaining < GAME_LENGTH &&
+    timeRemaining > 0 && (
+      <div className={styles.main} style={closed ? { width: "100%" } : { width: "70%" }}>
         <div className={styles.container}>
-          <div style={{fontSize: "44px"}}><Timer timeRemaining={timeRemaining} hideDays /></div>
+          <div style={{ fontSize: "44px" }}>
+            <Timer timeRemaining={timeRemaining} />
+          </div>
           <Image src="/assets/icons/icons-24/timer.svg" alt="timer icon" width={24} height={24} />
         </div>
       </div>
