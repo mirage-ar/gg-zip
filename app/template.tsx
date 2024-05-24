@@ -4,7 +4,7 @@ import React, { useMemo, useEffect } from "react";
 import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
-import { ApplicationProvider } from "@/state/context";
+import { ApplicationProvider } from "@/state/ApplicationContext";
 import GameTimer from "@/components/sponsor/game/GameTimer";
 import BoxNotification from "@/components/sponsor/notification/BoxNotification";
 

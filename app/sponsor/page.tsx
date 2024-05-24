@@ -24,15 +24,17 @@ import accounts from "./accounts.json";
 
 import { POLLING_TIME } from "@/utils/constants";
 import Powerups from "@/components/sponsor/powerups/Powerups";
-import { useApplicationContext } from "@/state/context";
+import { useApplicationContext } from "@/state/ApplicationContext";
 
 export default function Home() {
   const [tab, setTab] = useState(Tab.LEADERBOARD);
   const [page, setPage] = useState(Page.LEADERBOARD);
+  const [totalHoldings, setTotalHoldings] = useState<number>(0);
+
   const [playerList, setPlayerList] = useState<Player[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
-  const [totalHoldings, setTotalHoldings] = useState<number>(0);
   const [sponsorHoldings, setSponsorHoldings] = useState<SponsorHoldings[]>([]);
+
 
   const { closed, setClosed } = useApplicationContext();
 

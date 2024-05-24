@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, MouseEvent } from "react";
 import Image from "next/image";
-import { useApplicationContext } from "@/state/context";
+import { useApplicationContext } from "@/state/ApplicationContext";
 import styles from "./Onboarding.module.css";
 
 import { UPLOAD_API } from "@/utils/constants";

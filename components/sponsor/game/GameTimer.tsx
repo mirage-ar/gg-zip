@@ -9,7 +9,7 @@ import styles from "./GameTimer.module.css";
 
 import { getGameStartTime } from "@/utils";
 import { GAME_DATE, GAME_LENGTH } from "@/utils/constants";
-import { useApplicationContext } from "@/state/context";
+import { useApplicationContext } from "@/state/ApplicationContext";
 
 const tenMinutes = 10 * 60000;
 

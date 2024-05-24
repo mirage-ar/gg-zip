@@ -15,17 +15,27 @@ export type SponsorHoldings = {
   amount: number;
 };
 
+export type ChatMessage = {
+  message: string;
+  timestamp: number;
+  username: string;
+  image: string;
+};
+
 export type BoxNotification = {
   player?: Player | null;
   points: number;
   show: boolean;
 };
 
-export type ChatMessage = {
-  message: string;
-  timestamp: number;
-  username: string;
-  image: string;
+export type MarkersObject = {
+  [id: string]: mapboxgl.Marker;
+};
+
+export type GameDate = {
+  month: number;
+  day: number;
+  year: number;
 };
 
 export type LocationData = {
@@ -39,14 +49,13 @@ export type LocationData = {
   timestamp: number;
 };
 
-export type MarkersObject = {
-  [id: string]: mapboxgl.Marker;
-};
-
-export type GameDate = {
-  month: number;
-  day: number;
-  year: number;
+export type TransactionData = {
+  type: string;
+  amount: string;
+  subject: string;
+  buyer: string;
+  timestamp: number;
+  signature: string;
 };
 
 export enum Page {
@@ -73,15 +82,6 @@ export enum Powerup {
   MULTIPLIER = "boost",
   MAGNETISM = "magnet",
 }
-
-export type TransactionData = {
-  type: string;
-  amount: string;
-  subject: string;
-  buyer: string;
-  timestamp: number;
-  signature: string;
-};
 
 // ---------- DEPRECATED ----------
 export type LeaderboardItem = {

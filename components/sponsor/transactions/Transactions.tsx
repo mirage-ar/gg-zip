@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import * as DateFNS from "date-fns";
 
 import styles from "./Transactions.module.css";
 
@@ -34,32 +35,34 @@ const Transactions: React.FC<TransactionsProps> = ({ playerList }) => {
 
     let transactions: TransactionData[] = [];
 
-    for (const signatureInfo of signatures) {
-      const transactionResponse = await connection.getTransaction(signatureInfo.signature);
-      const logs = transactionResponse?.meta?.logMessages?.filter((message) => message.includes("Program log"));
+    await Promise.all(
+      signatures.map(async (signatureInfo) => {
+        const transactionResponse = await connection.getTransaction(signatureInfo.signature);
+        const logs = transactionResponse?.meta?.logMessages?.filter((message) => message.includes("Program log"));
 
-      // Include only transactions that are buy or sell
-      if (logs && logs[0]?.includes("Shares")) {
-        const firstLog = logs[0];
-        const transactiontype = firstLog
-          .substring(firstLog.indexOf("Shares") - 4, firstLog.indexOf("Shares"))
-          .replace(" ", "");
+        // Include only transactions that are buy or sell
+        if (logs && logs[0]?.includes("Shares")) {
+          const firstLog = logs[0];
+          const transactiontype = firstLog
+            .substring(firstLog.indexOf("Shares") - 4, firstLog.indexOf("Shares"))
+            .replace(" ", "");
 
-        const transaction: TransactionData = {
-          type: transactiontype,
-          amount: logs[1]?.substring(logs[1].indexOf("price: ") + 7),
-          subject: logs[2]?.substring(logs[2].indexOf("subject: ") + 9),
-          buyer: logs[3]?.substring(logs[3].indexOf("buyer: ") + 7),
-          timestamp: Number(logs[4]?.substring(logs[4].indexOf("timestamp: ") + 12)),
-          signature: transactionResponse?.transaction.signatures[0] || "",
-        };
+          const transaction: TransactionData = {
+            type: transactiontype,
+            amount: logs[1]?.substring(logs[1].indexOf("price: ") + 7),
+            subject: logs[2]?.substring(logs[2].indexOf("subject: ") + 9),
+            buyer: logs[3]?.substring(logs[3].indexOf("buyer: ") + 7),
+            timestamp: Number(logs[4]?.substring(logs[4].indexOf("timestamp: ") + 11)),
+            signature: transactionResponse?.transaction.signatures[0] || "",
+          };
 
-        transactions.push(transaction);
-        setTransactions(transactions);
-      }
+          transactions.push(transaction);
+          setTransactions(transactions);
+        }
 
-      await wait(10);
-    }
+        await wait(10);
+      })
+    );
   }
 
   useEffect(() => {
@@ -89,7 +92,7 @@ const Transactions: React.FC<TransactionsProps> = ({ playerList }) => {
             <div key={index} className={styles.transaction}>
               <div className={styles.walletContainer}>
                 <p>{formatWalletAddress(transaction.buyer)}</p>
-                <span>10s ago</span>
+                <span>{DateFNS.formatDistance(new Date(transaction.timestamp * 1000), new Date(), { addSuffix: true })}</span>
               </div>
               <p style={{ width: "50px" }}>{transaction.type}</p>
               <div className={styles.userContainer}>

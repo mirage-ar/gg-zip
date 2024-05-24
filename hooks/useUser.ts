@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-import { useApplicationContext } from "@/state/context";
+import { useApplicationContext } from "@/state/ApplicationContext";
 import { Player } from "@/types";
 
 export default function useUser() {

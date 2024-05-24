@@ -7,7 +7,7 @@ import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react";
 
 import IDL from "@/solana/idl.json";
 import { Player } from "@/types";
-import { useApplicationContext } from "@/state/context";
+import { useApplicationContext } from "@/state/ApplicationContext";
 import { useUser } from ".";
 
 type CollectMessage = {

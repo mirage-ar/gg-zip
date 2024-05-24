@@ -6,7 +6,7 @@ import Image from "next/image";
 import { withCommas } from "@/utils";
 
 import styles from "./BoxNotification.module.css";
-import { useApplicationContext } from "@/state/context";
+import { useApplicationContext } from "@/state/ApplicationContext";
 
 const BoxNotification: React.FC = () => {
   const { closed, boxNotification } = useApplicationContext();

@@ -4,7 +4,7 @@ import * as anchor from "@project-serum/anchor";
 import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
 import { SystemProgram, PublicKey, Transaction } from "@solana/web3.js";
-import { useApplicationContext } from "@/state/context";
+import { useApplicationContext } from "@/state/ApplicationContext";
 import { bnToNumber, getBuyPrice, getSellPrice } from "@/solana";
 import { wait } from "@/utils";
 

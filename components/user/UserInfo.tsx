@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import styles from "./UserInfo.module.css";
 
-import { useApplicationContext } from "@/state/context";
+import { useApplicationContext } from "@/state/ApplicationContext";
 import { formatWalletAddress, formatPoints } from "@/utils";
 import { useUser } from "@/hooks";
 

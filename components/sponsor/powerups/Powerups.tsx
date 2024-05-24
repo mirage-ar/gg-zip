@@ -78,12 +78,12 @@ const Powerups: React.FC<PowerupsProps> = ({ flyToMarker, playerList, onlineUser
         <div className={styles.descriptionContainer}>{description}</div>
       </div>
       <LiveLeaderboard
-          flyToMarker={flyToMarker}
-          playerList={playerList}
-          onlineUsers={onlineUsers}
-          sponsorHoldings={sponsorHoldings}
-          selectedPowerup={selectedPowerup}
-        />
+        flyToMarker={flyToMarker}
+        playerList={playerList}
+        onlineUsers={onlineUsers}
+        sponsorHoldings={sponsorHoldings}
+        selectedPowerup={selectedPowerup}
+      />
     </div>
   );
 };
