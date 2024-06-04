@@ -3,6 +3,7 @@ import Image from "next/image";
 import styles from "./SponsorNavigation.module.css";
 
 import { Page } from "@/types";
+import { useUser } from "@/hooks";
 
 interface SponsorNavigationProps {
   page: number;
@@ -12,6 +13,8 @@ interface SponsorNavigationProps {
 }
 
 const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, closed, setClosed }) => {
+  const { user } = useUser();
+
   const handlePageChange = (page: Page) => {
     setPage(page);
     setClosed(false);
@@ -19,7 +22,7 @@ const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, cl
 
   return (
     <div className={styles.main} style={closed ? { right: "50px" } : {}}>
-      <div className={styles.nav}>
+      <div className={styles.nav} style={page === Page.PROFILE ? { backgroundColor: "#42FF60" } : {}}>
         <button
           className={styles.navButton}
           onClick={() => handlePageChange(Page.LEADERBOARD)}
@@ -56,7 +59,7 @@ const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, cl
             height={24}
           />
         </button>
-        <button
+        {/* <button
           className={styles.navButton}
           onClick={() => handlePageChange(Page.POWERUPS)}
           style={page === Page.POWERUPS ? { backgroundColor: "#42FF60" } : {}}
@@ -67,14 +70,30 @@ const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, cl
             width={24}
             height={24}
           />
-        </button>
+        </button> */}
 
         <div
           className={styles.navIcon}
           onClick={() => handlePageChange(Page.PROFILE)}
           style={page === Page.PROFILE ? { backgroundColor: "#42FF60" } : {}}
         >
-          <Image src={`/assets/icons/icons-24/box-${page === Page.PROFILE ? "black" : "green"}.svg`} alt="koji" width={24} height={24} />
+          {user ? (
+            <Image
+              src={user?.image || ""}
+              className={styles.userIcon}
+              style={page === Page.PROFILE ? { border: "1px solid #000" } : {}}
+              alt="koji"
+              width={60}
+              height={60}
+            />
+          ) : (
+            <Image
+              src={`/assets/icons/icons-24/box-${page === Page.PROFILE ? "black" : "green"}.svg`}
+              alt="koji"
+              width={24}
+              height={24}
+            />
+          )}
         </div>
       </div>
     </div>

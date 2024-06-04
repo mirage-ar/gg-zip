@@ -25,6 +25,7 @@ import accounts from "./accounts.json";
 import { POLLING_TIME } from "@/utils/constants";
 import Powerups from "@/components/sponsor/powerups/Powerups";
 import { useApplicationContext } from "@/state/ApplicationContext";
+import Profile from "@/components/sponsor/profile/Profile";
 
 export default function Home() {
   const [tab, setTab] = useState(Tab.LEADERBOARD);
@@ -34,7 +35,6 @@ export default function Home() {
   const [playerList, setPlayerList] = useState<Player[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
   const [sponsorHoldings, setSponsorHoldings] = useState<SponsorHoldings[]>([]);
-
 
   const { closed, setClosed } = useApplicationContext();
 
@@ -225,7 +225,7 @@ export default function Home() {
                     <Image src="/assets/icons/icons-24/g.svg" alt="G icon" width={24} height={24} />
                   </div>
                   <div className={styles.prizeTotalAmount} style={{ color: "#ff61ef", justifyContent: "flex-start" }}>
-                    {withCommas(totalHoldings.toFixed(2))}
+                    {withCommas(totalHoldings.toFixed(3))}
                     <Image src="/assets/icons/icons-24/sol-pink.svg" alt="G icon" width={24} height={24} />
                   </div>
                 </div>
@@ -289,8 +289,8 @@ export default function Home() {
                         sponsorHoldings={sponsorHoldings}
                       />
                     );
-                    case Page.PROFILE:
-                      return <div>Profile</div>;
+                  case Page.PROFILE:
+                    return <Profile playerList={playerList} sponsorHoldings={sponsorHoldings} />;
                   default:
                     return null;
                 }

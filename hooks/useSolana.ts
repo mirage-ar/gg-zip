@@ -206,7 +206,8 @@ export default function useSolana(playerWalletAddress?: string) {
         };
       });
 
-      return holdings;
+      // UPDATE: Filter out holdings with 0 amount
+      return holdings.filter((holding) => holding.amount > 0);
     } catch (error) {
       console.error("Error fetching sponsor holdings:", error);
       return [];

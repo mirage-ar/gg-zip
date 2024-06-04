@@ -14,7 +14,7 @@ import MapboxMap from "@/components/map/MapboxMap";
 
 import { MarkersObject } from "@/types";
 import { getGameStartTime } from "@/utils";
-import { GAME_API, GAME_DATE, PLAYER_COUNT, POLLING_TIME } from "@/utils/constants";
+import { GAME_API, GAME_DATE, PLAYER_COUNT, POLLING_TIME, PAUSE } from "@/utils/constants";
 import UserInfo from "@/components/user/UserInfo";
 import { useUser } from "@/hooks";
 
@@ -79,133 +79,21 @@ export default function Home() {
           <MapboxMap mapRef={mapRef} markersRef={markersRef} isHomePage />
         </div>
         <div className={styles.mainContainer}>
-          <div className={styles.timerContainer}>
-            <p>The hunt will start in</p>
-            <div style={{fontSize: "108px"}}><Timer timeRemaining={timeRemaining} /></div>
-          </div>
-
-          {/* DESKTOP PLAYER CONTAINER */}
-          {timeRemaining <= FIVE_MINUTES && (
+          {PAUSE ? (
+            <Image src="/assets/graphics/pause.svg" alt="Arrow down" width={1000} height={1000} />
+          ) : (
             <>
-              <div className={styles.playerContainer}>
-                <div
-                  className={styles.hunterContainer}
-                  style={playerCount < PLAYER_COUNT ? {} : { backgroundColor: "#1F1F1F" }}
-                >
-                  <div className={styles.progressBar} style={playerCount < PLAYER_COUNT ? {} : { display: "none" }}>
-                    <div>{Math.min(playerCount, PLAYER_COUNT)}/150</div>
-                    <div className={styles.progress}>
-                      <div
-                        className={styles.progressFill}
-                        style={{ width: `${(playerCount / PLAYER_COUNT) * 100}%` }}
-                      ></div>
-                    </div>
-                    <div>{Math.max(0, PLAYER_COUNT - playerCount)} slots left</div>
-                  </div>
-                  <div className={styles.playerSection}>
-                    <Image src="/assets/graphics/timer/hunter.svg" alt="Hunter" width={27} height={72} />
-
-                    {playerCount < PLAYER_COUNT ? (
-                      <>
-                        <span className={styles.playerTitle}>HUNTERS</span>
-                        <div className={styles.arrows}>
-                          {Array.from({ length: 9 }).map((_, index) => (
-                            <Image
-                              key={index}
-                              src="/assets/graphics/timer/arrow.svg"
-                              alt="Arrow"
-                              width={13}
-                              height={10}
-                            />
-                          ))}
-                        </div>
-                        <Image src="/assets/graphics/timer/join.svg" alt="Seeker" width={214} height={70} />
-                      </>
-                    ) : (
-                      <>
-                        <span className={styles.playerTitle} style={{ color: "#42FF60" }}>
-                          HUNTERS LOCKED
-                        </span>
-                        <span className={styles.playerTitle} style={{ color: "#42FF60" }}>
-                          ({PLAYER_COUNT} / {PLAYER_COUNT})
-                        </span>
-                      </>
-                    )}
-                  </div>
-                </div>
-                <div className={styles.spacer} />
-
-                {/* SPONSOR SECTION */}
-                <div className={styles.playerSection}>
-                  <Image src="/assets/graphics/timer/spectator.svg" alt="Spectator" width={27} height={72} />
-                  <span className={styles.playerTitle}>SPECTATORS</span>
-                  <div className={styles.arrows}>
-                    {Array.from({ length: 7 }).map((_, index) => (
-                      <Image key={index} src="/assets/graphics/timer/arrow.svg" alt="Arrow" width={13} height={10} />
-                    ))}
-                  </div>
-                  {/* <Image src="/assets/graphics/timer/connect.svg" alt="Connect" width={214} height={70} /> */}
-                  <button className={styles.connectButton} onClick={connectWallet}>
-                    {publicKey ? "Click to Join" : "Connect Wallet to Join"}
-                  </button>
+              <div className={styles.timerContainer}>
+                <p>The hunt will start in</p>
+                <div style={{ fontSize: "108px" }}>
+                  <Timer timeRemaining={timeRemaining} />
                 </div>
               </div>
 
-              {/* MOBILE PLAYER CONTAINER */}
-              <div className={styles.playerContainerMobile}>
-                <div
-                  className={styles.hunterContainer}
-                  style={playerCount < PLAYER_COUNT ? {} : { backgroundColor: "#1F1F1F" }}
-                >
-                  <div
-                    className={styles.progressBarMobile}
-                    style={playerCount < PLAYER_COUNT ? {} : { display: "none" }}
-                  >
-                    <div className={styles.progressBarTitle}>
-                      <div>{Math.min(playerCount, PLAYER_COUNT)}/150</div>
-                      <div>{Math.max(0, PLAYER_COUNT - playerCount)} slots left</div>
-                    </div>
-                    <div className={styles.progress}>
-                      <div
-                        className={styles.progressFill}
-                        style={{ width: `${(playerCount / PLAYER_COUNT) * 100}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                  {playerCount < PLAYER_COUNT ? (
-                    <>
-                      <div className={styles.playerSection}>
-                        <Image src="/assets/graphics/timer/hunter.svg" alt="Hunter" width={27} height={72} />
-                        <span className={styles.playerTitle}>HUNTERS</span>
-                      </div>
-                      <Link href="https://hunt.gg.zip" className={styles.joinButton}>
-                        Join hunt.gg.zip
-                      </Link>
-                    </>
-                  ) : (
-                    <>
-                      <span className={styles.playerTitle} style={{ color: "#42FF60" }}>
-                        HUNTERS LOCKED
-                      </span>
-                      <span className={styles.playerTitle} style={{ color: "#42FF60" }}>
-                        ({PLAYER_COUNT} / {PLAYER_COUNT})
-                      </span>
-                    </>
-                  )}
-                </div>
-                <div className={styles.spacer} />
-
-                {/* SPONSOR SECTION */}
-                <div className={styles.playerSection}>
-                  <Image src="/assets/graphics/timer/spectator.svg" alt="Spectator" width={27} height={72} />
-                  <span className={styles.playerTitle}>SPECTATORS</span>
-                </div>
-                <div className={styles.goToDesktop}>Go to Desktop</div>
-              </div>
+              <p>May the odds be ever in your favor anon</p>
+              <Image src="/assets/icons/icons-24/box-green.svg" alt="Arrow down" width={24} height={24} />
             </>
           )}
-          <p>May the odds be ever in your favor anon</p>
-          <Image src="/assets/icons/icons-24/box-green.svg" alt="Arrow down" width={24} height={24} />
         </div>
       </div>
     </>

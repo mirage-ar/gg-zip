@@ -10,7 +10,7 @@ export const UPLOAD_API = "https://99fg9lfoj2.execute-api.us-east-1.amazonaws.co
 export const GAME_API = "https://ybobrsrwn3.execute-api.us-east-1.amazonaws.com";
 
 export const RPC = "https://solana-devnet.g.alchemy.com/v2/0ciOy1xReMbA60uYcFsndVgOUOFHUglZ";
-export const PROGRAM_ID = "4sCkbT7YsX21eDU9D38116QbUDufn3priqd1tAWCQ15K";
+export const PROGRAM_ID = "FeLN737SaQbjDAE7TfTP5QcgmS9zqeoEcYrU4umwZxxb";
 
 export const TRANSACTION_COUNT = 30;
 export const POLLING_TIME = 5000;
@@ -24,3 +24,5 @@ export const GAME_DATE = {
 export const GAME_TIME = 9;
 export const GAME_LENGTH = 60 * 60 * 1000;
 export const PLAYER_COUNT = 150;
+
+export const PAUSE = true;

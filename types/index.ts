@@ -8,6 +8,7 @@ export type Player = {
   rank?: number;
   buyPrice?: number;
   sellPrice?: number;
+  holdingAmount?: number;
 };
 
 export type SponsorHoldings = {
