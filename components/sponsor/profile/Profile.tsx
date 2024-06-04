@@ -22,7 +22,9 @@ const Profile: React.FC<ProfileProps> = ({ playerList, sponsorHoldings }) => {
       }
     }
 
-    setPlayerCards(playerCards);
+    const sortedPlayerCards = playerCards.sort((a, b) => (b.holdingAmount || 0) - (a.holdingAmount || 0));
+
+    setPlayerCards(sortedPlayerCards);
   }, [playerList]);
 
   return (
