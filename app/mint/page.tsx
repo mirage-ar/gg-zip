@@ -26,11 +26,10 @@ export default function Mint() {
   const [loading, setLoading] = useState(false);
 
   const { publicKey } = useWallet();
-
-  const { createUpdateUser } = useUser();
-
   const { setVisible } = useWalletModal();
   const { mintPlayerCard, isMinted } = useSolana();
+
+  const { createUpdateUser } = useUser();
 
   const fetchTwitterUserSession = async () => {
     const session = await getSession();
@@ -61,9 +60,10 @@ export default function Mint() {
   useEffect(() => {
     if (publicKey) {
       setStep(Step.CONNECT_X);
+      fetchTwitterUserSession();
+    } else {
+      setStep(Step.CONNECT_WALLET);
     }
-
-    fetchTwitterUserSession();
   }, [publicKey]);
 
   useEffect(() => {
