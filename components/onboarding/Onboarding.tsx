@@ -14,7 +14,7 @@ const Onboarding: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { publicKey, updateUserData } = useUser();
+  const { publicKey, createUpdateUser } = useUser();
   const { showOnboarding, setShowOnboarding } = useApplicationContext();
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const Onboarding: React.FC = () => {
     }
 
     if (preview && !image) {
-      updateUserData(publicKey.toBase58(), username, preview);
+      createUpdateUser(publicKey.toBase58(), username, preview);
       setShowOnboarding(false);
       return;
     }
@@ -81,7 +81,7 @@ const Onboarding: React.FC = () => {
         const data = await response.json();
         console.log("Image uploaded:", data.url);
 
-        updateUserData(publicKey.toBase58(), username, data.url);
+        await createUpdateUser(publicKey.toBase58(), username, data.url);
 
         setLoading(false);
         setShowOnboarding(false);
@@ -138,7 +138,7 @@ const Onboarding: React.FC = () => {
             {error && <div className={styles.error}>{error}</div>}
           </div>
           <div className={styles.saveContainer}>
-            <button disabled={loading || !!error} className={styles.saveButton} onClick={handleSave}>
+            <button disabled={loading || !!error || !preview} className={styles.saveButton} onClick={handleSave}>
               {loading ? "..." : "SAVE"}
             </button>
           </div>

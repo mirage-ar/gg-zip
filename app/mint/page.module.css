@@ -107,6 +107,12 @@
   cursor: pointer;
 }
 
+.stepButton:disabled {
+  background-color: var(--g3);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
 .next {
   color: var(--g2);
   border: 1px solid var(--g2);

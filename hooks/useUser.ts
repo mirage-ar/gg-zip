@@ -10,13 +10,11 @@ export default function useUser() {
   const [user, setUser] = useState<Player | null>(null);
   const [twitterUser, setTwitterUser] = useState<TwitterUser | null>(null);
 
-  const [points, setPoints] = useState<number | null>(null);
-
   const { publicKey } = useWallet();
   const { setVisible } = useWalletModal();
 
   const pathname = usePathname();
-  const { showOnboarding, setShowOnboarding } = useApplicationContext();
+  const { showOnboarding, setShowOnboarding, setGlobalUser } = useApplicationContext();
 
   const connectWallet = async () => {
     if (!publicKey) {
@@ -38,7 +36,6 @@ export default function useUser() {
         points: data.points,
         boxes: data.boxes,
       });
-      setPoints(data.points);
     } else {
       // do not show onboarding on mint page
       if (pathname !== "/mint") {
@@ -47,29 +44,34 @@ export default function useUser() {
     }
   };
 
-  const updateUserData = async (wallet: string, username: string, image: string) => {
-    const response = await fetch(`/api/user/${wallet}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username,
-        image,
-      }),
-    });
+  const createUpdateUser = async (wallet: string, username: string, image: string, twitterId?: string) => {
+    try {
+      const response = await fetch(`/api/user/${wallet}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          image,
+          twitterId,
+        }),
+      });
 
-    const result = await response.json();
-    const data = result.data;
+      const result = await response.json();
+      const data = result.data;
 
-    setUser({
-      id: data.id,
-      username: data.username,
-      image: data.image,
-      wallet: wallet,
-      points: data.points,
-      boxes: data.boxes,
-    });
+      setUser({
+        id: data.id,
+        username: data.username,
+        image: data.image,
+        wallet: wallet,
+        points: data.points,
+        boxes: data.boxes,
+      });
+    } catch (error) {
+      console.error("createUpdateUser error:", error);
+    }
   };
 
   const fetchTwitterUserSession = async () => {
@@ -87,5 +89,9 @@ export default function useUser() {
     fetchUser(publicKey.toBase58());
   }, [publicKey, showOnboarding]);
 
-  return { user, twitterUser, points, connectWallet, publicKey, updateUserData };
+  useEffect(() => {
+    setGlobalUser(user);
+  }, [user]);
+
+  return { user, twitterUser, publicKey, connectWallet, createUpdateUser };
 }

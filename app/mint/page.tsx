@@ -4,12 +4,9 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import PlayerCard from "@/components/sponsor/card/PlayerCard";
-import UserInfo from "@/components/user/UserInfo";
 
 import styles from "./page.module.css";
 
-import { useApplicationContext } from "@/state/ApplicationContext";
-import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { useSolana, useUser } from "@/hooks";
 import { formatWalletAddress } from "@/utils";
@@ -25,10 +22,10 @@ enum Step {
 export default function Mint() {
   const [step, setStep] = useState<Step>(Step.CONNECT_WALLET);
   const [playerCard, setPlayerCard] = useState<Player | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const { twitterUser } = useUser();
+  const { publicKey, twitterUser, createUpdateUser } = useUser();
 
-  const { publicKey } = useWallet();
   const { setVisible } = useWalletModal();
   const { mintPlayerCard, isMinted } = useSolana();
 
@@ -63,32 +60,28 @@ export default function Mint() {
     }
   }, [publicKey, twitterUser]);
 
+  const createUser = async () => {
+    if (!publicKey) {
+      console.error("publicKey is null");
+      return;
+    }
+    if (!twitterUser) {
+      console.error("twitterUser is null");
+      return;
+    }
+
+    await createUpdateUser(publicKey.toBase58(), twitterUser.username, twitterUser.image, twitterUser.id);
+  };
+
   const mintCard = async () => {
     if (!publicKey) return;
     if (!twitterUser) return;
 
+    setLoading(true);
     await mintPlayerCard();
     await createUser();
     setStep(Step.FINISHED);
-  };
-
-  const createUser = async () => {
-    if (!publicKey) return;
-    if (!twitterUser) return;
-
-    const createResponse = await fetch(`/api/user/${publicKey.toBase58()}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: twitterUser.username,
-        image: twitterUser.image,
-        twitterId: twitterUser.id,
-      }),
-    });
-
-    const result = await createResponse.json();
+    setLoading(false);
   };
 
   const connectTwiiter = async () => {
@@ -173,8 +166,8 @@ export default function Mint() {
                 {step === Step.CONNECT_WALLET || step === Step.CONNECT_X ? (
                   <div className={`${styles.stepButton} ${styles.next}`}>Mint Card</div>
                 ) : (
-                  <button onClick={mintCard} className={styles.stepButton}>
-                    Mint Card
+                  <button disabled={loading} onClick={mintCard} className={styles.stepButton}>
+                    {loading ? "Minting..." : "Mint Card"}
                   </button>
                 )}
               </div>

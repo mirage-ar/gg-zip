@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { createContext, useContext } from "react";
-import { BoxNotification } from "@/types";
+import { BoxNotification, Player } from "@/types";
 
 interface ApplicationContext {
   transactionPending: boolean;
@@ -11,6 +11,8 @@ interface ApplicationContext {
   setBoxNotification: (boxNotification: BoxNotification) => void;
   showOnboarding: boolean;
   setShowOnboarding: (showOnboarding: boolean) => void;
+  globalUser: Player | null;
+  setGlobalUser: (globalUser: Player | null) => void;
 }
 
 const defaultContext: ApplicationContext = {
@@ -22,6 +24,8 @@ const defaultContext: ApplicationContext = {
   setBoxNotification: () => {},
   showOnboarding: false,
   setShowOnboarding: () => {},
+  globalUser: null,
+  setGlobalUser: () => {},
 };
 
 const Context = createContext(defaultContext);
@@ -31,6 +35,7 @@ export function ApplicationProvider({ children }: { children: React.ReactNode })
   const [closed, setClosed] = useState(false);
   const [boxNotification, setBoxNotification] = useState<BoxNotification>({ player: null, points: 0, show: false });
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [globalUser, setGlobalUser] = useState<Player | null>(null);
 
   const value: ApplicationContext = {
     transactionPending,
@@ -41,6 +46,8 @@ export function ApplicationProvider({ children }: { children: React.ReactNode })
     setBoxNotification,
     showOnboarding,
     setShowOnboarding,
+    globalUser,
+    setGlobalUser,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

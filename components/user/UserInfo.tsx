@@ -10,8 +10,8 @@ import { formatWalletAddress, formatPoints } from "@/utils";
 import { useUser } from "@/hooks";
 
 const UserInfo: React.FC = () => {
-  const { user, points, publicKey, connectWallet } = useUser();
-  const { closed } = useApplicationContext();
+  const { publicKey, connectWallet } = useUser();
+  const { globalUser: user, closed } = useApplicationContext();
 
   if (!publicKey) {
     return (
@@ -41,7 +41,7 @@ const UserInfo: React.FC = () => {
         {user?.username && (
           <>
             <span className={styles.spacer}>•</span>
-            <div>@{user.username}</div>
+            <div>{user.username}</div>
           </>
         )}
 
@@ -61,8 +61,8 @@ const UserInfo: React.FC = () => {
         {/* --- USER POINTS --- */}
       </div>
       <div className={styles.userPointsContainer}>
-        {points ? (
-          <div className={styles.userPoints}>{formatPoints(points)}</div>
+        {user?.points ? (
+          <div className={styles.userPoints}>{formatPoints(user.points)}</div>
         ) : (
           <div className={styles.placeholder}>000000</div>
         )}
