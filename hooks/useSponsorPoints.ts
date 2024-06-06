@@ -28,7 +28,7 @@ const useSponsorPoints = (publicKey: PublicKey | null) => {
   const anchorWallet = useAnchorWallet();
   const { connection } = useConnection();
 
-  const { user, points } = useUser();
+  const { user } = useUser();
 
   const { setBoxNotification } = useApplicationContext();
 
@@ -71,7 +71,7 @@ const useSponsorPoints = (publicKey: PublicKey | null) => {
   useEffect(() => {
     if (!publicKey || !user) return;
     const fetchInitalPoints = async () => {
-      const initialPoints = points || 0;
+      const initialPoints = user.points || 0;
       sponsorPointsRef.current = initialPoints;
     };
     fetchInitalPoints();
@@ -102,12 +102,13 @@ const useSponsorPoints = (publicKey: PublicKey | null) => {
       const data = await response.json();
 
       if (!data.success) {
+        console.error("Error updating sponsor points:", data.error);
         return currentPoints;
       }
 
       return data.points;
     } catch (error) {
-      console.error("Error updating user points:", error);
+      console.error("Error updating sponsor points:", error);
       return currentPoints;
     }
   };
