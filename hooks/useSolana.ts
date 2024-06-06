@@ -50,7 +50,8 @@ export default function useSolana(playerWalletAddress?: string) {
 
       return playerCardCount;
     } catch (error) {
-      console.error(error);
+      // If the account does not exist, return 0
+      return 0;
     }
   }
 
@@ -99,7 +100,7 @@ export default function useSolana(playerWalletAddress?: string) {
       wait(5000);
       setTransactionPending(false);
     } catch (error) {
-      console.error(error);
+      console.error("buyPlayerCard", error);
       setTransactionPending(false);
     }
   }
@@ -147,7 +148,7 @@ export default function useSolana(playerWalletAddress?: string) {
 
       setTransactionPending(false);
     } catch (error) {
-      console.error(error);
+      console.error("sellPlayerCard", error);
       setTransactionPending(false);
     }
   }
@@ -186,7 +187,7 @@ export default function useSolana(playerWalletAddress?: string) {
       console.log(transaction);
       setTransactionPending(false);
     } catch (error) {
-      console.error(error);
+      console.error("mintPlayerCard", error);
       setTransactionPending(false);
     }
   }
@@ -212,10 +213,8 @@ export default function useSolana(playerWalletAddress?: string) {
         return tokenCount || 0;
       }
     } catch (error: any) {
-      console.error("Error fetching token account:", error);
-      if (error.message.includes("Account does not exist")) {
-        return 0; // Return 0 if the account does not exist
-      }
+      // If the account does not exist, return 0
+      return 0;
     }
     return 0;
   }
@@ -248,7 +247,7 @@ export default function useSolana(playerWalletAddress?: string) {
       // UPDATE: Filter out holdings with 0 amount
       return holdings.filter((holding) => holding.amount > 0);
     } catch (error) {
-      console.error("Error fetching sponsor holdings:", error);
+      console.error("fetchSponsorHoldings", error);
       return [];
     }
   }
@@ -269,7 +268,7 @@ export default function useSolana(playerWalletAddress?: string) {
       // If accountInfo is not null, the account exists
       return accountInfo !== null;
     } catch (error) {
-      console.error("Error fetching mint account:", error);
+      console.error("isMinted", error);
       return false;
     }
   };
@@ -283,7 +282,6 @@ export default function useSolana(playerWalletAddress?: string) {
     try {
       const playerCardCount = await fetchPlayerCardCount(playerWalletAddress);
       if (playerCardCount === undefined) {
-        console.error("Player card count is undefined");
         return;
       }
 
@@ -293,14 +291,15 @@ export default function useSolana(playerWalletAddress?: string) {
       setBuyPrice(buyPrice);
       setSellPrice(sellPrice);
     } catch (error) {
-      console.error(error);
+      console.error("fetchPrices", error);
     }
   }
 
   useEffect(() => {
     async function init() {
       fetchPrices();
-      setCardHoldings(await fetchCardHoldings());
+      const cardHoldings = await fetchCardHoldings();
+      setCardHoldings(cardHoldings);
     }
 
     init();
