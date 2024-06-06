@@ -15,8 +15,6 @@ import MapboxMap from "@/components/map/MapboxMap";
 import { MarkersObject } from "@/types";
 import { getGameStartTime } from "@/utils";
 import { GAME_API, GAME_DATE, PLAYER_COUNT, POLLING_TIME, PAUSE } from "@/utils/constants";
-import UserInfo from "@/components/user/UserInfo";
-import { useUser } from "@/hooks";
 
 const FIVE_MINUTES = 1000 * 60 * 5;
 
@@ -25,7 +23,8 @@ export default function Home() {
   const markersRef = useRef<MarkersObject>({});
   const [playerCount, setPlayerCount] = useState<number>(0);
 
-  const { connectWallet, publicKey } = useUser();
+  const { publicKey } = useWallet();
+  const { setVisible } = useWalletModal();
 
   // Calculate initial time remaining immediately
   const calculateTimeRemaining = () => {
@@ -156,7 +155,7 @@ export default function Home() {
                         ))}
                       </div>
                       {/* <Image src="/assets/graphics/timer/connect.svg" alt="Connect" width={214} height={70} /> */}
-                      <button className={styles.connectButton} onClick={connectWallet}>
+                      <button className={styles.connectButton} onClick={() => setVisible(true)}>
                         {publicKey ? "Click to Join" : "Connect Wallet to Join"}
                       </button>
                     </div>

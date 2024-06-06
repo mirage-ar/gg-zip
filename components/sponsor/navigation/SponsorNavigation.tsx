@@ -4,6 +4,7 @@ import styles from "./SponsorNavigation.module.css";
 
 import { Page } from "@/types";
 import { useUser } from "@/hooks";
+import { useApplicationContext } from "@/state/ApplicationContext";
 
 interface SponsorNavigationProps {
   page: number;
@@ -13,7 +14,7 @@ interface SponsorNavigationProps {
 }
 
 const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, closed, setClosed }) => {
-  const { user } = useUser();
+  const { globalUser: user } = useApplicationContext();
 
   const handlePageChange = (page: Page) => {
     setPage(page);

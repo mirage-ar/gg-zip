@@ -7,41 +7,24 @@ import { useApplicationContext } from "@/state/ApplicationContext";
 import { Player, TwitterUser } from "@/types";
 
 export default function useUser() {
-  const [user, setUser] = useState<Player | null>(null);
-  const [twitterUser, setTwitterUser] = useState<TwitterUser | null>(null);
+  const { setGlobalUser } = useApplicationContext();
 
-  const { publicKey } = useWallet();
-  const { setVisible } = useWalletModal();
-
-  const pathname = usePathname();
-  const { showOnboarding, setShowOnboarding, setGlobalUser } = useApplicationContext();
-
-  const connectWallet = async () => {
-    if (!publicKey) {
-      setVisible(true);
-    }
-  };
-
-  const fetchUser = async (wallet: string) => {
+  const fetchUser = async (wallet: string): Promise<Player | null> => {
     // CHECK IF USER EXISTS
     const response = await fetch(`/api/user/${wallet}`);
     const result = await response.json();
     if (result.success) {
       const data = result.data;
-      setUser({
+      return {
         id: data.id,
         username: data.username,
         image: data.image,
         wallet: wallet,
         points: data.points,
         boxes: data.boxes,
-      });
-    } else {
-      // do not show onboarding on mint page
-      if (pathname !== "/mint") {
-        setShowOnboarding(true);
-      }
+      };
     }
+    return null;
   };
 
   const createUpdateUser = async (wallet: string, username: string, image: string, twitterId?: string) => {
@@ -61,7 +44,7 @@ export default function useUser() {
       const result = await response.json();
       const data = result.data;
 
-      setUser({
+      setGlobalUser({
         id: data.id,
         username: data.username,
         image: data.image,
@@ -74,24 +57,5 @@ export default function useUser() {
     }
   };
 
-  const fetchTwitterUserSession = async () => {
-    const session = await getSession();
-    setTwitterUser(session?.user as TwitterUser);
-  };
-
-  useEffect(() => {
-    if (!publicKey) return;
-
-    if (pathname === "/mint") {
-      fetchTwitterUserSession();
-    }
-
-    fetchUser(publicKey.toBase58());
-  }, [publicKey, showOnboarding]);
-
-  useEffect(() => {
-    setGlobalUser(user);
-  }, [user]);
-
-  return { user, twitterUser, publicKey, connectWallet, createUpdateUser };
+  return { fetchUser, createUpdateUser };
 }

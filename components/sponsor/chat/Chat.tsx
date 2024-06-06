@@ -9,9 +9,15 @@ import styles from "./Chat.module.css";
 import { ChatMessage } from "@/types";
 import { GET_MESSAGES_URL, CHAT_SOCKET_URL } from "@/utils/constants";
 import { formatWalletAddress } from "@/utils";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useApplicationContext } from "@/state/ApplicationContext";
 
 const Chat: React.FC = () => {
-  const { user, publicKey, connectWallet } = useUser();
+  const { globalUser: user } = useApplicationContext();
+
+  const { publicKey } = useWallet();
+  const { setVisible } = useWalletModal();
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
@@ -130,7 +136,7 @@ const Chat: React.FC = () => {
             SEND
           </button>
         ) : (
-          <button onClick={connectWallet} className={styles.chatSendButton}>
+          <button onClick={() => setVisible(true)} className={styles.chatSendButton}>
             Connect Wallet
           </button>
         )}

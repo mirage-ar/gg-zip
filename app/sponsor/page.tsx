@@ -5,7 +5,6 @@ import Image from "next/image";
 import MapboxMap from "@/components/map/MapboxMap";
 import LiveLeaderboard from "@/components/sponsor/leaderboard/LiveLeaderboard";
 import Chat from "@/components/sponsor/chat/Chat";
-import UserInfo from "@/components/user/UserInfo";
 import SponsorNavigation from "@/components/sponsor/navigation/SponsorNavigation";
 import Transactions from "@/components/sponsor/transactions/Transactions";
 
@@ -15,7 +14,7 @@ import { PublicKey } from "@solana/web3.js";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
 import { Page, Tab, Player, MarkersObject, SponsorHoldings, Sort } from "@/types";
 import { getBuyPrice, getSellPrice, bnToNumber } from "@/solana";
-import { useSponsorPoints, useSolana, useUser } from "@/hooks";
+import { useSponsorPoints, useSolana } from "@/hooks";
 import { withCommas } from "@/utils";
 import { GAME_API } from "@/utils/constants";
 import BN from "bn.js";
@@ -26,6 +25,7 @@ import { POLLING_TIME } from "@/utils/constants";
 import Powerups from "@/components/sponsor/powerups/Powerups";
 import { useApplicationContext } from "@/state/ApplicationContext";
 import Profile from "@/components/sponsor/profile/Profile";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 export default function Home() {
   const [tab, setTab] = useState(Tab.LEADERBOARD);
@@ -42,7 +42,7 @@ export default function Home() {
   const markersRef = useRef<MarkersObject>({});
 
   const { program, fetchSponsorHoldings, fetchPlayerCardCount } = useSolana();
-  const { publicKey } = useUser();
+  const { publicKey } = useWallet();
   const { sponsorPoints } = useSponsorPoints(publicKey);
 
   const fetchPlayerData = async (profile: boolean, sponsorHoldings: string[]): Promise<Player[]> => {
@@ -80,7 +80,7 @@ export default function Home() {
           player.buyPrice = getBuyPrice(playerCardCount, 1);
           player.sellPrice = getSellPrice(1, playerCardCount);
         } catch (error) {
-          console.error(`Error fetching player card: ${player.wallet}`);
+          // gracefully handle error, sometimes player cards are not minted
         }
       })
     );

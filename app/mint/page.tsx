@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import PlayerCard from "@/components/sponsor/card/PlayerCard";
 
 import styles from "./page.module.css";
@@ -10,7 +10,8 @@ import styles from "./page.module.css";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { useSolana, useUser } from "@/hooks";
 import { formatWalletAddress } from "@/utils";
-import { Player } from "@/types";
+import { Player, TwitterUser } from "@/types";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 enum Step {
   CONNECT_WALLET = 1,
@@ -24,15 +25,16 @@ export default function Mint() {
   const [playerCard, setPlayerCard] = useState<Player | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const { publicKey, twitterUser, createUpdateUser } = useUser();
+  const { publicKey } = useWallet();
+
+  const { createUpdateUser } = useUser();
 
   const { setVisible } = useWalletModal();
   const { mintPlayerCard, isMinted } = useSolana();
 
-  useEffect(() => {
-    if (publicKey) {
-      setStep(Step.CONNECT_X);
-    }
+  const fetchTwitterUserSession = async () => {
+    const session = await getSession();
+    const twitterUser = session?.user as TwitterUser;
 
     if (twitterUser) {
       setPlayerCard({
@@ -47,35 +49,45 @@ export default function Mint() {
       });
       setStep(Step.MINT_CARD);
     }
+  };
 
-    async function checkIfMinted() {
-      const minted = await isMinted();
-      if (minted) {
-        setStep(Step.FINISHED);
-      }
+  async function checkIfMinted() {
+    const minted = await isMinted();
+    if (minted) {
+      setStep(Step.FINISHED);
+    }
+  }
+
+  useEffect(() => {
+    if (publicKey) {
+      setStep(Step.CONNECT_X);
     }
 
-    if (publicKey && twitterUser) {
+    fetchTwitterUserSession();
+  }, [publicKey]);
+
+  useEffect(() => {
+    if (publicKey && playerCard) {
       checkIfMinted();
     }
-  }, [publicKey, twitterUser]);
+  }, [publicKey, playerCard]);
 
   const createUser = async () => {
     if (!publicKey) {
       console.error("publicKey is null");
       return;
     }
-    if (!twitterUser) {
-      console.error("twitterUser is null");
+    if (!playerCard) {
+      console.error("playerCard is null");
       return;
     }
 
-    await createUpdateUser(publicKey.toBase58(), twitterUser.username, twitterUser.image, twitterUser.id);
+    await createUpdateUser(publicKey.toBase58(), playerCard.username, playerCard.image, playerCard.id);
   };
 
   const mintCard = async () => {
     if (!publicKey) return;
-    if (!twitterUser) return;
+    if (!playerCard) return;
 
     setLoading(true);
     await mintPlayerCard();
@@ -112,7 +124,7 @@ export default function Mint() {
 
           {/* USER INFO */}
           <div className={styles.userInfo}>
-            <div className={styles.userName}>{twitterUser ? `@${twitterUser.username}` : ""}</div>
+            <div className={styles.userName}>{playerCard ? `@${playerCard.username}` : ""}</div>
             <div className={styles.wallet}>{publicKey ? formatWalletAddress(publicKey.toBase58()) : ""}</div>
           </div>
 

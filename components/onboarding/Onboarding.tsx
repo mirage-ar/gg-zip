@@ -6,6 +6,8 @@ import styles from "./Onboarding.module.css";
 import { UPLOAD_API } from "@/utils/constants";
 import { resizeImage } from "@/utils";
 import { useUser } from "@/hooks";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { set } from "date-fns";
 
 const Onboarding: React.FC = () => {
   const [username, setUsername] = useState(`#${new Date().getTime().toString().substring(8)}`); // default username
@@ -14,7 +16,9 @@ const Onboarding: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { publicKey, createUpdateUser } = useUser();
+  const { publicKey } = useWallet();
+
+  const { createUpdateUser } = useUser();
   const { showOnboarding, setShowOnboarding } = useApplicationContext();
 
   useEffect(() => {
@@ -25,6 +29,9 @@ const Onboarding: React.FC = () => {
         if (result.success) {
           setUsername(result.data.username);
           setPreview(result.data.image);
+        } else {
+          setUsername(`#${new Date().getTime().toString().substring(8)}`);
+          setPreview(null);
         }
       }
     };

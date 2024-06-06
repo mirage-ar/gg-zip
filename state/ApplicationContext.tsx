@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createContext, useContext } from "react";
+import { usePathname } from "next/navigation";
 import { BoxNotification, Player } from "@/types";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 interface ApplicationContext {
   transactionPending: boolean;
@@ -36,6 +38,41 @@ export function ApplicationProvider({ children }: { children: React.ReactNode })
   const [boxNotification, setBoxNotification] = useState<BoxNotification>({ player: null, points: 0, show: false });
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [globalUser, setGlobalUser] = useState<Player | null>(null);
+
+  const pathname = usePathname();
+
+  const { publicKey } = useWallet();
+
+  const fetchUser = async (wallet: string) => {
+    console.log("fetchUser", wallet);
+    // CHECK IF USER EXISTS
+    const response = await fetch(`/api/user/${wallet}`);
+    const result = await response.json();
+    if (result.success) {
+      const data = result.data;
+      setGlobalUser({
+        id: data.id,
+        username: data.username,
+        image: data.image,
+        wallet: wallet,
+        points: data.points,
+        boxes: data.boxes,
+      });
+      setShowOnboarding(false);
+    } else {
+      setGlobalUser(null);
+      // do not show onboarding on mint page
+      if (pathname !== "/mint") {
+        setShowOnboarding(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (publicKey) {
+      fetchUser(publicKey.toBase58());
+    }
+  }, [publicKey]);
 
   const value: ApplicationContext = {
     transactionPending,

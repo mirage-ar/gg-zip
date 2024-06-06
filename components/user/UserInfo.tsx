@@ -5,18 +5,24 @@ import Image from "next/image";
 
 import styles from "./UserInfo.module.css";
 
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+
 import { useApplicationContext } from "@/state/ApplicationContext";
 import { formatWalletAddress, formatPoints } from "@/utils";
-import { useUser } from "@/hooks";
 
 const UserInfo: React.FC = () => {
-  const { publicKey, connectWallet } = useUser();
+
   const { globalUser: user, closed } = useApplicationContext();
+
+
+  const { publicKey } = useWallet();
+  const { setVisible } = useWalletModal();
 
   if (!publicKey) {
     return (
       <div className={styles.main} style={closed ? { marginRight: "70px" } : {}}>
-        <button className={styles.connectWallet} onClick={connectWallet}>
+        <button className={styles.connectWallet} onClick={() => setVisible(true)}>
           Connect Wallet
         </button>
         <div className={styles.userPointsContainer}>

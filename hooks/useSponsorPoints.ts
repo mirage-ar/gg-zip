@@ -28,9 +28,7 @@ const useSponsorPoints = (publicKey: PublicKey | null) => {
   const anchorWallet = useAnchorWallet();
   const { connection } = useConnection();
 
-  const { user } = useUser();
-
-  const { setBoxNotification } = useApplicationContext();
+  const { globalUser: user, setBoxNotification } = useApplicationContext();
 
   const program = useMemo(() => {
     if (anchorWallet) {
