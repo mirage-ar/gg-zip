@@ -12,6 +12,7 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 
 import { RPC } from "@/utils/constants";
 import Onboarding from "@/components/onboarding/Onboarding";
+import UserInfo from "@/components/user/UserInfo";
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const network = WalletAdapterNetwork.Devnet;
@@ -30,6 +31,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
           <WalletModalProvider>
             <ApplicationProvider>
               {children}
+              <UserInfo />
               <Onboarding />
               <GameTimer />
               <BoxNotification />

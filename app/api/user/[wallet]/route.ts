@@ -37,7 +37,7 @@ export async function GET(request: Request, { params }: { params: { wallet: stri
 export async function POST(request: Request, { params }: { params: { wallet: string } }) {
   const wallet = params.wallet;
   const data = await request.json();
-  const { username, image } = data;
+  const { username, image, twitterId } = data;
 
   const userPoints = await prisma.points.findUnique({
     where: {
@@ -56,7 +56,7 @@ export async function POST(request: Request, { params }: { params: { wallet: str
     },
     create: {
       username: username,
-      twitterId: userPoints?.twitterId,
+      twitterId: twitterId || userPoints?.twitterId,
       image: image,
       wallet: wallet,
       points: userPoints?.points || 0,

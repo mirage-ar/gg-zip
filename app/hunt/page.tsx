@@ -43,7 +43,6 @@ export default function Home() {
   return (
     <>
       <div className={styles.main}>
-        <UserInfo closed={closed} />
         <MapboxMap mapRef={mapRef} markersRef={markersRef} />
 
         <div className={styles.overlay} style={closed ? { marginRight: "-480px" } : { marginRight: "0" }}>

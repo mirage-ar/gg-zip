@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, MouseEvent } from "react";
+import React, { useState, ChangeEvent, MouseEvent, useEffect } from "react";
 import Image from "next/image";
 import { useApplicationContext } from "@/state/ApplicationContext";
 import styles from "./Onboarding.module.css";
@@ -14,8 +14,23 @@ const Onboarding: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { publicKey } = useUser();
+  const { publicKey, updateUserData } = useUser();
   const { showOnboarding, setShowOnboarding } = useApplicationContext();
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (publicKey) {
+        const response = await fetch(`/api/user/${publicKey.toBase58()}`);
+        const result = await response.json();
+        if (result.success) {
+          setUsername(result.data.username);
+          setPreview(result.data.image);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [publicKey]);
 
   const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -44,6 +59,12 @@ const Onboarding: React.FC = () => {
       return;
     }
 
+    if (preview && !image) {
+      updateUserData(publicKey.toBase58(), username, preview);
+      setShowOnboarding(false);
+      return;
+    }
+
     if (image) {
       setLoading(true);
       const reader = new FileReader();
@@ -60,20 +81,8 @@ const Onboarding: React.FC = () => {
         const data = await response.json();
         console.log("Image uploaded:", data.url);
 
-        // Create User
-        const createResponse = await fetch(`/api/user/${publicKey.toBase58()}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username,
-            image: data.url,
-          }),
-        });
+        updateUserData(publicKey.toBase58(), username, data.url);
 
-        const result = await createResponse.json();
-        console.log(result);
         setLoading(false);
         setShowOnboarding(false);
       };
@@ -87,15 +96,19 @@ const Onboarding: React.FC = () => {
           <h4>EDIT PROFILE</h4>
           <div className={styles.profilePhotoContainer}>
             {preview ? (
-              <Image src={preview} alt="Profile Photo" width={64} height={64} className={styles.profilePhoto} />
+              <label htmlFor="upload-input" style={{ cursor: "pointer" }}>
+                <Image src={preview} alt="Profile Photo" width={64} height={64} className={styles.profilePhoto} />
+              </label>
             ) : (
-              <Image
-                src="/assets/graphics/koji.png"
-                alt="Profile Photo"
-                width={64}
-                height={64}
-                className={styles.profilePhoto}
-              />
+              <label htmlFor="upload-input" style={{ cursor: "pointer" }}>
+                <Image
+                  src="/assets/graphics/koji.png"
+                  alt="Profile Photo"
+                  width={64}
+                  height={64}
+                  className={styles.profilePhoto}
+                />
+              </label>
             )}
             <div className={styles.editProfilePhotoText}>
               <label htmlFor="upload-input" style={{ cursor: "pointer" }} className={styles.uploadImageLabel}>

@@ -57,12 +57,15 @@ const Transactions: React.FC<TransactionsProps> = ({ playerList }) => {
           };
 
           transactions.push(transaction);
-          setTransactions(transactions);
         }
 
         await wait(10);
       })
+      
     );
+
+    const orderedTransactions = transactions.sort((a, b) => b.timestamp - a.timestamp);
+    setTransactions(orderedTransactions);
   }
 
   useEffect(() => {

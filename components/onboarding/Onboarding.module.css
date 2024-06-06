@@ -89,6 +89,7 @@
     background: var(--g, #42ff60);
     border: none;
     color: var(--b);
+    cursor: pointer;
   }
   
   .saveButton:disabled {

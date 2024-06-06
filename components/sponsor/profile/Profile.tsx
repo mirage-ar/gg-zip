@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import PlayerCard from "@/components/sponsor/card/PlayerCard";
 
 import styles from "./Profile.module.css";
 import { Player, SponsorHoldings } from "@/types";
+import { useApplicationContext } from "@/state/ApplicationContext";
 
 interface ProfileProps {
   playerList: Player[];
@@ -12,27 +14,36 @@ interface ProfileProps {
 const Profile: React.FC<ProfileProps> = ({ playerList, sponsorHoldings }) => {
   const [playerCards, setPlayerCards] = useState<Player[]>([]);
 
+  const { showOnboarding, setShowOnboarding } = useApplicationContext();
+
   useEffect(() => {
     let playerCards = [];
     for (let i = 0; i < sponsorHoldings.length; i++) {
       const player = playerList.find((player) => player.wallet === sponsorHoldings[i].wallet);
       if (player) {
-        player.holdingAmount = sponsorHoldings[i].amount;
+        player.amount = sponsorHoldings[i].amount;
         playerCards.push(player);
       }
     }
 
-    const sortedPlayerCards = playerCards.sort((a, b) => (b.holdingAmount || 0) - (a.holdingAmount || 0));
+    const sortedPlayerCards = playerCards.sort((a, b) => (b.amount || 0) - (a.amount || 0));
 
     setPlayerCards(sortedPlayerCards);
-  }, [playerList]);
+  }, [playerList, sponsorHoldings]);
 
   return (
     <div className={styles.main}>
-      <div className={styles.playerCards}>
-        {playerCards.map((player) => (
-          <PlayerCard key={player.wallet} player={player} />
-        ))}
+      <button className={styles.editProfile} onClick={() => setShowOnboarding(true)}>
+        Edit Profile
+        <Image src="/assets/icons/icons-24/settings.svg" alt="settings" width={24} height={24} />
+      </button>
+      <div className={styles.title}>Cards</div>
+      <div className={styles.scrollable}>
+        <div className={styles.playerCards}>
+          {playerCards.map((player) => (
+            <PlayerCard key={player.wallet} player={player} sponsorHoldings={sponsorHoldings} showButtons />
+          ))}
+        </div>
       </div>
     </div>
   );

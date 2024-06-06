@@ -200,7 +200,6 @@ export default function Home() {
     <>
       {/* ----- MAIN ----- */}
       <div className={styles.main}>
-        <UserInfo closed={closed} />
         <MapboxMap mapRef={mapRef} markersRef={markersRef} />
         <SponsorNavigation page={page} setPage={setPage} closed={closed} setClosed={setClosed} />
 

@@ -73,7 +73,6 @@ export default function Home() {
 
   return (
     <>
-      <UserInfo />
       <div className={styles.main}>
         <div className={styles.map}>
           <MapboxMap mapRef={mapRef} markersRef={markersRef} isHomePage />

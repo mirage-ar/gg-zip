@@ -20,7 +20,6 @@ const Chat: React.FC = () => {
 
   // Connect to WebSocket
   useEffect(() => {
-    console.log("here");
     fetchInitialMessages();
 
     webSocket.current = new WebSocket(CHAT_SOCKET_URL);

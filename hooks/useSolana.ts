@@ -54,7 +54,7 @@ export default function useSolana(playerWalletAddress?: string) {
     }
   }
 
-  async function buyPlayerCard() {
+  async function buyPlayerCard(amount: number) {
     if (!program || !publicKey || !playerWalletAddress) {
       return;
     }
@@ -80,7 +80,7 @@ export default function useSolana(playerWalletAddress?: string) {
       // } = await connection.getLatestBlockhashAndContext();
 
       const transaction = await program.methods
-        .buyShares(subjectPublicKey, new anchor.BN(1))
+        .buyShares(subjectPublicKey, new anchor.BN(amount))
         .accounts({
           authority: publicKey,
           token: tokenPda,
@@ -104,7 +104,7 @@ export default function useSolana(playerWalletAddress?: string) {
     }
   }
 
-  async function sellPlayerCard() {
+  async function sellPlayerCard(amount: number) {
     if (!program || !publicKey || !playerWalletAddress) {
       return;
     }
@@ -130,7 +130,7 @@ export default function useSolana(playerWalletAddress?: string) {
       } = await connection.getLatestBlockhashAndContext();
 
       const transaction = await program.methods
-        .sellShares(subjectPublicKey, new anchor.BN(1))
+        .sellShares(subjectPublicKey, new anchor.BN(amount))
         .accounts({
           authority: publicKey,
           token: tokenPda,
@@ -145,6 +145,45 @@ export default function useSolana(playerWalletAddress?: string) {
       // const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
       console.log(transaction);
 
+      setTransactionPending(false);
+    } catch (error) {
+      console.error(error);
+      setTransactionPending(false);
+    }
+  }
+
+  async function mintPlayerCard() {
+    if (!program || !publicKey) {
+      return;
+    }
+
+    try {
+      setTransactionPending(true);
+      const subjectPublicKey = publicKey;
+      const subjectBuffer = subjectPublicKey.toBuffer();
+
+      const [mintPda] = await findProgramAddressSync([Buffer.from("MINT"), subjectBuffer], program.programId);
+      const [protocolPda] = await findProgramAddressSync([Buffer.from("PROTOCOL")], program.programId);
+
+      // const {
+      //   context: { slot: minContextSlot },
+      //   value: { blockhash, lastValidBlockHeight },
+      // } = await connection.getLatestBlockhashAndContext();
+
+      const transaction = await program.methods
+        .mint()
+        .accounts({
+          authority: publicKey,
+          mint: mintPda,
+          protocol: protocolPda,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+
+      // const signature = await sendTransaction(transaction, connection, { minContextSlot });
+      // console.log(signature);
+      // const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
+      console.log(transaction);
       setTransactionPending(false);
     } catch (error) {
       console.error(error);
@@ -214,6 +253,28 @@ export default function useSolana(playerWalletAddress?: string) {
     }
   }
 
+  const isMinted = async () => {
+    if (!program || !publicKey) {
+      return false;
+    }
+  
+    try {
+      const subjectPublicKey = publicKey;
+      const subjectBuffer = subjectPublicKey.toBuffer();
+      const [mintPda] = await findProgramAddressSync([Buffer.from("MINT"), subjectBuffer], program.programId);
+  
+      // Fetch the account info for the mint PDA
+      const accountInfo = await program.provider.connection.getAccountInfo(mintPda);
+  
+      // If accountInfo is not null, the account exists
+      return accountInfo !== null;
+    } catch (error) {
+      console.error("Error fetching mint account:", error);
+      return false;
+    }
+  };
+  
+
   async function fetchPrices() {
     if (!program || !playerWalletAddress) {
       return;
@@ -253,7 +314,9 @@ export default function useSolana(playerWalletAddress?: string) {
     cardHoldings,
     buyPlayerCard,
     sellPlayerCard,
+    mintPlayerCard,
     fetchSponsorHoldings,
     fetchPlayerCardCount,
+    isMinted,
   };
 }

@@ -1,0 +1,213 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: rgba(20, 30, 45, 1);
+}
+
+.container {
+  width: 1012px;
+  height: 635px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  background-color: var(--b);
+  clip-path: polygon(3% 0, 100% 1%, 100% 94%, 97% 100%, 0 100%, 0 6%);
+  position: relative;
+  overflow: hidden;
+}
+
+.videoBackground {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+.header {
+  padding: 32px 39px;
+  width: 100%;
+  color: var(--g);
+  font-family: var(--connect);
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.userName {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--g);
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.wallet {
+  margin-top: 12px;
+  color: var(--g3, #373737);
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.stepsContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 39px;
+  margin-top: 20px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.stepNumber {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--w, #faf5e9);
+  text-align: center;
+  font-size: 14px;
+  border: 1px solid var(--g2);
+  border-radius: 50%;
+}
+
+.selected {
+  border: 1px solid var(--g);
+  color: var(--g);
+}
+
+.stepButton {
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--b);
+  width: 301px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: var(--corner4, 4px);
+  background: var(--g, #42ff60);
+  text-transform: uppercase;
+  box-shadow: 0 0 20px var(--p);
+  border: none;
+  cursor: pointer;
+}
+
+.next {
+  color: var(--g2);
+  border: 1px solid var(--g2);
+  background: var(--b);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.finished {
+  color: var(--w);
+  border: 1px solid var(--g2);
+  background: var(--b);
+  box-shadow: none;
+  cursor: inherit;
+}
+
+.finishedContainer {
+  margin-top: 20px;
+  position: relative;
+  width: 100%;
+  height: 134px;
+}
+
+.greenOne {
+  width: 605px;
+  height: 134px;
+  position: absolute;
+  top: 0;
+  left: 30px;
+  background: var(--g);
+  border-radius: 4px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: var(--b);
+  font-family: var(--connect);
+  padding: 32px;
+  font-size: 44px;
+  text-transform: uppercase;
+}
+
+.greenTwo {
+  width: 313px;
+  height: 134px;
+  position: absolute;
+  top: 0;
+  right: 30px;
+  background: var(--g);
+  border-radius: 4px;
+  color: var(--b);
+}
+
+.greenThree {
+  width: 50px;
+  height: 47px;
+  position: absolute;
+  top: 42px;
+  right: 340px;
+  background: var(--g);
+  border-radius: 4px;
+}
+
+.blackOne {
+  width: 34px;
+  height: 45px;
+  position: absolute;
+  top: 0;
+  right: 343px;
+  border-radius: 4px;
+  background: var(--b);
+}
+
+.blackTwo {
+  width: 34px;
+  height: 45px;
+  position: absolute;
+  bottom: 0;
+  right: 343px;
+  border-radius: 4px;
+  background: var(--b);
+}
+
+.infoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 12px;
+  background: var(--b);
+  height: 110px;
+  border-radius: 4px;
+}
+
+.infoLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  color: var(--g);
+  text-transform: uppercase;
+  font-size: 14px;
+}

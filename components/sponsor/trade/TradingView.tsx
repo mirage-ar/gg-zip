@@ -21,12 +21,12 @@ const TradingView: React.FC<TradingViewProps> = ({ player, setShowOverlay }) => 
   };
 
   const sellCard = () => {
-    sellPlayerCard();
+    sellPlayerCard(1);
     setShowOverlay(false);
   };
 
   const buyCard = () => {
-    buyPlayerCard();
+    buyPlayerCard(1);
     setShowOverlay(false);
   };
 

@@ -9,12 +9,9 @@ import { useApplicationContext } from "@/state/ApplicationContext";
 import { formatWalletAddress, formatPoints } from "@/utils";
 import { useUser } from "@/hooks";
 
-interface UserInfoProps {
-  closed?: boolean;
-}
-
-const UserInfo: React.FC<UserInfoProps> = ({ closed }) => {
+const UserInfo: React.FC = () => {
   const { user, points, publicKey, connectWallet } = useUser();
+  const { closed } = useApplicationContext();
 
   if (!publicKey) {
     return (

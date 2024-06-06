@@ -8,7 +8,14 @@ export type Player = {
   rank?: number;
   buyPrice?: number;
   sellPrice?: number;
-  holdingAmount?: number;
+  amount?: number;
+};
+
+export type TwitterUser = {
+  id: string;
+  username: string;
+  image: string;
+  wallet: string;
 };
 
 export type SponsorHoldings = {
