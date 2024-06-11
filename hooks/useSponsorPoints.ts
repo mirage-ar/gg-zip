@@ -89,7 +89,7 @@ const useSponsorPoints = (publicKey: PublicKey | null) => {
       if (!isHolding) {
         return currentPoints;
       } else {
-        const user = await fetchUser(wallet);
+        const user = await fetchUser(wallet); // TODO: just do the calculation here and show updated points (no fetch)
         return user?.points || currentPoints
       }
 

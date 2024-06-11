@@ -30,16 +30,16 @@ async function getSponsorAccounts(program: anchor.Program, wallet: string) {
   try {
     const walletPublicKey = new PublicKey(wallet);
 
-    const ownerFilter = [
+    const subjectFilter = [
       {
         memcmp: {
-          offset: 8,
+          offset: 16,
           bytes: walletPublicKey.toBase58(),
         },
       },
     ];
 
-    const accounts = program.account.tokenAccount.all(ownerFilter);
+    const accounts = program.account.tokenAccount.all(subjectFilter);
 
     return accounts;
   } catch (error) {
