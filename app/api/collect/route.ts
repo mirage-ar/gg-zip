@@ -102,16 +102,20 @@ export async function POST(request: Request) {
   console.log("Points to give:", pointsToGive);
 
   // FOR SAFTEY
-  await prisma.points.update({
-    where: {
-      wallet: wallet,
-    },
-    data: {
-      points: {
-        increment: pointsToGive,
+  try {
+    await prisma.points.update({
+      where: {
+        wallet: wallet,
       },
-    },
-  });
+      data: {
+        points: {
+          increment: pointsToGive,
+        },
+      },
+    });
+  } catch (error) {
+    console.log("No points record to update");
+  }
 
   const sponsor = await prisma.user.update({
     where: {
