@@ -33,7 +33,7 @@ async function getSponsorAccounts(program: anchor.Program, wallet: string) {
     const subjectFilter = [
       {
         memcmp: {
-          offset: 16,
+          offset: 40, // 8 bytes discriminator + 32 bytes owner
           bytes: walletPublicKey.toBase58(),
         },
       },
