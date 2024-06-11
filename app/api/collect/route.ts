@@ -21,7 +21,7 @@ async function getTotalShares(program: anchor.Program, wallet: string): Promise<
 
     return playerCardCount || 0;
   } catch (error) {
-    console.error("Error fetching account info:", error);
+    console.error("Error get total shares:", error);
     return 0;
   }
 }
@@ -46,7 +46,7 @@ async function getSponsorAccounts(program: anchor.Program, wallet: string) {
 
     return accounts;
   } catch (error) {
-    console.error("Error fetching account info:", error);
+    console.error("Error get sponsor accounts:", error);
   }
 }
 
@@ -67,7 +67,7 @@ async function getTokenAccount(program: anchor.Program, wallet: string, subject:
 
     return tokenAccount;
   } catch (error) {
-    console.error("Error fetching account info:", error);
+    console.error("Error get token account:", error);
   }
 }
 
@@ -90,7 +90,7 @@ export async function POST(request: Request) {
 
   const allSponsorAccounts = await getSponsorAccounts(program, subject);
 
-  for (const account of allSponsorAccounts || []) {
+  const promises = (allSponsorAccounts || []).map(async (account) => {
     const wallet = account.publicKey.toBase58();
 
     const sponsorAccount = await getTokenAccount(program, wallet, subject);
@@ -109,7 +109,7 @@ export async function POST(request: Request) {
     const pointsToGive = points * 3 * sponsorPercentage;
     console.log("Points to give:", pointsToGive);
 
-    // FOR SAFTEY
+    // FOR SAFETY
     try {
       await prisma.points.update({
         where: {
@@ -135,7 +135,9 @@ export async function POST(request: Request) {
         },
       },
     });
-  }
+  });
+
+  await Promise.all(promises);
 
   return Response.json({ success: true });
 }
