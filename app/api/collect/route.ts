@@ -39,7 +39,7 @@ async function getSponsorAccounts(program: anchor.Program, wallet: string) {
       },
     ];
 
-    const accounts = program.account.tokenAccount.all(subjectFilter);
+    const accounts = await program.account.tokenAccount.all(subjectFilter);
 
     console.log("Wallet:", wallet);
     console.log("Accounts:", accounts);
