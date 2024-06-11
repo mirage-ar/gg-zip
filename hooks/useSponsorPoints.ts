@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as anchor from "@project-serum/anchor";
-import { COLLECT_SOCKET_URL, PROGRAM_ID } from "@/utils/constants";
+import { COLLECT_SOCKET_URL, POLLING_TIME, PROGRAM_ID } from "@/utils/constants";
 
 import { PublicKey } from "@solana/web3.js";
 import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react";
@@ -29,6 +29,7 @@ const useSponsorPoints = (publicKey: PublicKey | null) => {
   const { connection } = useConnection();
 
   const { globalUser: user, setBoxNotification } = useApplicationContext();
+  const { fetchUser } = useUser();
 
   const program = useMemo(() => {
     if (anchorWallet) {

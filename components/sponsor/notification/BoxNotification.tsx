@@ -9,12 +9,22 @@ import styles from "./BoxNotification.module.css";
 import { useApplicationContext } from "@/state/ApplicationContext";
 
 const BoxNotification: React.FC = () => {
-  const { closed, boxNotification } = useApplicationContext();
+  const [show, setShow] = useState(false);
+  const { boxNotification } = useApplicationContext();
+
+  useEffect(() => {
+    if (boxNotification) {
+      setShow(true);
+      setTimeout(() => {
+        setShow(false);
+      }, 3000);
+    }
+  }, [boxNotification]);
 
   const icon = "assets/icons/icons-24/box-green.svg";
   return (
     <div className={styles.main} 
-    style={boxNotification.show ? { marginBottom: "0" } : { marginBottom: "-100px" }}
+    style={show ? { marginBottom: "0" } : { marginBottom: "-100px" }}
     >
       <div
         className={styles.container}
