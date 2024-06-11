@@ -7,7 +7,6 @@ import { UPLOAD_API } from "@/utils/constants";
 import { resizeImage } from "@/utils";
 import { useUser } from "@/hooks";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { set } from "date-fns";
 
 const Onboarding: React.FC = () => {
   const [username, setUsername] = useState(`#${new Date().getTime().toString().substring(8)}`); // default username

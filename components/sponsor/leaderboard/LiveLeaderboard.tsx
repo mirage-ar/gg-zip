@@ -130,9 +130,11 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
     <div className={styles.container}>
       {/* ----- TRADING VIEW ----- */}
       {showOverlay && tradingViewPlayer && <TradingView player={tradingViewPlayer} setShowOverlay={setShowOverlay} />}
-      {showOverlay && selectedPowerup && tradingViewPlayer && (
+
+      {/* POWER UP TRADING VIEW */}
+      {/* {showOverlay && selectedPowerup && tradingViewPlayer && (
         <TradingView player={tradingViewPlayer} setShowOverlay={setShowOverlay} />
-      )}
+      )} */}
 
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
@@ -220,8 +222,8 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
                           </button>
                         </>
                       ) : (
+                        // Powerup view
                         <>
-                          {/* TODO: create function to get powerup price */}
                           <div className={styles.price}>{withCommas(1000)}</div>
                           <button
                             className={styles.tradeButton}

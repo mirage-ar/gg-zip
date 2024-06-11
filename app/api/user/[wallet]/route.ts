@@ -8,24 +8,7 @@ export async function GET(request: Request, { params }: { params: { wallet: stri
     where: {
       wallet: wallet,
     },
-    // cacheStrategy: { // TODO: cache doesn't work with user popover
-    //   ttl: 60,
-    // }
   });
-
-  // if (!user) {
-  //   const pointsUser = await prisma.points.findUnique({
-  //     where: {
-  //       wallet: wallet,
-  //     },
-  //   });
-
-  //   if (!pointsUser) {
-  //     return Response.json({ success: false, message: "User does not exist" });
-  //   }
-
-  //   return Response.json({ success: true, data: pointsUser });
-  // }
 
   if (!user) {
     return Response.json({ success: false, message: "User does not exist" });

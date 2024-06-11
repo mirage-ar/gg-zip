@@ -103,7 +103,7 @@ const Transactions: React.FC<TransactionsProps> = ({ playerList }) => {
               </div>
               <div className={styles.priceContainer}>
                 <p>{withCommas(Number(transaction.amount).toFixed(3))}</p>
-                {/* TODO: 2) remove cluster get param on launch */}
+                {/* TODO: remove cluster get param on launch */}
                 <Link href={`https://solscan.io/tx/${transaction.signature}?cluster=devnet`} target="_blank"> 
                   <Image src="/assets/icons/icons-16/transaction.svg" alt="transaction link" width={16} height={16} />
                 </Link>
