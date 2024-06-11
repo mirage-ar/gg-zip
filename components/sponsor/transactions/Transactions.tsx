@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import * as DateFNS from "date-fns";
 
 import styles from "./Transactions.module.css";
 
 import { PublicKey } from "@solana/web3.js";
 import { Player, TransactionData } from "@/types";
-import { formatWalletAddress, wait, withCommas } from "@/utils";
+import { formatDate, formatWalletAddress, wait, withCommas } from "@/utils";
 import useSolana from "@/hooks/useSolana";
 
 import { TRANSACTION_COUNT } from "@/utils/constants";
@@ -95,7 +94,7 @@ const Transactions: React.FC<TransactionsProps> = ({ playerList }) => {
             <div key={index} className={styles.transaction}>
               <div className={styles.walletContainer}>
                 <p>{formatWalletAddress(transaction.buyer)}</p>
-                <span>{DateFNS.formatDistance(new Date(transaction.timestamp * 1000), new Date(), { addSuffix: true })}</span>
+                <span>{formatDate(new Date(transaction.timestamp * 1000))}</span>
               </div>
               <p style={{ width: "50px" }}>{transaction.type}</p>
               <div className={styles.userContainer}>

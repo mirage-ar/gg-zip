@@ -115,4 +115,3 @@ export const resizeImage = (file: File): Promise<string> => {
     img.src = URL.createObjectURL(file);
   });
 };
-
