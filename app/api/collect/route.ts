@@ -41,6 +41,9 @@ async function getSponsorAccounts(program: anchor.Program, wallet: string) {
 
     const accounts = program.account.tokenAccount.all(subjectFilter);
 
+    console.log("Wallet:", wallet);
+    console.log("Accounts:", accounts);
+
     return accounts;
   } catch (error) {
     console.error("Error fetching account info:", error);
