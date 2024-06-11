@@ -28,13 +28,11 @@ async function getTotalShares(program: anchor.Program, wallet: string): Promise<
 
 async function getSponsorAccounts(program: anchor.Program, wallet: string) {
   try {
-    const walletPublicKey = new PublicKey(wallet);
-
     const subjectFilter = [
       {
         memcmp: {
           offset: 40, // 8 bytes discriminator + 32 bytes owner
-          bytes: walletPublicKey.toBase58(),
+          bytes: wallet,
         },
       },
     ];
@@ -91,7 +89,7 @@ export async function POST(request: Request) {
   const allSponsorAccounts = await getSponsorAccounts(program, subject);
 
   const promises = (allSponsorAccounts || []).map(async (account) => {
-    const wallet = account.publicKey.toBase58();
+    const wallet: string = (account.account.owner as anchor.web3.PublicKey).toBase58();
 
     const sponsorAccount = await getTokenAccount(program, wallet, subject);
 
