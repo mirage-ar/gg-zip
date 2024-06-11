@@ -181,6 +181,8 @@ export default function Home() {
 
       const holdings = await calculateTotalHoldings(players, sponsorHoldingsWallets);
       setTotalHoldings(holdings);
+
+      // TODO: FETCH SPONSOR POINTS HERE
     };
 
     fetchData();

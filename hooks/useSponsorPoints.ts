@@ -88,24 +88,26 @@ const useSponsorPoints = (publicKey: PublicKey | null) => {
 
       if (!isHolding) {
         return currentPoints;
+      } else {
+        const user = await fetchUser(wallet);
+        return user?.points || currentPoints
       }
 
-      const response = await fetch(`api/collect`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ wallet: publicKey, subject: message.wallet, points: message.points }),
-      });
+      // const response = await fetch(`api/collect`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ wallet: publicKey, subject: message.wallet, points: message.points }),
+      // });
 
-      const data = await response.json();
+      // const data = await response.json();
 
-      if (!data.success) {
-        console.error("Error updating sponsor points:", data.error);
-        return currentPoints;
-      }
+      // if (!data.success) {
+      //   console.error("Error updating sponsor points:", data.error);
+      //   return currentPoints;
+      // }
 
-      return data.points;
     } catch (error) {
       console.error("Error updating sponsor points:", error);
       return currentPoints;

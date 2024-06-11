@@ -70,7 +70,7 @@ async function getTokenAccount(program: anchor.Program, wallet: string, subject:
 
 export async function POST(request: Request) {
   const data = await request.json();
-  const { wallet, subject, points } = data;
+  const { subject, points } = data;
 
   const connection = new Connection(RPC);
   const programId = new PublicKey(PROGRAM_ID);
@@ -78,32 +78,51 @@ export async function POST(request: Request) {
   const MockWallet = {
     signTransaction: () => Promise.reject(),
     signAllTransactions: () => Promise.reject(),
-    publicKey: new PublicKey(wallet),
+    publicKey: new PublicKey(subject),
   };
 
   const provider = new anchor.AnchorProvider(connection, MockWallet, anchor.AnchorProvider.defaultOptions());
   // @ts-ignore
   const program = new anchor.Program(IDL, programId, provider);
 
-  const sponsorAccount = await getTokenAccount(program, wallet, subject);
+  const allSponsorAccounts = await getSponsorAccounts(program, subject);
 
-  if (!sponsorAccount) {
-    return Response.json({ success: false, message: "Hunter account not found" });
-  }
+  for (const account of allSponsorAccounts || []) {
+    const wallet = account.publicKey.toBase58();
 
-  console.log("Points:", points);
-  const sponsorShares = bnToNumber(sponsorAccount.amount as anchor.BN);
-  console.log("Sponsor shares:", sponsorShares);
-  const totalShares = await getTotalShares(program, subject);
-  console.log("Total shares:", totalShares);
-  const sponsorPercentage = sponsorShares / totalShares;
-  console.log("Sponsor percentage:", sponsorPercentage);
-  const pointsToGive = points * 3 * sponsorPercentage;
-  console.log("Points to give:", pointsToGive);
+    const sponsorAccount = await getTokenAccount(program, wallet, subject);
 
-  // FOR SAFTEY
-  try {
-    await prisma.points.update({
+    if (!sponsorAccount) {
+      return Response.json({ success: false, message: "Sponsor account not found" });
+    }
+
+    console.log("Points:", points);
+    const sponsorShares = bnToNumber(sponsorAccount.amount as anchor.BN);
+    console.log("Sponsor shares:", sponsorShares);
+    const totalShares = await getTotalShares(program, subject);
+    console.log("Total shares:", totalShares);
+    const sponsorPercentage = sponsorShares / totalShares;
+    console.log("Sponsor percentage:", sponsorPercentage);
+    const pointsToGive = points * 3 * sponsorPercentage;
+    console.log("Points to give:", pointsToGive);
+
+    // FOR SAFTEY
+    try {
+      await prisma.points.update({
+        where: {
+          wallet: wallet,
+        },
+        data: {
+          points: {
+            increment: pointsToGive,
+          },
+        },
+      });
+    } catch (error) {
+      console.log("No points record to update");
+    }
+
+    const sponsor = await prisma.user.update({
       where: {
         wallet: wallet,
       },
@@ -113,20 +132,7 @@ export async function POST(request: Request) {
         },
       },
     });
-  } catch (error) {
-    console.log("No points record to update");
   }
 
-  const sponsor = await prisma.user.update({
-    where: {
-      wallet: wallet,
-    },
-    data: {
-      points: {
-        increment: pointsToGive,
-      },
-    },
-  });
-
-  return Response.json({ success: true, points: sponsor.points });
+  return Response.json({ success: true });
 }
