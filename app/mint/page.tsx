@@ -104,7 +104,7 @@ export default function Mint() {
 
     if (!success) {
       setLoading(false);
-      setError("Transaction failed. Please make sure testnet and have sol.");
+      setError("Transaction failed. Please make sure you have testnet sol.");
       return;
     }
 

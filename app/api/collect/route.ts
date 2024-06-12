@@ -91,7 +91,7 @@ export async function POST(request: Request) {
   const promises = (allSponsorAccounts || []).map(async (account) => {
     const wallet: string = (account.account.owner as anchor.web3.PublicKey).toBase58();
 
-    const sponsorAccount = await getTokenAccount(program, wallet, subject);
+    const sponsorAccount = await getTokenAccount(program, wallet, subject); // TODO: not needed, we already have the token accounts
 
     if (!sponsorAccount) {
       return Response.json({ success: false, message: "Sponsor account not found" });
