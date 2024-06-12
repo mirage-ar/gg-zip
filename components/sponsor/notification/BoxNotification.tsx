@@ -13,7 +13,7 @@ const BoxNotification: React.FC = () => {
   const { boxNotification } = useApplicationContext();
 
   useEffect(() => {
-    if (boxNotification) {
+    if (boxNotification.show) {
       setShow(true);
       setTimeout(() => {
         setShow(false);
