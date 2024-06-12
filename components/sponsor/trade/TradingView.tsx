@@ -6,6 +6,7 @@ import styles from "./TradingView.module.css";
 import { Player } from "@/types";
 import { formatWalletAddress, withCommas } from "@/utils";
 import { useSolana } from "@/hooks";
+import { useApplicationContext } from "@/state/ApplicationContext";
 
 interface TradingViewProps {
   player: Player;
@@ -14,6 +15,7 @@ interface TradingViewProps {
 
 const TradingView: React.FC<TradingViewProps> = ({ player, setShowOverlay }) => {
   const { cardHoldings, sellPrice, buyPrice, buyPlayerCard, sellPlayerCard } = useSolana(player.wallet);
+  const { transactionPending } = useApplicationContext();
 
   // Function to stop event propagation
   const handleContainerClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

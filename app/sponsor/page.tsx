@@ -185,7 +185,7 @@ export default function Home() {
       const holdings = await calculateTotalHoldings(players, sponsorHoldingsWallets);
       setTotalHoldings(holdings);
 
-      // TODO: FETCH SPONSOR POINTS HERE - REMOVE ?
+      // TODO: UPDATE TO SST USER
       if (publicKey) {
         const user = await fetchUser(publicKey.toBase58());
         if (user) {

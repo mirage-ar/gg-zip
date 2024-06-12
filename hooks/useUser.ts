@@ -27,6 +27,7 @@ export default function useUser() {
     return null;
   };
 
+  // TODO: update to SST user
   const createUpdateUser = async (wallet: string, username: string, image: string, twitterId?: string) => {
     try {
       const response = await fetch(`/api/user/${wallet}`, {

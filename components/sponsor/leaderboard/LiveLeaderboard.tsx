@@ -8,6 +8,7 @@ import styles from "./LiveLeaderboard.module.css";
 import { Player, SponsorHoldings, Sort, Powerup } from "@/types";
 import { withCommas } from "@/utils";
 import SearchBar from "@/components/utility/SearchBar";
+import { useApplicationContext } from "@/state/ApplicationContext";
 
 interface LiveLeaderboardProps {
   flyToMarker: (markerId: string) => void;
@@ -32,6 +33,8 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredPlayers, setFilteredPlayers] = useState<Player[]>([]);
+
+  const { transactionPending } = useApplicationContext();
 
   useEffect(() => {
     // Function to apply sorting and filtering
@@ -215,10 +218,10 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
                           <div className={styles.price}>{withCommas(player.buyPrice?.toFixed(3) || 0)}</div>
                           <button
                             className={styles.tradeButton}
-                            disabled={!player.buyPrice}
+                            disabled={!player.buyPrice || transactionPending}
                             onClick={() => openTradingView(player, index + 1)}
                           >
-                            Trade
+                            {transactionPending ? "..." : "Trade"}
                           </button>
                         </>
                       ) : (

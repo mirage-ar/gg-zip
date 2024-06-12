@@ -189,6 +189,7 @@
 
 .tradeButton:disabled {
   background-color: var(--g3);
+  color: var(--w);
   cursor: not-allowed;
 }
 
