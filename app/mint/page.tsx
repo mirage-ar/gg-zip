@@ -12,6 +12,7 @@ import { useSolana, useUser } from "@/hooks";
 import { formatWalletAddress } from "@/utils";
 import { Player, TwitterUser } from "@/types";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { set } from "date-fns";
 
 enum Step {
   CONNECT_WALLET = 1,
@@ -24,6 +25,7 @@ export default function Mint() {
   const [step, setStep] = useState<Step>(Step.CONNECT_WALLET);
   const [playerCard, setPlayerCard] = useState<Player | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const { publicKey } = useWallet();
   const { setVisible } = useWalletModal();
@@ -86,11 +88,25 @@ export default function Mint() {
   };
 
   const mintCard = async () => {
-    if (!publicKey) return;
-    if (!playerCard) return;
+    if (!publicKey) {
+      setError("Wallet not connected.");
+      return;
+    }
+
+    if (!playerCard) {
+      setError("Player card not found.");
+      return;
+    }
 
     setLoading(true);
-    await mintPlayerCard();
+    const success = await mintPlayerCard();
+    
+    if (!success) {
+      setLoading(false);
+      setError("Transaction failed. Please try again.");
+      return;
+    }
+
     await createUser();
     setStep(Step.FINISHED);
     setLoading(false);
@@ -109,7 +125,10 @@ export default function Mint() {
               <source src="/assets/video/mint.mp4" type="video/mp4" />
             </video>
           )}
-          <div className={styles.header}>Mint Player Card</div>
+          <div className={styles.header}>
+            <span>Mint Player Card</span>
+            {error && <div className={styles.error}>{error}</div>}
+          </div>
           <div className={styles.cardContainer}>
             {/* PLAYER CARD STEPS */}
             {step === Step.CONNECT_WALLET && (

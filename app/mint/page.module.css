@@ -32,12 +32,19 @@
 }
 
 .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 32px 39px;
   width: 100%;
   color: var(--g);
   font-family: var(--connect);
   font-size: 18px;
   text-transform: uppercase;
+}
+
+.error {
+  color: #d81313;
 }
 
 .userName {

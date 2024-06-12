@@ -153,9 +153,9 @@ export default function useSolana(playerWalletAddress?: string) {
     }
   }
 
-  async function mintPlayerCard() {
+  async function mintPlayerCard(): Promise<boolean> {
     if (!program || !publicKey) {
-      return;
+      return false;
     }
 
     try {
@@ -186,9 +186,11 @@ export default function useSolana(playerWalletAddress?: string) {
       // const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
       console.log(transaction);
       setTransactionPending(false);
+      return true;
     } catch (error) {
       console.error("mintPlayerCard", error);
       setTransactionPending(false);
+      return false;
     }
   }
 
