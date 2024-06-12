@@ -19,7 +19,7 @@ const BlankPage: React.FC = () => {
         <div className={styles.titleContainer}>
           <Image src="/assets/graphics/testnet/left.svg" alt="spacer" width={14} height={58} />
           <span className={styles.text}>
-            Switch wallet to testnet:
+            Switch wallet to devnet:
             <br />
             settings -&gt; developer settings -&gt; testnet mode
           </span>
@@ -38,7 +38,7 @@ const BlankPage: React.FC = () => {
         <div className={styles.titleContainer}>
           <Image src="/assets/graphics/testnet/left.svg" alt="spacer" width={14} height={58} />
           <span className={styles.text}>
-            Get testnet sol via:
+            Get devnet sol via:
             <br />
             <Link href="https://faucet.solana.com/">faucet.solana.com</Link>
           </span>
