@@ -88,6 +88,7 @@ export default function Mint() {
   };
 
   const mintCard = async () => {
+    setError(null);
     if (!publicKey) {
       setError("Wallet not connected.");
       return;
@@ -100,10 +101,10 @@ export default function Mint() {
 
     setLoading(true);
     const success = await mintPlayerCard();
-    
+
     if (!success) {
       setLoading(false);
-      setError("Transaction failed. Please try again.");
+      setError("Transaction failed. Please make sure testnet and have sol.");
       return;
     }
 
