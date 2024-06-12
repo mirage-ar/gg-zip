@@ -23,6 +23,8 @@ export default function Home() {
   const markersRef = useRef<MarkersObject>({});
   const [playerCount, setPlayerCount] = useState<number>(0);
 
+  const router = useRouter();
+
   const { publicKey } = useWallet();
   const { setVisible } = useWalletModal();
 
@@ -47,28 +49,36 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [timeRemaining]);
 
-  // TODO: turn player count on before next game
-  // useEffect(() => {
-  //   const getPlayerCount = async () => {
-  //     try {
-  //       const response = await fetch(`${GAME_API}/players`);
-  //       const data = await response.json();
-  //       setPlayerCount(data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
+  // TODO: PLAYER COUNT POLLING - needs to be updated
+  useEffect(() => {
+    const getPlayerCount = async () => {
+      try {
+        const response = await fetch(`${GAME_API}/players`);
+        const data = await response.json();
+        setPlayerCount(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  //   getPlayerCount();
+    getPlayerCount();
 
-  //   const interval = setInterval(() => {
-  //     if (document.visibilityState === "visible") {
-  //       getPlayerCount();
-  //     }
-  //   }, POLLING_TIME);
+    const interval = setInterval(() => {
+      if (document.visibilityState === "visible") {
+        getPlayerCount();
+      }
+    }, POLLING_TIME);
 
-  //   return () => clearInterval(interval);
-  // }, []);
+    return () => clearInterval(interval);
+  }, []);
+
+  const joinGame = () => {
+    if (!publicKey) {
+      setVisible(true);
+    } else {
+      router.push("/sponsor");
+    }
+  };
 
   return (
     <>
@@ -142,7 +152,7 @@ export default function Home() {
                     {/* SPONSOR SECTION */}
                     <div className={styles.playerSection}>
                       <Image src="/assets/graphics/timer/spectator.svg" alt="Spectator" width={27} height={72} />
-                      <span className={styles.playerTitle}>SPECTATORS</span>
+                      <span className={styles.playerTitle}>SPONSORS</span>
                       <div className={styles.arrows}>
                         {Array.from({ length: 7 }).map((_, index) => (
                           <Image
@@ -155,7 +165,7 @@ export default function Home() {
                         ))}
                       </div>
                       {/* <Image src="/assets/graphics/timer/connect.svg" alt="Connect" width={214} height={70} /> */}
-                      <button className={styles.connectButton} onClick={() => setVisible(true)}>
+                      <button className={styles.connectButton} onClick={() => joinGame()}>
                         {publicKey ? "Click to Join" : "Connect Wallet to Join"}
                       </button>
                     </div>
@@ -208,7 +218,7 @@ export default function Home() {
                     {/* SPONSOR SECTION */}
                     <div className={styles.playerSection}>
                       <Image src="/assets/graphics/timer/spectator.svg" alt="Spectator" width={27} height={72} />
-                      <span className={styles.playerTitle}>SPECTATORS</span>
+                      <span className={styles.playerTitle}>SPONSORS</span>
                     </div>
                     <div className={styles.goToDesktop}>Go to Desktop</div>
                   </div>

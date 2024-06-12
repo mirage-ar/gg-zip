@@ -37,9 +37,10 @@ const GameTimer = () => {
       if (timeRemaining <= 0) {
         clearInterval(interval);
 
-        if (pathname === "/hunt") {
-          router.push("/gameover");
-        }
+        // TODO: new game over screen
+        // if (pathname === "/sponsor") {
+        //   router.push("/gameover");
+        // }
       }
     }, 1000);
 
