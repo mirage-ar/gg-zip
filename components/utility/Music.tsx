@@ -33,7 +33,7 @@ const Music: React.FC = () => {
 
   return (
     <div className={styles.main}>
-      <audio ref={audioRef} src={"/assets/audio/olsen.mp3"} autoPlay loop muted={isMuted} />
+      <audio ref={audioRef} src={"/assets/audio/boiler.mp3"} autoPlay loop muted={isMuted} />
       <div className={styles.button} onClick={toggleMute}>
         <Image
           src={isMuted ? "/assets/icons/icons-24/sound-off.svg" : "/assets/icons/icons-24/sound-on.svg"}
