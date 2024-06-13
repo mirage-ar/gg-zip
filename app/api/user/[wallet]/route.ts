@@ -36,6 +36,7 @@ export async function POST(request: Request, { params }: { params: { wallet: str
       username: username,
       image: image,
       points: userPoints?.points,
+      twitterId: twitterId || userPoints?.twitterId,
     },
     create: {
       username: username,
