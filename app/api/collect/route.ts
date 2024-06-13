@@ -97,45 +97,49 @@ export async function POST(request: Request) {
       return Response.json({ success: false, message: "Sponsor account not found" });
     }
 
-    console.log("Points:", points);
-    const sponsorShares = bnToNumber(sponsorAccount.amount as anchor.BN);
-    console.log("Sponsor shares:", sponsorShares);
-    const totalShares = await getTotalShares(program, subject);
-    console.log("Total shares:", totalShares);
-    const sponsorPercentage = sponsorShares / totalShares;
-    console.log("Sponsor percentage:", sponsorPercentage);
-    const pointsToGive = points * 3 * sponsorPercentage;
-    console.log("Points to give:", pointsToGive);
-
-    // FOR SAFETY
     try {
-      await prisma.points.update({
-        where: {
-          wallet: wallet,
-        },
-        data: {
-          points: {
-            increment: pointsToGive,
-          },
-        },
-      });
-    } catch (error) {
-      console.log("No points record to update");
-    }
+      console.log("Points:", points);
+      const sponsorShares = bnToNumber(sponsorAccount.amount as anchor.BN);
+      console.log("Sponsor shares:", sponsorShares);
+      const totalShares = await getTotalShares(program, subject);
+      console.log("Total shares:", totalShares);
+      const sponsorPercentage = sponsorShares / totalShares;
+      console.log("Sponsor percentage:", sponsorPercentage);
+      const pointsToGive = points * 3 * sponsorPercentage;
+      console.log("Points to give:", pointsToGive);
 
-    try {
-      await prisma.user.update({
-        where: {
-          wallet: wallet,
-        },
-        data: {
-          points: {
-            increment: pointsToGive,
+      // FOR SAFETY
+      try {
+        await prisma.points.update({
+          where: {
+            wallet: wallet,
           },
-        },
-      });
+          data: {
+            points: {
+              increment: pointsToGive,
+            },
+          },
+        });
+      } catch (error) {
+        console.log("No points record to update");
+      }
+
+      try {
+        await prisma.user.update({
+          where: {
+            wallet: wallet,
+          },
+          data: {
+            points: {
+              increment: pointsToGive,
+            },
+          },
+        });
+      } catch (error) {
+        console.log("No user record to update");
+      }
     } catch (error) {
-      console.log("No user record to update");
+      console.log("Error:", error);
     }
   });
 
