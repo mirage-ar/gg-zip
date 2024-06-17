@@ -6,7 +6,6 @@ import MapboxMap from "@/components/map/MapboxMap";
 
 import styles from "./page.module.css";
 import LiveLeaderboardOld from "@/components/sponsor/leaderboard/LiveLeaderboardOld";
-import BoxNotification from "@/components/sponsor/notification/BoxNotification";
 import Chat from "@/components/sponsor/chat/Chat";
 
 import { MarkersObject } from "@/types";

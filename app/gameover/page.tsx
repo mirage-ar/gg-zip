@@ -4,9 +4,6 @@ import Image from "next/image";
 import MapboxMap from "@/components/map/MapboxMap";
 import styles from "./page.module.css";
 import React, { useRef } from "react";
-import LiveLeaderboard from "@/components/sponsor/leaderboard/LiveLeaderboard";
-import BoxNotification from "@/components/sponsor/notification/BoxNotification";
-import Chat from "@/components/sponsor/chat/Chat";
 import Winners from "@/components/sponsor/winners/Winners";
 
 import { MarkersObject } from "@/types";

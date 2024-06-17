@@ -14,24 +14,65 @@ interface ProfileProps {
 const Profile: React.FC<ProfileProps> = ({ playerList, sponsorHoldings }) => {
   const [playerCards, setPlayerCards] = useState<Player[]>([]);
 
-  const { showOnboarding, setShowOnboarding } = useApplicationContext();
+  // SO WE DON'T HAVE TO FETCH IN DB EVERY POLLING TIME
+  const [heldPlayerCards, setHeldPlayerCards] = useState<Player[]>([]);
+
+  const { setShowOnboarding } = useApplicationContext();
+
+  const getPlayer = async (wallet: string): Promise<Player | null> => {
+    try {
+      const response = await fetch(`api/user/${wallet}`);
+      const result = await response.json();
+      return result.data;
+    } catch (error) {
+      console.error("Error fetching player:", error);
+      return null;
+    }
+  };
 
   useEffect(() => {
-    let playerCards = [];
-    for (let i = 0; i < playerList.length; i++) {
-      const player = playerList[i];
-      player.amount = sponsorHoldings.find((user) => user.wallet === player.wallet)?.amount || 0;
-      player.rank = i + 1;
-      const playerIsHeld = sponsorHoldings.find((user) => user.wallet === player.wallet);
-      if (playerIsHeld) {
-        playerCards.push(player);
+    const getPlayerCards = async () => {
+      let playerCards = [];
+      for (let i = 0; i < sponsorHoldings.length; i++) {
+        const playerListContainsPlayer = playerList.some((player) => player.wallet === sponsorHoldings[i].wallet);
+        if (playerListContainsPlayer) {
+          const player = playerList.find((player) => player.wallet === sponsorHoldings[i].wallet);
+          if (player) {
+            const playerRank = playerList.indexOf(player) + 1;
+            player.amount = sponsorHoldings[i].amount;
+            player.rank = playerRank;
+            playerCards.push(player);
+          }
+        }
       }
-    }
 
-    const sortedPlayerCards = playerCards.sort((a, b) => (a.rank || 0) - (b.rank || 0));
+      const sortedPlayerCards = playerCards.sort((a, b) => (a.rank || 0) - (b.rank || 0));
+      setPlayerCards(sortedPlayerCards);
+    };
 
-    setPlayerCards(sortedPlayerCards);
-  }, [playerList, sponsorHoldings]);
+    getPlayerCards();
+  }, [sponsorHoldings, playerList]);
+
+  useEffect(() => {
+    const getHeldPlayerCards = async () => {
+      let playerCards = [];
+      for (let i = 0; i < sponsorHoldings.length; i++) {
+        const playerListContainsPlayer = playerList.some((player) => player.wallet === sponsorHoldings[i].wallet);
+        if (!playerListContainsPlayer) {
+          const player = await getPlayer(sponsorHoldings[i].wallet);
+          if (player) {
+            player.amount = sponsorHoldings[i].amount;
+            playerCards.push(player);
+          }
+        }
+      }
+      setHeldPlayerCards(playerCards);
+    };
+
+    getHeldPlayerCards();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={styles.main}>
@@ -42,7 +83,7 @@ const Profile: React.FC<ProfileProps> = ({ playerList, sponsorHoldings }) => {
       <div className={styles.title}>Cards</div>
       <div className={styles.scrollable}>
         <div className={styles.playerCards}>
-          {playerCards.map((player) => (
+          {playerCards.concat(heldPlayerCards).map((player) => (
             <PlayerCard key={player.wallet} player={player} sponsorHoldings={sponsorHoldings} showButtons />
           ))}
         </div>

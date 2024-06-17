@@ -30,12 +30,6 @@ export type ChatMessage = {
   image: string;
 };
 
-export type BoxNotification = {
-  player?: Player | null;
-  points: number;
-  show: boolean;
-};
-
 export type MarkersObject = {
   [id: string]: mapboxgl.Marker;
 };

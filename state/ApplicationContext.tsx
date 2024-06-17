@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createContext, useContext } from "react";
 import { usePathname } from "next/navigation";
-import { BoxNotification, Player } from "@/types";
+import { Player } from "@/types";
 import { useWallet } from "@solana/wallet-adapter-react";
 
 interface ApplicationContext {
@@ -9,8 +9,6 @@ interface ApplicationContext {
   setTransactionPending: (transactionPending: boolean) => void;
   closed: boolean;
   setClosed: (closed: boolean) => void;
-  boxNotification: BoxNotification;
-  setBoxNotification: (boxNotification: BoxNotification) => void;
   showOnboarding: boolean;
   setShowOnboarding: (showOnboarding: boolean) => void;
   globalUser: Player | null;
@@ -22,8 +20,6 @@ const defaultContext: ApplicationContext = {
   setTransactionPending: () => {},
   closed: false,
   setClosed: () => {},
-  boxNotification: { player: null, points: 0, show: false },
-  setBoxNotification: () => {},
   showOnboarding: false,
   setShowOnboarding: () => {},
   globalUser: null,
@@ -35,7 +31,6 @@ const Context = createContext(defaultContext);
 export function ApplicationProvider({ children }: { children: React.ReactNode }) {
   const [transactionPending, setTransactionPending] = useState<boolean>(false);
   const [closed, setClosed] = useState(false);
-  const [boxNotification, setBoxNotification] = useState<BoxNotification>({ player: null, points: 0, show: false });
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [globalUser, setGlobalUser] = useState<Player | null>(null);
 
@@ -79,8 +74,6 @@ export function ApplicationProvider({ children }: { children: React.ReactNode })
     setTransactionPending,
     closed,
     setClosed,
-    boxNotification,
-    setBoxNotification,
     showOnboarding,
     setShowOnboarding,
     globalUser,

@@ -10,7 +10,7 @@
     "migrate:dev": "npx prisma migrate dev --schema=prisma/schema.prisma",
     "migrate:prod": "npx prisma migrate deploy --schema=prisma/schema.prisma",
     "postinstall": "npx prisma generate --no-engine",
-    "script": "ts-node ./scripts/script.ts"
+    "end": "ts-node scripts/end.ts"
   },
   "dependencies": {
     "@moralisweb3/common-evm-utils": "^2.23.2",
@@ -26,6 +26,7 @@
     "@solana/web3.js": "^1.89.1",
     "@vercel/analytics": "^1.1.2",
     "@vercel/speed-insights": "^1.0.8",
+    "axios": "^1.7.2",
     "canvas-confetti": "^1.9.2",
     "date-fns": "^3.2.0",
     "mapbox-gl": "^3.1.2",
@@ -34,8 +35,7 @@
     "next-auth": "^4.24.5",
     "pino-pretty": "^10.3.1",
     "react": "^18",
-    "react-dom": "^18",
-    "ts-node": "^10.9.2"
+    "react-dom": "^18"
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.6.4",
@@ -46,6 +46,8 @@
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "prisma": "^5.8.1",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5"
   }
 }

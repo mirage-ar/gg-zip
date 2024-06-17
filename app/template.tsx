@@ -6,7 +6,6 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { ApplicationProvider } from "@/state/ApplicationContext";
 import GameTimer from "@/components/sponsor/game/GameTimer";
-import BoxNotification from "@/components/sponsor/notification/BoxNotification";
 
 import "@solana/wallet-adapter-react-ui/styles.css";
 
