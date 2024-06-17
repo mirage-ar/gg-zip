@@ -7,6 +7,7 @@ import { Player } from "@/types";
 import { formatWalletAddress, withCommas } from "@/utils";
 import { useSolana } from "@/hooks";
 import { useApplicationContext } from "@/state/ApplicationContext";
+import PlayerCard from "../card/PlayerCard";
 
 interface TradingViewProps {
   player: Player;
@@ -14,7 +15,10 @@ interface TradingViewProps {
 }
 
 const TradingView: React.FC<TradingViewProps> = ({ player, setShowOverlay }) => {
+  const [amount, setAmount] = useState(1);
+  const [playerWithAmount, setPlayerWithAmount] = useState<Player>(player);
   const { cardHoldings, sellPrice, buyPrice, buyPlayerCard, sellPlayerCard } = useSolana(player.wallet);
+
   const { transactionPending } = useApplicationContext();
 
   // Function to stop event propagation
@@ -23,14 +27,91 @@ const TradingView: React.FC<TradingViewProps> = ({ player, setShowOverlay }) => 
   };
 
   const sellCard = () => {
-    sellPlayerCard(1);
-    setShowOverlay(false);
+    sellPlayerCard(amount);
   };
 
   const buyCard = () => {
-    buyPlayerCard(1);
-    setShowOverlay(false);
+    buyPlayerCard(amount);
   };
+
+  useEffect(() => {
+    setPlayerWithAmount({ ...player, amount: cardHoldings });
+  }, [player, cardHoldings]);
+
+  return (
+    <div className={styles.main} onClick={() => setShowOverlay(false)}>
+      <div className={styles.container} onClick={handleContainerClick}>
+        <div className={styles.header}>Trade</div>
+        <PlayerCard player={playerWithAmount} />
+        <div className={styles.playerName}>
+          <Link href={`https://twitter.com/${player.username}`}>@{player.username}</Link>
+        </div>
+        <div className={styles.spacer} />
+
+        {/* PLAYER INFO */}
+        <div className={styles.subInfoContainer}>
+          <div className={styles.titleRow}>
+            <p>Rank</p>
+            <p>Boxes</p>
+            <p>Points</p>
+          </div>
+          <div className={styles.contentRow}>
+            <div className={styles.contentInfo}>
+              {player.rank || 0}
+              <Image src="/assets/icons/icons-16/rank.svg" alt="Rank" width={16} height={16} />
+            </div>
+            <div className={styles.contentInfo}>
+              {player.boxes}
+              <Image src="/assets/icons/icons-16/box-opened-green.svg" alt="Rank" width={16} height={16} />
+            </div>
+            <div className={styles.contentInfo}>
+              {withCommas(player.points)}
+              <Image src="/assets/icons/icons-16/points.svg" alt="Rank" width={16} height={16} />
+            </div>
+          </div>
+        </div>
+        <div className={styles.spacer} />
+
+        {/* TRADING AMOUNT */}
+        <div className={styles.amountContainer}>
+          <div className={styles.amountButton}>
+            <Image
+              src="/assets/icons/icons-16/minus.svg"
+              alt="Minus"
+              width={16}
+              height={16}
+              onClick={() => setAmount(amount - 1 === 0 ? 1 : amount - 1)}
+            />
+          </div>
+          <div className={styles.amount}>
+            <p>{amount}</p>
+            <Image src="/assets/icons/icons-16/card.svg" alt="Card" width={16} height={16} />
+          </div>
+          <div className={styles.amountButton}>
+            <Image
+              src="/assets/icons/icons-16/plus.svg"
+              alt="Plus"
+              width={16}
+              height={16}
+              onClick={() => setAmount(amount + 1)}
+            />
+          </div>
+        </div>
+
+        {/* TRADING BUTTONS */}
+        <div className={styles.buttonContainer}>
+          <button className={styles.buyButton} onClick={buyCard} disabled={transactionPending}>
+            <p>Buy</p>
+            <span>{buyPrice.toFixed(3)}</span>
+          </button>
+          <button className={styles.sellButton} disabled={cardHoldings < 1 || amount > cardHoldings || transactionPending} onClick={sellCard}>
+            <p>Sell</p>
+            <span>{sellPrice.toFixed(3)}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className={styles.main} onClick={() => setShowOverlay(false)}>

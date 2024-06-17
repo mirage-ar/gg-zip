@@ -13,8 +13,8 @@
 }
 
 .container {
-  width: 538px;
-  height: 350px;
+  padding: 32px 0;
+  width: 305px;
   flex-shrink: 0;
   display: flex;
   justify-content: center;
@@ -24,6 +24,24 @@
   border-radius: 5px;
   background-color: var(--b);
   box-shadow: 0 0 20px var(--g);
+}
+
+.header {
+  margin: 0 0 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  color: var(--g);
+  font-family: var(--connect);
+  font-size: 18px;
+}
+
+.playerName {
+  font-family: var(--diatype);
+  font-size: 18px;
+  color: var(--g);
+  text-transform: uppercase;
 }
 
 .userInfoContainer {
@@ -78,24 +96,10 @@
 
 .titleRow {
   display: flex;
-  width: 265px;
+  width: 114px;
   padding: 0 32px;
   align-items: flex-start;
   flex-direction: column;
-  gap: 2px;
-  font-size: 18px;
-  color: var(--g);
-  font-family: var(--connect);
-  text-transform: uppercase;
-}
-
-.contentRow {
-  display: flex;
-  width: 265px;
-  padding: 0 32px;
-  align-items: flex-end;
-  flex-direction: column;
-  text-align: right;
   gap: 2px;
   font-size: 18px;
   color: var(--w);
@@ -103,11 +107,81 @@
   text-transform: uppercase;
 }
 
+.contentRow {
+  display: flex;
+  width: 195px;
+  padding: 0 32px;
+  align-items: flex-end;
+  flex-direction: column;
+  text-align: right;
+  gap: 2px;
+  font-size: 18px;
+  color: var(--g);
+  font-family: var(--connect);
+  text-transform: uppercase;
+}
+
+.contentInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.amountContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: space-between;
+  gap: 4px;
+  width: 235px;
+  height: 16px;
+  margin-bottom: 12px;
+}
+
+.amount {
+  height: 18px;
+  display: flex;
+  gap: 4px;
+  color: var(--w, #faf5e9);
+  font-family: var(--connect);
+  font-size: 18px;
+}
+
+.amont p {
+  margin: 0;
+  height: 20px;
+}
+
+.amountButton {
+  cursor: pointer;
+}
+
 .buttonContainer {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   gap: 4px;
+}
+
+.buyButton {
+  width: 235px;
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  font-size: 14px;
+  background-color: var(--g);
+  color: var(--b);
+  text-transform: uppercase;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.buyButton span {
+  font-family: var(--connect);
 }
 
 .sellButton {
@@ -130,33 +204,21 @@
   font-family: var(--connect);
 }
 
-.sellButton:disabled {
+.buyButton:disabled {
+  color: var(--b);
   background-color: var(--g3);
   cursor: not-allowed;
 }
 
-.buyButton {
-    width: 235px;
-    height: 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px;
-    font-size: 14px;
-    background-color: var(--g);
-    color: var(--b);
-    text-transform: uppercase;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .buyButton span {
-    font-family: var(--connect);
-  }
+.sellButton:disabled {
+  color: var(--b);
+  background-color: var(--g3);
+  cursor: not-allowed;
+}
 
 .spacer {
   margin: 12px 0;
   border-bottom: 1px solid #292929;
-  width: 474px;
+  /* width: 474px; */
+  width: 241px;
 }

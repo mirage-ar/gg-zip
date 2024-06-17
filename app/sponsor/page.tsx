@@ -14,7 +14,7 @@ import { PublicKey } from "@solana/web3.js";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
 import { Page, Tab, Player, MarkersObject, SponsorHoldings, Sort } from "@/types";
 import { getBuyPrice, getSellPrice, bnToNumber } from "@/solana";
-import { useSponsorPoints, useSolana, useUser } from "@/hooks";
+import { useSolana, useUser } from "@/hooks";
 import { withCommas } from "@/utils";
 import { GAME_API } from "@/utils/constants";
 import BN from "bn.js";
@@ -44,7 +44,6 @@ export default function Home() {
 
   const { program, fetchSponsorHoldings, fetchPlayerCardCount } = useSolana();
   const { publicKey } = useWallet();
-  // const { sponsorPoints } = useSponsorPoints(publicKey);
 
   const { fetchUser } = useUser();
 

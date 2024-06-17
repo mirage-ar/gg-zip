@@ -18,10 +18,12 @@ const Profile: React.FC<ProfileProps> = ({ playerList, sponsorHoldings }) => {
 
   useEffect(() => {
     let playerCards = [];
-    for (let i = 0; i < sponsorHoldings.length; i++) {
-      const player = playerList.find((player) => player.wallet === sponsorHoldings[i].wallet);
-      if (player) {
-        player.amount = sponsorHoldings[i].amount;
+    for (let i = 0; i < playerList.length; i++) {
+      const player = playerList[i];
+      player.amount = sponsorHoldings.find((user) => user.wallet === player.wallet)?.amount || 0;
+      player.rank = i + 1;
+      const playerIsHeld = sponsorHoldings.find((user) => user.wallet === player.wallet);
+      if (playerIsHeld) {
         playerCards.push(player);
       }
     }

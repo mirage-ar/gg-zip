@@ -221,7 +221,7 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
                             disabled={!player.buyPrice || transactionPending}
                             onClick={() => openTradingView(player, index + 1)}
                           >
-                            {transactionPending ? "..." : "Trade"}
+                            Trade
                           </button>
                         </>
                       ) : (

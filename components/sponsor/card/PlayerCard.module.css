@@ -138,6 +138,33 @@
   border: none;
 } */
 
+.amountContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: space-between;
+  gap: 4px;
+  width: 225px;
+  height: 16px;
+}
+
+.amount {
+  height: 18px;
+  display: flex;
+  gap: 4px;
+  color: var(--w, #faf5e9);
+  font-family: var(--connect);
+  font-size: 18px;
+}
+
+.amont p {
+  margin: 0;
+  height: 20px;
+}
+
+.amountButton {
+  cursor: pointer;
+}
+
 .buyButton {
     width: 235px;
     height: 40px;
@@ -179,6 +206,12 @@
   }
   
   .sellButton:disabled {
+    background-color: var(--g3);
+    color: var(--b);
+    cursor: not-allowed;
+  }
+
+  .buyButton:disabled {
     background-color: var(--g3);
     cursor: not-allowed;
   }

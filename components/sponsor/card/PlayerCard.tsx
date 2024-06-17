@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import styles from "./PlayerCard.module.css";
 import { useSolana } from "@/hooks";
 import { Player, SponsorHoldings } from "@/types";
+import { useApplicationContext } from "@/state/ApplicationContext";
 
 interface PlayerCardProps {
   player: Player;
@@ -12,8 +14,10 @@ interface PlayerCardProps {
 
 const PlayerCard: React.FC<PlayerCardProps> = ({ player, sponsorHoldings, showButtons }) => {
   const { cardHoldings, sellPrice, buyPrice, buyPlayerCard, sellPlayerCard } = useSolana(player.wallet);
+  const { transactionPending } = useApplicationContext();
 
   const [holdingAmountCard, setHoldingAmountCard] = useState<string>("card-0");
+  const [amount, setAmount] = useState(1);
 
   // This function is used to calculate the color of the card based on the holding amount
   const calculateCardColor = (holdingAmount: number) => {
@@ -36,17 +40,17 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, sponsorHoldings, showBu
 
   useEffect(() => {
     setHoldingAmountCard(
-      calculateCardColor(sponsorHoldings?.find((user) => user.wallet === player.wallet)?.amount || player.amount || 0)
+      calculateCardColor(player.amount || sponsorHoldings?.find((user) => user.wallet === player.wallet)?.amount || 0)
     );
-  }, [sponsorHoldings]);
+  }, [sponsorHoldings, player]);
 
   const buyCard = () => {
-    buyPlayerCard(1);
-  }
+    buyPlayerCard(amount);
+  };
 
   const sellCard = () => {
-    sellPlayerCard(1);
-  }
+    sellPlayerCard(amount);
+  };
 
   return (
     <div className={styles.main}>
@@ -70,7 +74,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, sponsorHoldings, showBu
           <Image src="/assets/graphics/ball-white.svg" alt="sphere" width={30} height={30} />
           <Image src="/assets/graphics/bar-spacer.svg" alt="spacer" width={35} height={2} />
           <div className={styles.playerCardAmount}>
-            {sponsorHoldings?.find((user) => user.wallet === player.wallet)?.amount || player.amount}
+            {player.amount || sponsorHoldings?.find((user) => user.wallet === player.wallet)?.amount || 0}
             <Image src="/assets/icons/icons-16/card.svg" alt="holding amount" width={16} height={16} />
           </div>
         </div>
@@ -78,13 +82,40 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, sponsorHoldings, showBu
 
       {showButtons && (
         <>
-          <div className={styles.playerName}>@{player.username}</div>
+          <div className={styles.playerName}>
+            <Link href={`https://twitter.com/${player.username}`} target="new">@{player.username}</Link>
+          </div>
+                  {/* TRADING AMOUNT */}
+        <div className={styles.amountContainer}>
+          <div className={styles.amountButton}>
+            <Image
+              src="/assets/icons/icons-16/minus.svg"
+              alt="Minus"
+              width={16}
+              height={16}
+              onClick={() => setAmount(amount - 1 === 0 ? 1 : amount - 1)}
+            />
+          </div>
+          <div className={styles.amount}>
+            <p>{amount}</p>
+            <Image src="/assets/icons/icons-16/card.svg" alt="Card" width={16} height={16} />
+          </div>
+          <div className={styles.amountButton}>
+            <Image
+              src="/assets/icons/icons-16/plus.svg"
+              alt="Plus"
+              width={16}
+              height={16}
+              onClick={() => setAmount(amount + 1)}
+            />
+          </div>
+        </div>
           <div className={styles.playerCardButtons}>
-            <button className={styles.buyButton} onClick={buyCard}>
+            <button className={styles.buyButton} onClick={buyCard} disabled={transactionPending}>
               <p>Buy</p>
               <span>{buyPrice.toFixed(3)}</span>
             </button>
-            <button className={styles.sellButton} disabled={cardHoldings < 1} onClick={sellCard}>
+            <button className={styles.sellButton} disabled={cardHoldings < 1 || transactionPending} onClick={sellCard}>
               <p>Sell</p>
               <span>{sellPrice.toFixed(3)}</span>
             </button>

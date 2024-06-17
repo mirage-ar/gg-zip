@@ -88,25 +88,28 @@ export async function POST(request: Request) {
 
   const allSponsorAccounts = await getSponsorAccounts(program, subject);
 
-  const promises = (allSponsorAccounts || []).map(async (account) => {
-    const wallet: string = (account.account.owner as anchor.web3.PublicKey).toBase58();
+  const filteredSponsorAccounts = allSponsorAccounts?.filter((account) => {
+    return (account.account.amount as anchor.BN).toNumber() > 0;
+  });
 
-    const sponsorAccount = await getTokenAccount(program, wallet, subject); // TODO: not needed, we already have the token accounts
+  const promises = (filteredSponsorAccounts || []).map(async (account) => {
+    const wallet: string = (account.account.owner as anchor.web3.PublicKey).toBase58();
+    const sponsorAccount = account.account;
 
     if (!sponsorAccount) {
       return Response.json({ success: false, message: "Sponsor account not found" });
     }
 
     try {
-      console.log("Points:", points);
+      console.log("Points: ", points);
       const sponsorShares = bnToNumber(sponsorAccount.amount as anchor.BN);
-      console.log("Sponsor shares:", sponsorShares);
+      console.log("Sponsor shares: ", sponsorShares);
       const totalShares = await getTotalShares(program, subject);
-      console.log("Total shares:", totalShares);
+      console.log("Total shares: ", totalShares);
       const sponsorPercentage = sponsorShares / totalShares;
-      console.log("Sponsor percentage:", sponsorPercentage);
+      console.log("Sponsor percentage: ", sponsorPercentage);
       const pointsToGive = points * 3 * sponsorPercentage;
-      console.log("Points to give:", pointsToGive);
+      console.log("Points to give: ", pointsToGive);
 
       // FOR SAFETY
       try {
@@ -136,10 +139,10 @@ export async function POST(request: Request) {
           },
         });
       } catch (error) {
-        console.log("No user record to update");
+        console.error("No user record to update");
       }
     } catch (error) {
-      console.log("Error:", error);
+      console.error("Error:", error);
     }
   });
 

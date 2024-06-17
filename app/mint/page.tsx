@@ -212,7 +212,7 @@ export default function Mint() {
               <div className={styles.greenTwo}>
                 <div className={styles.infoContainer}>
                   <div className={styles.infoLeft}>
-                    <Image src="/assets/icons/icons-24/hunters.svg" alt="checkmark" width={24} height={24} />
+                    <Image src="/assets/icons/icons-24/iphone.svg" alt="checkmark" width={24} height={24} />
                     download gg app on
                     <br />
                     HUNT.GG.ZIP
