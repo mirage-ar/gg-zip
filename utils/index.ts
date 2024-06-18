@@ -10,13 +10,6 @@ export function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export function isMobile() {
-  if (typeof window !== "undefined") {
-    return /Mobi|Android/i.test(window.navigator.userAgent);
-  }
-  return false;
-}
-
 export function formatPoints(points: number) {
   return points.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -82,6 +75,14 @@ export const withCommas = (x: number | string): string => {
 
   return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 };
+
+export const abbreviateString = (str: string, maxLength: number = 10): string => {
+  if (str.length <= maxLength) {
+    return str;
+  }
+
+  return str.slice(0, maxLength) + "...";
+}
 
 
 export const resizeImage = (file: File): Promise<string> => {

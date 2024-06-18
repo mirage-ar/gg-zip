@@ -1,13 +1,9 @@
 import React from "react";
 import Image from "next/image";
 
-import { isMobile } from "@/utils";
-
 import styles from "./page.module.css";
-import { on } from "events";
 
 const Page: React.FC = () => {
-  const onMobile = isMobile();
 
   return (
     <div className={styles.main}>

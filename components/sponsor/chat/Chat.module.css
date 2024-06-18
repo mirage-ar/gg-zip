@@ -2,14 +2,18 @@
 
 .container {
   margin: 20px 0;
-  padding: 0 16px 22px;
+  width: 419px;
+  height: calc(100vh - 300px); 
+  display: flex;
+  position: absolute;
+  bottom: 100px;
+  left: 16px;
 }
 
 .chatMessages {
   overflow-y: auto;
   width: 100%;
-  padding: 10px;
-  padding-bottom: 100px;
+  /* padding: 6px; */
   position: relative;
 
   /* Apply a mask for the fade effect */
@@ -40,6 +44,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 12px;
 }
 
 .chatMessageImage {
@@ -50,7 +55,7 @@
 }
 
 .chatMessageName {
-  margin-left: 8px;
+  margin-left: -4px;
   color: var(--g);
   text-transform: uppercase;
   font-size: 14px;
@@ -75,16 +80,17 @@
 
 .chatInputContainer {
   position: fixed;
-  bottom: 10px;
+  bottom: 55px;
+  left: 16px;
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 6px;
-  width: 500px;
+  width: 419px;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(3px);
   border-radius: var(--corner4, 4px);
-  border: 1px solid var(--g2, #292929);
+  /* border: 1px solid var(--g2, #292929); */
 }
 
 .chatInput {
@@ -94,12 +100,16 @@
   border: none;
   border-radius: 0;
   outline: none;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(3px);
   color: #fff;
   font-family: var(--diatype);
   font-size: 14px;
   resize: none;
+}
+
+.chatInput::placeholder {
+  color: var(--w);
 }
 
 .chatSendButton {

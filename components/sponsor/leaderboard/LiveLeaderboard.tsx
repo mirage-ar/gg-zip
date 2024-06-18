@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import styles from "./LiveLeaderboard.module.css";
 import { Player, SponsorHoldings, Sort, Powerup } from "@/types";
-import { withCommas } from "@/utils";
+import { abbreviateString, withCommas } from "@/utils";
 import SearchBar from "@/components/utility/SearchBar";
 import { useApplicationContext } from "@/state/ApplicationContext";
 
@@ -41,6 +41,10 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
     const applySortingAndFiltering = () => {
       let sortedPlayers = [...playerList];
 
+      for (let i = 0; i < sortedPlayers.length; i++) {
+        sortedPlayers[i].rank = i + 1;
+      }
+
       if (pointsSorted !== Sort.NONE) {
         sortedPlayers =
           pointsSorted === Sort.ASCENDING
@@ -67,8 +71,7 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
 
   const sponsorHoldingsWallets = sponsorHoldings.map((holding) => holding.wallet);
 
-  function openTradingView(player: Player, rank: number) {
-    player.rank = rank;
+  function openTradingView(player: Player) {
     setTradingViewPlayer(player);
     setShowOverlay(true);
   }
@@ -150,7 +153,7 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
             <Image src="/assets/icons/icons-24/g.svg" alt="Coin Icon" width={24} height={24} />
           </span>
           <span>
-            <Image src="/assets/icons/icons-24/box-opened-green.svg" alt="Coin Icon" width={24} height={24} />
+            <Image src="/assets/icons/icons-24/playercards-green.svg" alt="Cards Icon" width={24} height={24} />
           </span>
           <div className={styles.filterIcon} onClick={togglePointsSort}>
             {pointsIcon}
@@ -182,8 +185,14 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
                         : {}
                     }
                   >
-                    <div className={styles.playerInfo} onClick={() => flyToMarker(player.id)}>
-                      <div className={styles.playerRank}>{index + 1}</div>
+                    <div
+                      className={styles.playerInfo}
+                      onClick={() => flyToMarker(player.id)}
+                      style={onlineUsers.includes(player.id) ? { cursor: "pointer" } : {}}
+                    >
+                      <div className={styles.playerRank}>
+                        {player.rank || index + 1}
+                      </div>
                       <div className={styles.playerMarker}>
                         {onlineUsers.includes(player.id) && <div className={styles.onlineMarker} />}
                         <Image
@@ -196,18 +205,25 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
                       </div>
                       <div className={styles.playerNameContainer}>
                         <div className={styles.playerName}>
-                          @{player.username}
+                          @{abbreviateString(player.username, 16)}
                           {sponsorHoldings.find((user) => user.wallet === player.wallet) && (
                             <div className={styles.sponsorHoldingAmount}>
-                              <Image src="/assets/icons/icons-16/check-mark.svg" alt="Check" width={16} height={16} />
                               {sponsorHoldings.find((user) => user.wallet === player.wallet)?.amount}
+                              <Image src="/assets/icons/icons-16/player-card.svg" alt="Check" width={16} height={16} />
+                              {sponsorHoldings
+                                .find((user) => user.wallet === player.wallet)
+                                ?.percentage?.toFixed(1)}%{" "}
                             </div>
                           )}
                         </div>
                         <div className={styles.playerScoreContainer}>
                           <div className={styles.playerScore}>{withCommas(player.points)}</div>
-                          <div className={styles.dot}>•</div>
-                          <div className={styles.playerBoxes}>{withCommas(player.boxes)}</div>
+                          {player.cardCount && (
+                            <>
+                              <div className={styles.dot}>•</div>
+                              <div className={styles.playerBoxes}>{withCommas(player.cardCount)}</div>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -219,7 +235,7 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
                           <button
                             className={styles.tradeButton}
                             disabled={!player.buyPrice || transactionPending}
-                            onClick={() => openTradingView(player, index + 1)}
+                            onClick={() => openTradingView(player)}
                           >
                             Trade
                           </button>

@@ -6,7 +6,7 @@ import styles from "./Transactions.module.css";
 
 import { PublicKey } from "@solana/web3.js";
 import { Player, TransactionData } from "@/types";
-import { formatDate, formatWalletAddress, wait, withCommas } from "@/utils";
+import { abbreviateString, formatDate, formatWalletAddress, wait, withCommas } from "@/utils";
 import useSolana from "@/hooks/useSolana";
 
 import { TRANSACTION_COUNT } from "@/utils/constants";
@@ -83,13 +83,16 @@ const Transactions: React.FC<TransactionsProps> = ({ playerList }) => {
       <div className={styles.header}>
         <span style={{width: "100px"}}>Wallet</span>
         <span style={{width: "50px"}}>Type</span>
-        <span style={{width: "100px"}}>Card</span>
+        <span style={{width: "150px"}}>Card</span>
         <span style={{width: "100px"}}>Price</span>
       </div>
 
       <div className={styles.transactions}>
         {transactions.map((transaction, index) => {
           const player = playerList.find((player) => player.wallet === transaction.subject);
+          if (!player) {
+            return null;
+          }
           return (
             <div key={index} className={styles.transaction}>
               <div className={styles.walletContainer}>
@@ -99,7 +102,7 @@ const Transactions: React.FC<TransactionsProps> = ({ playerList }) => {
               <p style={{ width: "50px" }}>{transaction.type}</p>
               <div className={styles.userContainer}>
                 <Image src={player?.image || ""} alt="user" width={32} height={32} />
-                <p>@{player?.username}</p>
+                <p>@{abbreviateString(player?.username)}</p>
               </div>
               <div className={styles.priceContainer}>
                 <p>{withCommas(Number(transaction.amount).toFixed(3))}</p>

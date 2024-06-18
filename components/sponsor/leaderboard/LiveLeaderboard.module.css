@@ -60,9 +60,6 @@
 .playerInfo {
   display: flex;
   align-items: center;
-  cursor: pointer;
-
-  /* border: 1px solid red; */
 }
 
 .playerRank {
@@ -127,10 +124,10 @@
 
 .sponsorHoldingAmount {
   display: inline-flex;
-  padding: 2px 4px;
+  padding: 2px 5px;
   justify-content: center;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
   font-size: 12px;
 
   color: var(--b);
@@ -156,7 +153,7 @@
 }
 
 .priceContainer {
-  width: 250px;
+  /* width: 250px; */
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -164,7 +161,7 @@
 }
 
 .price {
-  width: 100px;
+  /* width: 100px; */
   font-family: var(--connect);
   font-size: 18px;
   color: var(--g);

@@ -39,6 +39,12 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, sponsorHoldings, showBu
   };
 
   useEffect(() => {
+    if (!transactionPending) {
+      setAmount(1);
+    }
+  }, [transactionPending]);
+
+  useEffect(() => {
     setHoldingAmountCard(
       calculateCardColor(player.amount || sponsorHoldings?.find((user) => user.wallet === player.wallet)?.amount || 0)
     );
@@ -83,33 +89,35 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, sponsorHoldings, showBu
       {showButtons && (
         <>
           <div className={styles.playerName}>
-            <Link href={`https://twitter.com/${player.username}`} target="new">@{player.username}</Link>
+            <Link href={`https://twitter.com/${player.username}`} target="new">
+              @{player.username}
+            </Link>
           </div>
-                  {/* TRADING AMOUNT */}
-        <div className={styles.amountContainer}>
-          <div className={styles.amountButton}>
-            <Image
-              src="/assets/icons/icons-16/minus.svg"
-              alt="Minus"
-              width={16}
-              height={16}
-              onClick={() => setAmount(amount - 1 === 0 ? 1 : amount - 1)}
-            />
+          {/* TRADING AMOUNT */}
+          <div className={styles.amountContainer}>
+            <div className={styles.amountButton}>
+              <Image
+                src="/assets/icons/icons-16/minus.svg"
+                alt="Minus"
+                width={16}
+                height={16}
+                onClick={() => setAmount(amount - 1 === 0 ? 1 : amount - 1)}
+              />
+            </div>
+            <div className={styles.amount}>
+              <p>{amount}</p>
+              <Image src="/assets/icons/icons-16/card.svg" alt="Card" width={16} height={16} />
+            </div>
+            <div className={styles.amountButton}>
+              <Image
+                src="/assets/icons/icons-16/plus.svg"
+                alt="Plus"
+                width={16}
+                height={16}
+                onClick={() => setAmount(amount + 1)}
+              />
+            </div>
           </div>
-          <div className={styles.amount}>
-            <p>{amount}</p>
-            <Image src="/assets/icons/icons-16/card.svg" alt="Card" width={16} height={16} />
-          </div>
-          <div className={styles.amountButton}>
-            <Image
-              src="/assets/icons/icons-16/plus.svg"
-              alt="Plus"
-              width={16}
-              height={16}
-              onClick={() => setAmount(amount + 1)}
-            />
-          </div>
-        </div>
           <div className={styles.playerCardButtons}>
             <button className={styles.buyButton} onClick={buyCard} disabled={transactionPending}>
               <p>Buy</p>

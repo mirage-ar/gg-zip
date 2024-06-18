@@ -1,8 +1,11 @@
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="icons-24/timer">
-<circle id="Ellipse 14" cx="12" cy="14" r="7.3" stroke="#42FF60" stroke-width="1.4"/>
-<path id="Vector 603" d="M12 7V2" stroke="#42FF60" stroke-width="1.4"/>
-<path id="Vector 605" d="M17.2324 9.26807L20.2324 6.26807" stroke="#42FF60" stroke-width="1.4"/>
-<path id="Vector 604" d="M8 2L16 2" stroke="#42FF60" stroke-width="1.4"/>
+<g id="icons-24/timer" clip-path="url(#clip0_22379_8101)">
+<path id="Ellipse 1292" d="M12 5.71429V1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 9.53342 1.81185 7.25645 3.18291 5.42174" stroke="#42FF60" stroke-width="1.4"/>
+<path id="Rectangle 34054" d="M5.52378 5.44937L12.6976 9.0363C14.3298 9.8524 14.6828 12.0277 13.3925 13.3181C12.1021 14.6084 9.92681 14.2554 9.11071 12.6232L5.52378 5.44937Z" fill="#42FF60"/>
 </g>
+<defs>
+<clipPath id="clip0_22379_8101">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs>
 </svg>

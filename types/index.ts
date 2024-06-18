@@ -9,6 +9,7 @@ export type Player = {
   buyPrice?: number;
   sellPrice?: number;
   amount?: number;
+  cardCount?: number;
 };
 
 export type TwitterUser = {
@@ -21,6 +22,7 @@ export type TwitterUser = {
 export type SponsorHoldings = {
   wallet: string;
   amount: number;
+  percentage?: number;
 };
 
 export type ChatMessage = {
@@ -28,6 +30,7 @@ export type ChatMessage = {
   timestamp: number;
   username: string;
   image: string;
+  source: string;
 };
 
 export type MarkersObject = {
@@ -63,7 +66,7 @@ export type TransactionData = {
 export enum Page {
   LEADERBOARD,
   TRANSACTIONS,
-  CHAT,
+  SPONSORS,
   POWERUPS,
   PROFILE,
 }

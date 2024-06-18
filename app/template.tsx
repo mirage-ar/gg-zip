@@ -6,6 +6,7 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { ApplicationProvider } from "@/state/ApplicationContext";
 import GameTimer from "@/components/sponsor/game/GameTimer";
+import Chat from "@/components/sponsor/chat/Chat";
 
 import "@solana/wallet-adapter-react-ui/styles.css";
 
@@ -33,6 +34,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
               <UserInfo />
               <Onboarding />
               <GameTimer />
+              <Chat />
             </ApplicationProvider>
           </WalletModalProvider>
         </WalletProvider>

@@ -30,6 +30,8 @@ const Profile: React.FC<ProfileProps> = ({ playerList, sponsorHoldings }) => {
     }
   };
 
+  // TODO: clean this up
+  // LIVE HELD CARDS
   useEffect(() => {
     const getPlayerCards = async () => {
       let playerCards = [];
@@ -53,26 +55,34 @@ const Profile: React.FC<ProfileProps> = ({ playerList, sponsorHoldings }) => {
     getPlayerCards();
   }, [sponsorHoldings, playerList]);
 
+  // HELD CARDS IN PRISMA DB
   useEffect(() => {
     const getHeldPlayerCards = async () => {
       let playerCards = [];
       for (let i = 0; i < sponsorHoldings.length; i++) {
         const playerListContainsPlayer = playerList.some((player) => player.wallet === sponsorHoldings[i].wallet);
         if (!playerListContainsPlayer) {
-          const player = await getPlayer(sponsorHoldings[i].wallet);
-          if (player) {
-            player.amount = sponsorHoldings[i].amount;
-            playerCards.push(player);
+          const playerExists = heldPlayerCards.find((player) => player.wallet === sponsorHoldings[i].wallet);
+          if (!playerExists) {
+            const player = await getPlayer(sponsorHoldings[i].wallet);
+            if (player) {
+              player.amount = sponsorHoldings[i].amount;
+              playerCards.push(player);
+            }
+          } else {
+            playerExists.amount = sponsorHoldings[i].amount;
+            playerCards.push(playerExists);
           }
         }
       }
+
       setHeldPlayerCards(playerCards);
     };
 
     getHeldPlayerCards();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [sponsorHoldings]);
 
   return (
     <div className={styles.main}>

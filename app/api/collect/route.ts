@@ -48,27 +48,6 @@ async function getSponsorAccounts(program: anchor.Program, wallet: string) {
   }
 }
 
-async function getTokenAccount(program: anchor.Program, wallet: string, subject: string) {
-  try {
-    const subjectPublicKey = new PublicKey(subject);
-    const subjectBuffer = subjectPublicKey.toBuffer();
-
-    const sponsorPublicKey = new PublicKey(wallet);
-    const sponsorBuffer = sponsorPublicKey.toBuffer();
-
-    const [tokenPda] = await findProgramAddressSync(
-      [Buffer.from("TOKEN"), sponsorBuffer, subjectBuffer],
-      program.programId
-    );
-
-    const tokenAccount = await program.account.tokenAccount.fetch(tokenPda);
-
-    return tokenAccount;
-  } catch (error) {
-    console.error("Error get token account:", error);
-  }
-}
-
 export async function POST(request: Request) {
   const data = await request.json();
   const { subject, points } = data;
@@ -111,22 +90,6 @@ export async function POST(request: Request) {
       const pointsToGive = points * 3 * sponsorPercentage;
       console.log("Points to give: ", pointsToGive);
 
-      // FOR SAFETY
-      try {
-        await prisma.points.update({
-          where: {
-            wallet: wallet,
-          },
-          data: {
-            points: {
-              increment: pointsToGive,
-            },
-          },
-        });
-      } catch (error) {
-        console.log("No points record to update");
-      }
-
       try {
         await prisma.user.update({
           where: {
@@ -142,7 +105,7 @@ export async function POST(request: Request) {
         console.error("No user record to update");
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error: ", error);
     }
   });
 

@@ -1,16 +1,10 @@
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-import { getSession } from "next-auth/react";
 import { useApplicationContext } from "@/state/ApplicationContext";
-import { Player, TwitterUser } from "@/types";
+import { Player } from "@/types";
 
 export default function useUser() {
   const { setGlobalUser } = useApplicationContext();
 
   const fetchUser = async (wallet: string): Promise<Player | null> => {
-    // CHECK IF USER EXISTS
     const response = await fetch(`/api/user/${wallet}`);
     const result = await response.json();
     if (result.success) {
@@ -27,7 +21,6 @@ export default function useUser() {
     return null;
   };
 
-  // TODO: update to SST user
   const createUpdateUser = async (wallet: string, username: string, image: string, twitterId?: string) => {
     try {
       const response = await fetch(`/api/user/${wallet}`, {

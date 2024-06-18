@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Timer from "@/components/utility/Timer";
 
 import styles from "./GameTimer.module.css";
@@ -11,13 +11,13 @@ import { getGameStartTime } from "@/utils";
 import { GAME_DATE, GAME_LENGTH } from "@/utils/constants";
 import { useApplicationContext } from "@/state/ApplicationContext";
 
-const tenMinutes = 10 * 60000;
+const fiveMinutes = 5 * 60000;
+const oneHour = 60 * 60000;
 
 const GameTimer = () => {
-  const router = useRouter();
   const pathname = usePathname();
 
-  const { closed, setClosed } = useApplicationContext();
+  const { closed, setGameEnding } = useApplicationContext();
 
   const isHunt = pathname === "/hunt" || pathname === "/sponsor";
 
@@ -34,13 +34,13 @@ const GameTimer = () => {
     const interval = setInterval(() => {
       setTimeRemaining(calculateTimeRemaining());
 
-      if (timeRemaining <= 0) {
-        clearInterval(interval);
+      if (timeRemaining <= fiveMinutes) {
+        setGameEnding(true);
+      }
 
-        // TODO: new game over screen
-        // if (pathname === "/sponsor") {
-        //   router.push("/gameover");
-        // }
+      if (timeRemaining <= 0) {
+        setGameEnding(false);
+        clearInterval(interval);
       }
     }, 1000);
 
@@ -52,10 +52,10 @@ const GameTimer = () => {
     isHunt &&
     timeRemaining < GAME_LENGTH &&
     timeRemaining > 0 && (
-      <div className={styles.main} style={closed ? { width: "100%" } : { width: "70%" }}>
+      <div className={styles.main} style={closed ? { width: "100%" } : { width: "80%" }}>
         <div className={styles.container}>
-          <div style={{ fontSize: "44px" }}>
-            <Timer timeRemaining={timeRemaining} />
+          <div style={{ fontSize: "32px" }}>
+            <Timer timeRemaining={timeRemaining} hideDays />
           </div>
           <Image src="/assets/icons/icons-24/timer.svg" alt="timer icon" width={24} height={24} />
         </div>

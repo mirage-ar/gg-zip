@@ -12,7 +12,7 @@ import styles from "./page.module.css";
 
 import { PublicKey } from "@solana/web3.js";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
-import { Page, Tab, Player, MarkersObject, SponsorHoldings, Sort } from "@/types";
+import { Page, Tab, Player, MarkersObject, SponsorHoldings } from "@/types";
 import { getBuyPrice, getSellPrice, bnToNumber } from "@/solana";
 import { useSolana, useUser } from "@/hooks";
 import { withCommas } from "@/utils";
@@ -37,7 +37,7 @@ export default function Home() {
   const [sponsorHoldings, setSponsorHoldings] = useState<SponsorHoldings[]>([]);
   const [sponsorPoints, setSponsorPoints] = useState<number>(0);
 
-  const { closed, setClosed } = useApplicationContext();
+  const { closed, setClosed, gameEnding } = useApplicationContext();
 
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<MarkersObject>({});
@@ -81,6 +81,7 @@ export default function Home() {
 
           player.buyPrice = getBuyPrice(playerCardCount, 1);
           player.sellPrice = getSellPrice(1, playerCardCount);
+          player.cardCount = playerCardCount;
         } catch (error) {
           // gracefully handle error, sometimes player cards are not minted
         }
@@ -147,10 +148,10 @@ export default function Home() {
     switch (page) {
       case Page.LEADERBOARD:
         return "Leaderboard";
+      case Page.SPONSORS:
+        return "Sponsors";
       case Page.TRANSACTIONS:
         return "Transactions";
-      case Page.CHAT:
-        return "Chat";
       case Page.POWERUPS:
         return "Powerups";
     }
@@ -209,6 +210,7 @@ export default function Home() {
   return (
     <>
       {/* ----- MAIN ----- */}
+      { gameEnding && <div className={styles.gameEnding} />}
       <div className={styles.main}>
         <MapboxMap mapRef={mapRef} markersRef={markersRef} />
         <SponsorNavigation page={page} setPage={setPage} closed={closed} setClosed={setClosed} />
@@ -285,10 +287,10 @@ export default function Home() {
                         sponsorHoldings={sponsorHoldings}
                       />
                     );
+                  case Page.SPONSORS:
+                    return <div>SPONSORS</div>;
                   case Page.TRANSACTIONS:
                     return <Transactions playerList={playerList} />;
-                  case Page.CHAT:
-                    return <Chat />;
                   case Page.POWERUPS:
                     return (
                       <Powerups

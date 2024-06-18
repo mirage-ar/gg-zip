@@ -21,6 +21,8 @@ const TradingView: React.FC<TradingViewProps> = ({ player, setShowOverlay }) => 
 
   const { transactionPending } = useApplicationContext();
 
+  const [transactionStarted, setTransactionStarted] = useState(false);
+
   // Function to stop event propagation
   const handleContainerClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation(); // This stops the click from propagating to the parent
@@ -28,15 +30,23 @@ const TradingView: React.FC<TradingViewProps> = ({ player, setShowOverlay }) => 
 
   const sellCard = () => {
     sellPlayerCard(amount);
+    setTransactionStarted(true);
   };
 
   const buyCard = () => {
     buyPlayerCard(amount);
+    setTransactionStarted(true);
   };
 
   useEffect(() => {
     setPlayerWithAmount({ ...player, amount: cardHoldings });
   }, [player, cardHoldings]);
+
+  useEffect(() => {
+    if (transactionStarted && !transactionPending) {
+      setShowOverlay(false);
+    }
+  }, [transactionPending]);
 
   return (
     <div className={styles.main} onClick={() => setShowOverlay(false)}>
@@ -104,7 +114,11 @@ const TradingView: React.FC<TradingViewProps> = ({ player, setShowOverlay }) => 
             <p>Buy</p>
             <span>{buyPrice.toFixed(3)}</span>
           </button>
-          <button className={styles.sellButton} disabled={cardHoldings < 1 || amount > cardHoldings || transactionPending} onClick={sellCard}>
+          <button
+            className={styles.sellButton}
+            disabled={cardHoldings < 1 || amount > cardHoldings || transactionPending}
+            onClick={sellCard}
+          >
             <p>Sell</p>
             <span>{sellPrice.toFixed(3)}</span>
           </button>

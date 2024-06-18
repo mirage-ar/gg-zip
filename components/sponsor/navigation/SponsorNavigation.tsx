@@ -24,7 +24,8 @@ const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, cl
   return (
     <div className={styles.main} style={closed ? { right: "50px" } : {}}>
       <div className={styles.nav} style={page === Page.PROFILE ? { backgroundColor: "#42FF60" } : {}}>
-        
+
+        {/* LEADERBOARD BUTTON */}
         <button
           className={styles.navButton}
           onClick={() => handlePageChange(Page.LEADERBOARD)}
@@ -38,6 +39,21 @@ const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, cl
           />
         </button>
 
+        {/* SPONSORS BUTTON */}
+        <button
+          className={styles.navButton}
+          onClick={() => handlePageChange(Page.SPONSORS)}
+          style={page === Page.SPONSORS ? { backgroundColor: "#42FF60" } : {}}
+        >
+          <Image
+            src={`/assets/icons/icons-24/sponsors-${page === Page.SPONSORS ? "black" : "white"}.svg`}
+            alt="leaderboard"
+            width={24}
+            height={24}
+          />
+        </button>
+
+        {/* TRANSACTIONS BUTTON */}
         <button
           className={styles.navButton}
           onClick={() => handlePageChange(Page.TRANSACTIONS)}
@@ -51,20 +67,8 @@ const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, cl
           />
         </button>
 
+        {/* POWERUPS BUTTON */}
         <button
-          className={styles.navButton}
-          onClick={() => handlePageChange(Page.CHAT)}
-          style={page === Page.CHAT ? { backgroundColor: "#42FF60" } : {}}
-        >
-          <Image
-            src={`/assets/icons/icons-24/chat-${page === Page.CHAT ? "black" : "white"}.svg`}
-            alt="leaderboard"
-            width={24}
-            height={24}
-          />
-        </button>
-
-        {/* <button
           className={styles.navButton}
           onClick={() => handlePageChange(Page.POWERUPS)}
           style={page === Page.POWERUPS ? { backgroundColor: "#42FF60" } : {}}
@@ -75,7 +79,7 @@ const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, cl
             width={24}
             height={24}
           />
-        </button> */}
+        </button>
 
         <div
           className={styles.navIcon}

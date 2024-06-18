@@ -227,6 +227,9 @@ export default function useSolana(playerWalletAddress?: string) {
     }
 
     try {
+
+
+  
       const ownerFilter = [
         {
           memcmp: {
@@ -238,13 +241,21 @@ export default function useSolana(playerWalletAddress?: string) {
 
       const accounts = await program.account.tokenAccount.all(ownerFilter);
 
-      const holdings = accounts.map((account) => {
+      const holdings: SponsorHoldings[] = accounts.map((account) => {
         return {
           // @ts-ignore
           wallet: account.account.subject.toBase58(),
           amount: bnToNumber(account.account.amount as anchor.BN),
+          percentage: 0,
         };
       });
+
+      for (const holding of holdings) {
+        const playerCardCount = await fetchPlayerCardCount(holding.wallet);
+        if (playerCardCount) {
+          holding.percentage = (holding.amount / playerCardCount) * 100;
+        }
+      }
 
       // UPDATE: Filter out holdings with 0 amount
       return holdings.filter((holding) => holding.amount > 0);

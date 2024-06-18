@@ -12,11 +12,9 @@ const Footer: React.FC = () => {
         <div className={styles.container}>
         <Link className={styles.link} href="https://t.me/ggdotzip" target="_blank">
             <Image src="/assets/icons/telegram.svg" alt="twitter" width={24} height={24} />
-            <span style={{ paddingLeft: "6px" }}>GGDOTZIP</span>
           </Link>
           <Link className={styles.link} href="https://twitter.com/ggdotzip" target="_blank">
             <Image src="/assets/icons/x.svg" alt="twitter" width={24} height={24} />
-            <span style={{ paddingLeft: "6px" }}>GGDOTZIP</span>
           </Link>
           <Music />
         </div>

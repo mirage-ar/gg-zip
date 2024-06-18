@@ -65,6 +65,7 @@ const Chat: React.FC = () => {
         timestamp: Date.now(),
         username: user?.username || (publicKey && formatWalletAddress(publicKey.toBase58())) || "Anonymous",
         image: user?.image || "https://gg.zip/assets/graphics/koji.png",
+        source: "sponsor",
       };
       webSocket.current.send(JSON.stringify({ action: "sendmessage", data: messageData }));
       setInputMessage("");
@@ -98,50 +99,63 @@ const Chat: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.chatMessages}>
-        {messages.map((message, index) => (
-          <div key={index} className={styles.chatMessageContainer}>
-            <div className={styles.chatMessageInfo}>
-              <div className={styles.chatMessageImageContainer}>
-                <Image
-                  src={message.image}
-                  alt={message.username}
-                  width={20}
-                  height={20}
-                  className={styles.chatMessageImage}
-                />
-                <p className={styles.chatMessageName}>{message.username}</p>
-              </div>
-              <p className={styles.chatMessageTimestamp}>
-                {DateFNS.formatDistance(new Date(message.timestamp), new Date(), { addSuffix: true })}
-              </p>
+    <>
+      {messages.length > 0 && (
+        <>
+          <div className={styles.container}>
+            <div className={styles.chatMessages}>
+              {messages.map((message, index) => (
+                <div key={index} className={styles.chatMessageContainer}>
+                  <div className={styles.chatMessageInfo}>
+                    <div className={styles.chatMessageImageContainer}>
+                      <Image
+                        src={message.image}
+                        alt={message.username}
+                        width={20}
+                        height={20}
+                        className={styles.chatMessageImage}
+                        style={message.source === "sponsor" ? { borderColor: "#FF61EF" } : {}}
+                      />
+                      <p
+                        className={styles.chatMessageName}
+                        style={message.source === "sponsor" ? { color: "#FF61EF" } : {}}
+                      >
+                        {message.username}
+                      </p>
+                      <Image src={`/assets/icons/icons-16/${message.source === "sponsor" ? "case" : "sword"}.svg`} alt="sponsor case" width={16} height={16} />
+                    </div>
+                    <p className={styles.chatMessageTimestamp}>
+                      {DateFNS.formatDistance(new Date(message.timestamp), new Date(), { addSuffix: true })}
+                    </p>
+                  </div>
+                  <p className={styles.chatMessage}>{message.message}</p>
+                </div>
+              ))}
+              <div ref={messagesEndRef} />
             </div>
-            <p className={styles.chatMessage}>{message.message}</p>
           </div>
-        ))}
-        <div ref={messagesEndRef} />
-      </div>
 
-      <div className={styles.chatInputContainer}>
-        <textarea
-          className={styles.chatInput}
-          value={inputMessage}
-          onChange={(e) => setInputMessage(e.target.value)}
-          onKeyDown={handleKeyPress}
-          placeholder="Type a message..."
-        />
-        {publicKey ? (
-          <button onClick={handleFormSubmit} className={styles.chatSendButton}>
-            SEND
-          </button>
-        ) : (
-          <button onClick={() => setVisible(true)} className={styles.chatSendButton}>
-            Connect Wallet
-          </button>
-        )}
-      </div>
-    </div>
+          <div className={styles.chatInputContainer}>
+            <textarea
+              className={styles.chatInput}
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              onKeyDown={handleKeyPress}
+              placeholder="Send a message..."
+            />
+            {publicKey ? (
+              <button onClick={handleFormSubmit} className={styles.chatSendButton}>
+                SEND
+              </button>
+            ) : (
+              <button onClick={() => setVisible(true)} className={styles.chatSendButton}>
+                Connect Wallet
+              </button>
+            )}
+          </div>
+        </>
+      )}
+    </>
   );
 };
 

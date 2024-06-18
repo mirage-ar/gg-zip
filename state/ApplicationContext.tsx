@@ -13,6 +13,8 @@ interface ApplicationContext {
   setShowOnboarding: (showOnboarding: boolean) => void;
   globalUser: Player | null;
   setGlobalUser: (globalUser: Player | null) => void;
+  gameEnding: boolean;
+  setGameEnding: (gameEnding: boolean) => void;
 }
 
 const defaultContext: ApplicationContext = {
@@ -24,6 +26,8 @@ const defaultContext: ApplicationContext = {
   setShowOnboarding: () => {},
   globalUser: null,
   setGlobalUser: () => {},
+  gameEnding: false,
+  setGameEnding: () => {},
 };
 
 const Context = createContext(defaultContext);
@@ -33,6 +37,7 @@ export function ApplicationProvider({ children }: { children: React.ReactNode })
   const [closed, setClosed] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [globalUser, setGlobalUser] = useState<Player | null>(null);
+  const [gameEnding, setGameEnding] = useState(false);
 
   const pathname = usePathname();
 
@@ -78,6 +83,8 @@ export function ApplicationProvider({ children }: { children: React.ReactNode })
     setShowOnboarding,
     globalUser,
     setGlobalUser,
+    gameEnding,
+    setGameEnding,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

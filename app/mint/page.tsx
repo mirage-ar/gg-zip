@@ -12,7 +12,6 @@ import { useSolana, useUser } from "@/hooks";
 import { formatWalletAddress } from "@/utils";
 import { Player, TwitterUser } from "@/types";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { set } from "date-fns";
 
 enum Step {
   CONNECT_WALLET = 1,
