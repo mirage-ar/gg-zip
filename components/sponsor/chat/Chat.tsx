@@ -100,7 +100,7 @@ const Chat: React.FC = () => {
 
   return (
     <>
-      {messages.length > 0 && (
+      {/* {messages.length > 0 && ( */}
         <>
           <div className={styles.container}>
             <div className={styles.chatMessages}>
@@ -154,7 +154,7 @@ const Chat: React.FC = () => {
             )}
           </div>
         </>
-      )}
+      {/* )} */}
     </>
   );
 };

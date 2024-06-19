@@ -8,7 +8,7 @@ import { useUser } from "@/hooks";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 import type { LocationData, MarkersObject } from "@/types";
-import { GAME_API, LOCATION_SOCKET_URL } from "@/utils/constants";
+import { GAME_API, LOCATION_SOCKET_URL, POLLING_TIME } from "@/utils/constants";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string;
 
@@ -112,7 +112,7 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = 
       if (document.visibilityState === "visible") {
         fetchBoxes();
       }
-    }, 5000);
+    }, POLLING_TIME);
 
     return () => clearInterval(interval);
   // eslint-disable-next-line react-hooks/exhaustive-deps
