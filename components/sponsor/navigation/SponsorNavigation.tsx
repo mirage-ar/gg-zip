@@ -24,6 +24,7 @@ const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, cl
   return (
     <div className={styles.main} style={closed ? { right: "50px" } : {}}>
       <div className={styles.nav} style={page === Page.PROFILE ? { backgroundColor: "#42FF60" } : {}}>
+
         {/* LEADERBOARD BUTTON */}
         <button
           className={styles.navButton}
@@ -39,7 +40,7 @@ const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, cl
         </button>
 
         {/* SPONSORS BUTTON */}
-        {/* <button
+        <button
           className={styles.navButton}
           onClick={() => handlePageChange(Page.SPONSORS)}
           style={page === Page.SPONSORS ? { backgroundColor: "#42FF60" } : {}}
@@ -50,7 +51,7 @@ const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, cl
             width={24}
             height={24}
           />
-        </button> */}
+        </button>
 
         {/* TRANSACTIONS BUTTON */}
         <button
@@ -80,7 +81,7 @@ const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, cl
           />
         </button> */}
 
-        {/* PROFILE BUTTON */}
+{/* PROFILE BUTTON */}
         <div
           className={styles.navIcon}
           onClick={() => handlePageChange(Page.PROFILE)}
