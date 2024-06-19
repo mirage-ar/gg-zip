@@ -12,7 +12,7 @@
   height: 100%;
   top: 0;
   left: 0;
-  filter: blur(8px);
+  filter: blur(2px);
   z-index: -10000;
 }
 
@@ -231,4 +231,28 @@
   .progress {
     width: 350px;
   }
+}
+
+.graphicTopLeft {
+  position: absolute;
+  top: 10%;
+  left: 15%;
+}
+
+.graphicTopRight {
+  position: absolute;
+  top: 10%;
+  right: 15%;
+}
+
+.graphicBottomLeft {
+  position: absolute;
+  bottom: 10%;
+  left: 15%;
+}
+
+.graphicBottomRight {
+  position: absolute;
+  bottom: 10%;
+  right: 15%;
 }

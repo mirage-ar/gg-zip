@@ -97,6 +97,18 @@ export default function Home() {
                   <Timer timeRemaining={timeRemaining} />
                 </div>
               </div>
+              <div className={styles.graphicTopLeft}>
+                <Image src="/assets/graphics/timer/top-left.svg" alt="graphic" width={62} height={162} />
+              </div>
+              <div className={styles.graphicTopRight}>
+                <Image src="/assets/graphics/timer/top-right.svg" alt="graphic" width={62} height={162} />
+              </div>
+              <div className={styles.graphicBottomLeft}>
+                <Image src="/assets/graphics/timer/bottom-left.svg" alt="graphic" width={62} height={162} />
+              </div>
+              <div className={styles.graphicBottomRight}>
+                <Image src="/assets/graphics/timer/bottom-right.svg" alt="graphic" width={62} height={162} />
+              </div>
 
               {/* DESKTOP PLAYER CONTAINER */}
               {timeRemaining <= FIVE_MINUTES && (
