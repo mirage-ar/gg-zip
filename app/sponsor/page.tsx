@@ -211,7 +211,7 @@ export default function Home() {
     <>
       {/* ----- MAIN ----- */}
       { gameEnding && <div className={styles.gameEnding} />}
-      <Chat />
+      <Chat playerList={playerList} />
       <div className={styles.main}>
         <MapboxMap mapRef={mapRef} markersRef={markersRef} />
         <SponsorNavigation page={page} setPage={setPage} closed={closed} setClosed={setClosed} />

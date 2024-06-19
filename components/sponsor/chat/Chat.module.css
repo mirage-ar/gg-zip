@@ -3,7 +3,7 @@
 .container {
   margin: 20px 0;
   width: 419px;
-  height: calc(100vh - 300px); 
+  height: calc(100vh - 300px);
   display: flex;
   position: absolute;
   bottom: 100px;
@@ -51,12 +51,12 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1px solid var(--g);
+  border: 1px solid var(--p);
 }
 
 .chatMessageName {
   margin-left: -4px;
-  color: var(--g);
+  color: var(--p);
   text-transform: uppercase;
   font-size: 14px;
 }
@@ -86,7 +86,7 @@
   align-items: center;
   gap: 10px;
   padding: 6px;
-  width: 419px;
+  width: 420px;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(3px);
   border-radius: var(--corner4, 4px);
@@ -94,7 +94,7 @@
 }
 
 .chatInput {
-  width: 70%;
+  width: 380px;
   height: 50px;
   padding: 14px 12px;
   border: none;
@@ -113,15 +113,21 @@
 }
 
 .chatSendButton {
-  width: 30%;
+  width: 100px;
   height: 50px;
   border: none;
   outline: none;
-  background-color: var(--g);
-  color: var(--b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--b);
+  color: var(--g);
   font-family: var(--diatype);
   font-size: 14px;
   border-radius: 4px;
   text-transform: uppercase;
   cursor: pointer;
+
+  /* border: 1px solid red; */
 }

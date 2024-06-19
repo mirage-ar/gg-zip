@@ -6,25 +6,33 @@ import { useUser } from "@/hooks";
 import * as DateFNS from "date-fns";
 import styles from "./Chat.module.css";
 
-import { ChatMessage } from "@/types";
-import { GET_MESSAGES_URL, CHAT_SOCKET_URL } from "@/utils/constants";
+import { ChatMessage, Player, TransactionData } from "@/types";
+import { GET_MESSAGES_URL, CHAT_SOCKET_URL, RPC } from "@/utils/constants";
 import { formatWalletAddress } from "@/utils";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useApplicationContext } from "@/state/ApplicationContext";
+import { Connection, PublicKey } from "@solana/web3.js";
+import useSolana from "@/hooks/useSolana";
 
-const Chat: React.FC = () => {
+interface ChatProps {
+  playerList: Player[];
+}
+
+const Chat: React.FC<ChatProps> = ({ playerList }) => {
   const { globalUser: user } = useApplicationContext();
 
+  const { fetchUser } = useUser();
   const { publicKey } = useWallet();
   const { setVisible } = useWalletModal();
+  const { program } = useSolana();
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
   const webSocket = useRef<WebSocket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Connect to WebSocket
+  // Connect to Chat WebSocket
   useEffect(() => {
     fetchInitialMessages();
 
@@ -51,6 +59,70 @@ const Chat: React.FC = () => {
       webSocket.current?.close();
     };
   }, []);
+
+  // Connect to Transaction WebSocket
+  useEffect(() => {
+    if (!program) return;
+    if (playerList.length === 0) return;
+
+    const connection = new Connection("https://api.devnet.solana.com", "confirmed");
+    const programId = program.programId;
+    const programPublicKey = new PublicKey(programId);
+
+    const subscriptionId = connection.onLogs(
+      programPublicKey,
+      async (logs) => {
+        const transactionResponse = await connection.getParsedTransaction(logs.signature);
+        const transactionLogs = transactionResponse?.meta?.logMessages?.filter((message) =>
+          message.includes("Program log")
+        );
+
+        if (transactionLogs && transactionLogs[0]?.includes("Shares")) {
+          const firstLog = transactionLogs[0];
+          const transactiontype = firstLog
+            .substring(firstLog.indexOf("Shares") - 4, firstLog.indexOf("Shares"))
+            .replace(" ", "");
+
+          const transaction: TransactionData = {
+            type: transactiontype,
+            amount: transactionLogs[1]?.substring(transactionLogs[1].indexOf("price: ") + 7),
+            subject: transactionLogs[2]?.substring(transactionLogs[2].indexOf("subject: ") + 9),
+            buyer: transactionLogs[3]?.substring(transactionLogs[3].indexOf("buyer: ") + 7),
+            timestamp: Number(transactionLogs[4]?.substring(transactionLogs[4].indexOf("timestamp: ") + 11)),
+            signature: transactionResponse?.transaction.signatures[0] || "",
+          };
+
+          // fetch user from db here
+          const buyer = await fetchUser(transaction.buyer);
+          const subject = playerList.find((player) => player.wallet === transaction.subject);
+
+          if (buyer) {
+            setMessages((prevMessages) => {
+              const transactionMessage: ChatMessage = {
+                message: `${
+                  transaction.type === "Buy" ? "Bought" : "Sold"
+                } @${subject?.username.toLocaleUpperCase()} for ${Number(transaction.amount).toFixed(3)}`,
+                timestamp: transaction.timestamp * 1000,
+                username: buyer.username,
+                image: buyer.image,
+                source: "system",
+              };
+
+              const newMessages = [...prevMessages, transactionMessage];
+              return newMessages.slice(-500);
+            });
+          }
+
+          // get user from db here
+        }
+      },
+      "confirmed"
+    );
+
+    return () => {
+      connection.removeOnLogsListener(subscriptionId);
+    };
+  }, [program, playerList]);
 
   // Automatically scroll to the latest message
   useEffect(() => {
@@ -100,61 +172,62 @@ const Chat: React.FC = () => {
 
   return (
     <>
-      {/* {messages.length > 0 && ( */}
-        <>
-          <div className={styles.container}>
-            <div className={styles.chatMessages}>
-              {messages.map((message, index) => (
-                <div key={index} className={styles.chatMessageContainer}>
-                  <div className={styles.chatMessageInfo}>
-                    <div className={styles.chatMessageImageContainer}>
-                      <Image
-                        src={message.image}
-                        alt={message.username}
-                        width={20}
-                        height={20}
-                        className={styles.chatMessageImage}
-                        style={message.source === "sponsor" ? { borderColor: "#FF61EF" } : {}}
-                      />
-                      <p
-                        className={styles.chatMessageName}
-                        style={message.source === "sponsor" ? { color: "#FF61EF" } : {}}
-                      >
-                        {message.username}
-                      </p>
-                      <Image src={`/assets/icons/icons-16/${message.source === "sponsor" ? "case" : "sword"}.svg`} alt="sponsor case" width={16} height={16} />
-                    </div>
-                    <p className={styles.chatMessageTimestamp}>
-                      {DateFNS.formatDistance(new Date(message.timestamp), new Date(), { addSuffix: true })}
-                    </p>
-                  </div>
-                  <p className={styles.chatMessage}>{message.message}</p>
+      <div className={styles.container}>
+        <div className={styles.chatMessages}>
+          {messages.map((message, index) => (
+            <div key={index} className={styles.chatMessageContainer}>
+              <div className={styles.chatMessageInfo}>
+                <div className={styles.chatMessageImageContainer}>
+                  <Image
+                    src={message.image}
+                    alt={message.username}
+                    width={20}
+                    height={20}
+                    className={styles.chatMessageImage}
+                    style={message.source === "hunter" ? { borderColor: "#42FF60" } : {}}
+                  />
+                  <p className={styles.chatMessageName} style={message.source === "hunter" ? { color: "#42FF60" } : {}}>
+                    {message.username}
+                  </p>
+                  <Image
+                    src={`/assets/icons/icons-16/${message.source === "hunter" ? "sword" : "case"}.svg`}
+                    alt="sponsor case"
+                    width={16}
+                    height={16}
+                  />
                 </div>
-              ))}
-              <div ref={messagesEndRef} />
+                <p className={styles.chatMessageTimestamp}>
+                  {DateFNS.formatDistance(new Date(message.timestamp), new Date(), { addSuffix: true })}
+                </p>
+              </div>
+              <p className={styles.chatMessage} style={message.source === "system" ? { color: "#FF61EF" } : {}}>
+                {message.message}
+              </p>
             </div>
-          </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+      </div>
 
-          <div className={styles.chatInputContainer}>
-            <textarea
-              className={styles.chatInput}
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyDown={handleKeyPress}
-              placeholder="Send a message..."
-            />
-            {publicKey ? (
-              <button onClick={handleFormSubmit} className={styles.chatSendButton}>
-                SEND
-              </button>
-            ) : (
-              <button onClick={() => setVisible(true)} className={styles.chatSendButton}>
-                Connect Wallet
-              </button>
-            )}
-          </div>
-        </>
-      {/* )} */}
+      <div className={styles.chatInputContainer}>
+        <textarea
+          className={styles.chatInput}
+          value={inputMessage}
+          onChange={(e) => setInputMessage(e.target.value)}
+          onKeyDown={handleKeyPress}
+          placeholder="Send a message..."
+        />
+        {publicKey ? (
+          <button onClick={handleFormSubmit} className={styles.chatSendButton} style={{justifyContent: "flex-end", paddingRight: "16px"}}>
+            <Image src="/assets/icons/icons-24/send.svg" alt="send message" width={24} height={24} />
+          </button>
+        ) : (
+          <button onClick={() => setVisible(true)} className={styles.chatSendButton}>
+            Connect
+            <Image src="/assets/icons/icons-24/plus.svg" alt="connect wallet" width={24} height={24} />
+          </button>
+        )}
+      </div>
     </>
   );
 };
