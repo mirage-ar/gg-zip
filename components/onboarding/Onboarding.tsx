@@ -38,6 +38,11 @@ const Onboarding: React.FC = () => {
     fetchUserData();
   }, [publicKey]);
 
+  // Function to stop event propagation
+  const handleContainerClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation(); // This stops the click from propagating to the parent
+  };
+
   const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
@@ -97,8 +102,8 @@ const Onboarding: React.FC = () => {
 
   return (
     showOnboarding && (
-      <div className={styles.main}>
-        <div className={styles.container}>
+      <div className={styles.main} onClick={() => setShowOnboarding(false)}>
+        <div className={styles.container} onClick={handleContainerClick}>
           <h4>EDIT PROFILE</h4>
           <div className={styles.profilePhotoContainer}>
             {preview ? (

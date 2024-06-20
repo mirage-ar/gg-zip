@@ -26,6 +26,7 @@ import Powerups from "@/components/sponsor/powerups/Powerups";
 import { useApplicationContext } from "@/state/ApplicationContext";
 import Profile from "@/components/sponsor/profile/Profile";
 import { useWallet } from "@solana/wallet-adapter-react";
+import SponsorLeaderboard from "@/components/sponsor/leaderboard/SponsorLeaderboard";
 
 export default function Home() {
   const [tab, setTab] = useState(Tab.LEADERBOARD);
@@ -49,12 +50,12 @@ export default function Home() {
 
   const fetchPlayerData = async (profile: boolean, sponsorHoldings: string[]): Promise<Player[]> => {
     const response = await fetch(`${GAME_API}/leaderboard`);
-    const data = await response.json();
+    // const data = await response.json();
 
     // dummy data
-    // const data: { leaderboard: Player[] } = {
-    //   leaderboard: accounts,
-    // };
+    const data: { leaderboard: Player[] } = {
+      leaderboard: accounts,
+    };
 
     const leaderboard = data.leaderboard.sort((a: Player, b: Player) => b.points - a.points);
     let playerList: Player[] = [];
@@ -87,6 +88,10 @@ export default function Home() {
         }
       })
     );
+
+    for (let i = 0; i < playerList.length; i++) {
+      playerList[i].rank = i + 1;
+    }
     return playerList;
   };
 
@@ -149,7 +154,7 @@ export default function Home() {
       case Page.LEADERBOARD:
         return "Leaderboard";
       case Page.SPONSORS:
-        return "Sponsors";
+        return "Sponsor Leaderboard";
       case Page.TRANSACTIONS:
         return "Transactions";
       case Page.POWERUPS:
@@ -210,7 +215,7 @@ export default function Home() {
   return (
     <>
       {/* ----- MAIN ----- */}
-      { gameEnding && <div className={styles.gameEnding} />}
+      {gameEnding && <div className={styles.gameEnding} />}
       <Chat playerList={playerList} />
       <div className={styles.main}>
         <MapboxMap mapRef={mapRef} markersRef={markersRef} />
@@ -289,7 +294,13 @@ export default function Home() {
                       />
                     );
                   case Page.SPONSORS:
-                    return <div>SPONSORS</div>;
+                    return (
+                      <SponsorLeaderboard
+                        flyToMarker={flyToMarker}
+                        playerList={playerList}
+                        onlineUsers={onlineUsers}
+                      />
+                    );
                   case Page.TRANSACTIONS:
                     return <Transactions playerList={playerList} />;
                   case Page.POWERUPS:

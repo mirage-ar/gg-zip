@@ -81,7 +81,7 @@ export const abbreviateString = (str: string, maxLength: number = 10): string =>
     return str;
   }
 
-  return str.slice(0, maxLength) + "...";
+  return str.slice(0, maxLength - 3) + "...";
 }
 
 

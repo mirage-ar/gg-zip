@@ -16,6 +16,10 @@ interface LiveLeaderboardProps {
   onlineUsers: string[];
   sponsorHoldings: SponsorHoldings[];
   selectedPowerup?: Powerup;
+  showSearch?: boolean;
+  showHeader?: boolean;
+  showHoldingHighlight?: boolean;
+  abbreviateNames?: boolean;
 }
 
 const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
@@ -24,6 +28,10 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
   onlineUsers,
   sponsorHoldings,
   selectedPowerup,
+  showSearch = true,
+  showHeader = true,
+  showHoldingHighlight = true,
+  abbreviateNames = false,
 }) => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [tradingViewPlayer, setTradingViewPlayer] = useState<Player | null>(null);
@@ -40,10 +48,6 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
     // Function to apply sorting and filtering
     const applySortingAndFiltering = () => {
       let sortedPlayers = [...playerList];
-
-      for (let i = 0; i < sortedPlayers.length; i++) {
-        sortedPlayers[i].rank = i + 1;
-      }
 
       if (pointsSorted !== Sort.NONE) {
         sortedPlayers =
@@ -142,35 +146,38 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
         <TradingView player={tradingViewPlayer} setShowOverlay={setShowOverlay} />
       )} */}
 
-      <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      {showSearch && <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />}
 
       {/* ----- HEADER ----- */}
-      <div className={styles.header}>
-        <div className={styles.leftColumn}>
-          <span>Rank</span>
-          <span>Name</span>
-          <span>
-            <Image src="/assets/icons/icons-24/g.svg" alt="Coin Icon" width={24} height={24} />
-          </span>
-          <span>
-            <Image src="/assets/icons/icons-24/playercards-green.svg" alt="Cards Icon" width={24} height={24} />
-          </span>
-          <div className={styles.filterIcon} onClick={togglePointsSort}>
-            {pointsIcon}
+      {showHeader && (
+        <div className={styles.header}>
+          <div className={styles.leftColumn}>
+            <span>Rank</span>
+            <span>Name</span>
+            <span>
+              <Image src="/assets/icons/icons-24/g.svg" alt="Coin Icon" width={24} height={24} />
+            </span>
+            <span>
+              <Image src="/assets/icons/icons-24/playercards-green.svg" alt="Cards Icon" width={24} height={24} />
+            </span>
+            <div className={styles.filterIcon} onClick={togglePointsSort}>
+              {pointsIcon}
+            </div>
+          </div>
+          <div className={styles.rightColumn}>
+            <div className={styles.priceHeader}>
+              <span>Price</span>
+              <Image src="/assets/icons/icons-24/solana.svg" alt="Solana Icon" width={24} height={24} />
+            </div>
+            <div className={styles.filterIcon} onClick={togglePriceSort}>
+              {priceIcon}
+            </div>
           </div>
         </div>
-        <div className={styles.rightColumn}>
-          <div className={styles.priceHeader}>
-            <span>Price</span>
-            <Image src="/assets/icons/icons-24/solana.svg" alt="Solana Icon" width={24} height={24} />
-          </div>
-          <div className={styles.filterIcon} onClick={togglePriceSort}>
-            {priceIcon}
-          </div>
-        </div>
-      </div>
+      )}
 
-      <div className={styles.scrollable}>
+      {/* TODO: figure a better way of having this bottom padding */}
+      <div className={styles.scrollable} style={showSearch ? { marginBottom: "63px" } : {}}>
         {/* ----- LEADERBOARD ------ */}
         {filteredPlayers.length > 0 &&
           filteredPlayers.map(
@@ -180,7 +187,7 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
                   <div
                     className={styles.leaderboardRow}
                     style={
-                      sponsorHoldingsWallets.includes(player.wallet)
+                      sponsorHoldingsWallets.includes(player.wallet) && showHoldingHighlight
                         ? { backgroundColor: "rgba(66, 255, 96, 0.2)" }
                         : {}
                     }
@@ -190,9 +197,7 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
                       onClick={() => flyToMarker(player.id)}
                       style={onlineUsers.includes(player.id) ? { cursor: "pointer" } : {}}
                     >
-                      <div className={styles.playerRank}>
-                        {player.rank || index + 1}
-                      </div>
+                      <div className={styles.playerRank}>{player.rank || index + 1}</div>
                       <div className={styles.playerMarker}>
                         {onlineUsers.includes(player.id) && <div className={styles.onlineMarker} />}
                         <Image
@@ -205,7 +210,7 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
                       </div>
                       <div className={styles.playerNameContainer}>
                         <div className={styles.playerName}>
-                          @{abbreviateString(player.username, 16)}
+                          @{abbreviateString(player.username, abbreviateNames ? 12 : 16)}
                           {sponsorHoldings.find((user) => user.wallet === player.wallet) && (
                             <div className={styles.sponsorHoldingAmount}>
                               {sponsorHoldings.find((user) => user.wallet === player.wallet)?.amount}

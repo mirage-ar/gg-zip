@@ -96,12 +96,12 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
           const buyer = await fetchUser(transaction.buyer);
           const subject = playerList.find((player) => player.wallet === transaction.subject);
 
-          if (buyer) {
+          if (buyer && subject) {
             setMessages((prevMessages) => {
               const transactionMessage: ChatMessage = {
                 message: `${
                   transaction.type === "Buy" ? "Bought" : "Sold"
-                } @${subject?.username.toLocaleUpperCase()} for ${Number(transaction.amount).toFixed(3)}`,
+                } @${subject.username.toLocaleUpperCase()} for ${Number(transaction.amount).toFixed(3)}`,
                 timestamp: transaction.timestamp * 1000,
                 username: buyer.username,
                 image: buyer.image,

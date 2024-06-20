@@ -12,6 +12,16 @@ export type Player = {
   cardCount?: number;
 };
 
+export type Sponsor = {
+  id: string;
+  username: string;
+  image: string;
+  wallet: string;
+  points: number;
+  rank?: number;
+  holdings?: SponsorHoldings[];
+};
+
 export type TwitterUser = {
   id: string;
   username: string;

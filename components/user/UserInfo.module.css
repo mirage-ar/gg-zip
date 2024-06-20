@@ -23,6 +23,7 @@
   text-transform: uppercase;
 
   width: 400px;
+  cursor: pointer;
 }
 
 .userIcon img {

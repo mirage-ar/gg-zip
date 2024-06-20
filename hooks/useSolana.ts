@@ -221,20 +221,17 @@ export default function useSolana(playerWalletAddress?: string) {
     return 0;
   }
 
-  async function fetchSponsorHoldings(): Promise<SponsorHoldings[]> {
+  async function fetchSponsorHoldings(wallet?: string): Promise<SponsorHoldings[]> {
     if (!program || !publicKey) {
       return [];
     }
 
     try {
-
-
-  
       const ownerFilter = [
         {
           memcmp: {
             offset: 8,
-            bytes: publicKey.toBase58(),
+            bytes: wallet || publicKey.toBase58(),
           },
         },
       ];

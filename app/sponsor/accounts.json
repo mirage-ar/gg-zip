@@ -1,92 +1,862 @@
 [
   {
-    "id": "85990094",
-    "username": "fiigmnt",
-    "image": "https://pbs.twimg.com/profile_images/1564446865927593984/2dKVOZk7.jpg",
-    "points": 2871,
-    "boxes": 6,
-    "wallet": "9LEPpWSZpnkBmAMrTvaA9ARFjMdJqjro4SCKkpCXBwbG",
-    "rank": 1
+    "id": "1051148719201112000",
+    "airdrop": 1,
+    "boxes": 19,
+    "image": "https://pbs.twimg.com/profile_images/1209055421165637638/PAf1oTf4.jpg",
+    "points": 5979,
+    "risk": 0,
+    "username": "08fff1",
+    "wallet": "D4uUDsesR93q3UapDBh3PM1jihLmyxcXMCMq7oV5StEY"
   },
   {
-    "id": "1655952645088219137",
-    "username": "celia",
-    "image": "https://pbs.twimg.com/profile_images/1750687996297265152/ftuMyKXp.jpg",
-    "points": 1560,
-    "boxes": 2,
-    "wallet": "FG22CkapS12Qj5MdwH8p6Mb8UqxB7BDTaJkkc3x6PJ1a",
-    "rank": 2
-  },
-  {
-    "id": "1780313261801455619",
-    "username": "test_user_2",
-    "image": "https://pbs.twimg.com/profile_images/1780348989918871552/23xCIF0T.jpg",
-    "points": 1419,
-    "boxes": 6,
-    "wallet": "6zKmdKcZrWMKSDPSJPArGZzTcrRUrsdRg6qARDhhqUEF",
-    "rank": 3
-  },
-  {
-    "id": "1780313261801455620",
-    "username": "test_user_3",
-    "image": "https://pbs.twimg.com/profile_images/1780348989918871552/23xCIF0T.jpg",
-    "points": 1935,
+    "id": "865276015937040400",
+    "airdrop": 1,
     "boxes": 4,
-    "wallet": "6AHvvY51QdpDMv65XXuKPCWf6ca1k78NmNi7AawLNDhL",
-    "rank": 4
+    "image": "https://pbs.twimg.com/profile_images/1722649495052103680/8Mo1vTif.jpg",
+    "points": 908,
+    "risk": 0,
+    "username": "cryptic_monk",
+    "wallet": ""
   },
   {
-    "id": "1780313261801455621",
-    "username": "test_user_4",
-    "image": "https://pbs.twimg.com/profile_images/1780348989918871552/23xCIF0T.jpg",
-    "points": 1622,
-    "boxes": 7,
-    "wallet": "nT5QyQTADGJwksWH6aNkgWBfh4nb5TC6uqCZiGozg8G",
-    "rank": 5
-  },
-  {
-    "id": "1780313261801455622",
-    "username": "test_user_5",
-    "image": "https://pbs.twimg.com/profile_images/1780348989918871552/23xCIF0T.jpg",
-    "points": 1587,
+    "id": "3418009593",
+    "airdrop": 1,
     "boxes": 2,
-    "wallet": "Fmo6jwSvYK5LjrkALyo57x7udgVtZvLXbEGTBgePZDgE",
-    "rank": 6
+    "image": "https://pbs.twimg.com/profile_images/1798219358201638912/GLLh_WwY.jpg",
+    "points": 763,
+    "risk": 0,
+    "username": "artempuuss",
+    "wallet": ""
   },
   {
-    "id": "1780313261801455623",
-    "username": "test_user_6",
-    "image": "https://pbs.twimg.com/profile_images/1780348989918871552/23xCIF0T.jpg",
-    "points": 1460,
+    "id": "1500554726097698800",
+    "airdrop": 1,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1787495879080910849/jx65OEjO.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "Franco_k4l",
+    "wallet": ""
+  },
+  {
+    "id": "40048658",
+    "airdrop": 1,
+    "boxes": 18,
+    "image": "https://pbs.twimg.com/profile_images/1702305504070942721/LodpNadj.jpg",
+    "points": 7504,
+    "risk": 0,
+    "username": "gregohr12",
+    "wallet": "8qyXjHzb2XuSFtQaX9xWc4XgBhkww8MFFRrgZYDpSK2Y"
+  },
+  {
+    "id": "1491029727930466300",
+    "airdrop": 1,
+    "boxes": 32,
+    "image": "https://pbs.twimg.com/profile_images/1755652309516754944/MbzhjSnR.jpg",
+    "points": 28549,
+    "risk": 0,
+    "username": "expsngknvs",
+    "wallet": ""
+  },
+  {
+    "id": "1600230048572792800",
+    "airdrop": 1,
+    "boxes": 11,
+    "image": "https://pbs.twimg.com/profile_images/1759553683765817345/NjKbTW3l.jpg",
+    "points": 4686,
+    "risk": 0,
+    "username": "sjdedic",
+    "wallet": "6xcruNF5gn149ruo1dGjQFKapR2NrsgJxoiMJJ25odYY"
+  },
+  {
+    "id": "1331646370005082000",
+    "airdrop": 1,
+    "boxes": 11,
+    "image": "https://pbs.twimg.com/profile_images/1779199020436512768/yuA5Bpn3.jpg",
+    "points": 3766,
+    "risk": 0,
+    "username": "takeshi_gitano",
+    "wallet": "HpwdQHWQTCHvCZF2vmLT1bsnqgPDu98BwLU4iQb35RYP"
+  },
+  {
+    "id": "1544183678720708600",
+    "airdrop": 1,
+    "boxes": 1,
+    "image": "https://pbs.twimg.com/profile_images/1753602146107572224/FPktF1ih.jpg",
+    "points": 173,
+    "risk": 0,
+    "username": "YOURFAC35922412",
+    "wallet": ""
+  },
+  {
+    "id": "1132533282816581600",
+    "airdrop": 1,
     "boxes": 3,
-    "wallet": "Dz9bFoKDEBzRP5BweFoxLbSLnoXM2jSjXxo368XQk3wN",
-    "rank": 7
+    "image": "https://pbs.twimg.com/profile_images/1765764150641512448/i2Q5n0Ok.jpg",
+    "points": 703,
+    "risk": 0,
+    "username": "solavirus",
+    "wallet": ""
   },
   {
-    "id": "1780313261801455624",
-    "username": "test_user_7",
-    "image": "https://pbs.twimg.com/profile_images/1780348989918871552/23xCIF0T.jpg",
-    "points": 1342,
+    "id": "220985321",
+    "airdrop": 1,
+    "boxes": 18,
+    "image": "https://pbs.twimg.com/profile_images/1527085394801590275/zjPbq7Qm.jpg",
+    "points": 4231,
+    "risk": 0,
+    "username": "cake_leo",
+    "wallet": "3BD6VwepTtAbEDfHkQmCk6TETjxkW1vBy261PdmU4mqj"
+  },
+  {
+    "id": "769259742871097300",
+    "airdrop": 0,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1654836167248953345/8nMmsAhB.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "ImDeKa__",
+    "wallet": ""
+  },
+  {
+    "id": "3269878514",
+    "airdrop": 1,
+    "boxes": 1,
+    "image": "https://pbs.twimg.com/profile_images/1781047201491533824/5YDAQoRB.png",
+    "points": 213,
+    "risk": 0,
+    "username": "arping12071",
+    "wallet": ""
+  },
+  {
+    "id": "1480976985895706600",
+    "airdrop": 1,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1799451173977788417/mhyszRA7.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "itsurbohspongy",
+    "wallet": ""
+  },
+  {
+    "id": "1135578263009472500",
+    "airdrop": 0,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1555701266567032832/ma0nxyQB.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "hair_designer1",
+    "wallet": ""
+  },
+  {
+    "id": "1279048580796301300",
+    "airdrop": 1,
+    "boxes": 2,
+    "image": "https://pbs.twimg.com/profile_images/1641726105622319104/tH0HamuD.jpg",
+    "points": 425,
+    "risk": 0,
+    "username": "gokusai_pen",
+    "wallet": ""
+  },
+  {
+    "id": "1615593522115252200",
+    "airdrop": 1,
+    "boxes": 12,
+    "image": "https://pbs.twimg.com/profile_images/1615593572807610371/S619LY_N.jpg",
+    "points": 4574,
+    "risk": 0,
+    "username": "irinalekseevaaa",
+    "wallet": ""
+  },
+  {
+    "id": "300204422",
+    "airdrop": 1,
+    "boxes": 1,
+    "image": "https://pbs.twimg.com/profile_images/1723970161785671680/LOkC-Xxp.jpg",
+    "points": 499,
+    "risk": 0,
+    "username": "cybernerd2077",
+    "wallet": ""
+  },
+  {
+    "id": "1342414029969444900",
+    "airdrop": 0,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1579101281737900032/GGko44KA.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "qisuan8",
+    "wallet": "BQo7yevPZezHDMQsoHjQQghne8nYWVp51vvmTwcExgkU"
+  },
+  {
+    "id": "818811404526436400",
+    "airdrop": 1,
+    "boxes": 2,
+    "image": "https://pbs.twimg.com/profile_images/1753406704614842368/_a5j_HI4.jpg",
+    "points": 469,
+    "risk": 0,
+    "username": "alamodia600",
+    "wallet": ""
+  },
+  {
+    "id": "1389786101334691800",
+    "airdrop": 1,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1598222180332232705/Vu8Nupth.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "cryptohiro3",
+    "wallet": ""
+  },
+  {
+    "id": "4045162089",
+    "airdrop": 0,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1748717152297762816/tJGvoezc.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "illia_01",
+    "wallet": ""
+  },
+  {
+    "id": "1650598391309541400",
+    "airdrop": 1,
+    "boxes": 1,
+    "image": "https://pbs.twimg.com/profile_images/1787166638787137536/G2rnpgyJ.jpg",
+    "points": 123,
+    "risk": 0,
+    "username": "king_mayze",
+    "wallet": ""
+  },
+  {
+    "id": "1749806232263913500",
+    "airdrop": 1,
+    "boxes": 15,
+    "image": "https://pbs.twimg.com/profile_images/1752405030937022464/vCzDPsVd.jpg",
+    "points": 19023,
+    "risk": 0,
+    "username": "cryptoguy423504",
+    "wallet": "9kyauEXqBdfDZxNjbnJ31tJhWophVN4S4hEu6Q3cM9F8"
+  },
+  {
+    "id": "1147828782860050400",
+    "airdrop": 1,
+    "boxes": 2,
+    "image": "https://pbs.twimg.com/profile_images/1771563278365347840/JRGz3W0A.jpg",
+    "points": 397,
+    "risk": 0,
+    "username": "put4r2",
+    "wallet": ""
+  },
+  {
+    "id": "71947798",
+    "airdrop": 1,
+    "boxes": 16,
+    "image": "https://pbs.twimg.com/profile_images/1581661727309037568/VWJSyeE6.jpg",
+    "points": 4001,
+    "risk": 0,
+    "username": "sanjerisan",
+    "wallet": ""
+  },
+  {
+    "id": "1523671110797176800",
+    "airdrop": 1,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1620185404971294721/KxiZUbPp.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "pit_aes_eco",
+    "wallet": "6KffCy1XnYoG9mBs7NE5uSyNQpFMoZParwFeBodx97Lh"
+  },
+  {
+    "id": "1339390846572126200",
+    "airdrop": 1,
+    "boxes": 13,
+    "image": "https://pbs.twimg.com/profile_images/1801098572986757121/SkIWubbv.jpg",
+    "points": 10891,
+    "risk": 0,
+    "username": "Sylvest15084964",
+    "wallet": ""
+  },
+  {
+    "id": "844786331184066600",
+    "airdrop": 1,
     "boxes": 4,
-    "wallet": "",
-    "rank": 8
+    "image": "https://pbs.twimg.com/profile_images/1658278179302170624/0Bd9Gdtr.jpg",
+    "points": 629,
+    "risk": 0,
+    "username": "escuelacriptook",
+    "wallet": ""
   },
   {
-    "id": "1780313261801455625",
-    "username": "test_user_8",
-    "image": "https://pbs.twimg.com/profile_images/1780348989918871552/23xCIF0T.jpg",
-    "points": 1764,
-    "boxes": 8,
-    "wallet": "",
-    "rank": 9
+    "id": "1752992876424769500",
+    "airdrop": 1,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1752992923308707840/OE4E6IcQ.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "Nazar2Radchenko",
+    "wallet": ""
   },
   {
-    "id": "1780313261801455626",
-    "username": "test_user_9",
-    "image": "https://pbs.twimg.com/profile_images/1780348989918871552/23xCIF0T.jpg",
-    "points": 1093,
+    "id": "1256853484340641800",
+    "airdrop": 1,
+    "boxes": 3,
+    "image": "https://pbs.twimg.com/profile_images/1755549486099693568/cYI6UXgm.jpg",
+    "points": 902,
+    "risk": 0,
+    "username": "DRemizonov",
+    "wallet": ""
+  },
+  {
+    "id": "1752499352088514600",
+    "airdrop": 1,
+    "boxes": 4,
+    "image": "https://pbs.twimg.com/profile_images/1757859026648305665/aYiBfIHf.jpg",
+    "points": 1027,
+    "risk": 0,
+    "username": "xforcrypt",
+    "wallet": ""
+  },
+  {
+    "id": "1448625174316605400",
+    "airdrop": 1,
+    "boxes": 11,
+    "image": "https://pbs.twimg.com/profile_images/1801230261386174464/jS-tUSIb.jpg",
+    "points": 3213,
+    "risk": 0,
+    "username": "dalbitcloud",
+    "wallet": "E6zP92LCg25G9GZm3TRL85C4KPsf3yrUViyRbSepn73Y"
+  },
+  {
+    "id": "4861743221",
+    "airdrop": 0,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1696821873542103040/xhVL9Rrw.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "matsmdi",
+    "wallet": "3RJdf5S2MXAJxBnZpAECQfKYnC7qePHKrJi4xTeDXcKp"
+  },
+  {
+    "id": "1759452254242062300",
+    "airdrop": 1,
     "boxes": 5,
-    "wallet": "",
-    "rank": 10
+    "image": "https://pbs.twimg.com/profile_images/1796335068354686976/t7ujZ3x5.jpg",
+    "points": 1559,
+    "risk": 0,
+    "username": "hauyang8382",
+    "wallet": ""
+  },
+  {
+    "id": "1324702060223340500",
+    "airdrop": 1,
+    "boxes": 10,
+    "image": "https://pbs.twimg.com/profile_images/1581231078303535106/saxo1dy6.jpg",
+    "points": 2123,
+    "risk": 0,
+    "username": "miguelrare",
+    "wallet": "ttFkVFcd7XwmKouRfbuaaBbq1uJrmPVqa2BkYxDuVWy"
+  },
+  {
+    "id": "1081721751879352300",
+    "airdrop": 1,
+    "boxes": 15,
+    "image": "https://pbs.twimg.com/profile_images/1661235496763416576/0Dg1aAPQ.jpg",
+    "points": 4437,
+    "risk": 0,
+    "username": "yenprasanth",
+    "wallet": "5VuRTafDtP1n2fbfqBphoLgNYTSXCder4tNZ3poCwHYf"
+  },
+  {
+    "id": "1627355466945757200",
+    "airdrop": 1,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1627365325661405193/soj5r7vm.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "Hirokel99",
+    "wallet": ""
+  },
+  {
+    "id": "1414213266377564200",
+    "airdrop": 1,
+    "boxes": 4,
+    "image": "https://pbs.twimg.com/profile_images/1764981118254923776/EQO0jDJJ.jpg",
+    "points": 453,
+    "risk": 0,
+    "username": "0xsongmu",
+    "wallet": ""
+  },
+  {
+    "id": "1502023092201164800",
+    "airdrop": 1,
+    "boxes": 27,
+    "image": "https://pbs.twimg.com/profile_images/1788256172954492929/Co7N5M_f.jpg",
+    "points": 35776,
+    "risk": 0,
+    "username": "0xPockets",
+    "wallet": "2owTYy79DKWt7rdujf1GE3tekixhs9Nwqe4SYisnLcCB"
+  },
+  {
+    "id": "1482786388751888400",
+    "airdrop": 1,
+    "boxes": 22,
+    "image": "https://pbs.twimg.com/profile_images/1781865613184446464/2idvtwdo.jpg",
+    "points": 14926,
+    "risk": 0,
+    "username": "funanchill",
+    "wallet": ""
+  },
+  {
+    "id": "1352931618000760800",
+    "airdrop": 1,
+    "boxes": 1,
+    "image": "https://pbs.twimg.com/profile_images/1771513720138772480/D4UPpTNu.jpg",
+    "points": 421,
+    "risk": 0,
+    "username": "Jun888king",
+    "wallet": ""
+  },
+  {
+    "id": "2499902276",
+    "airdrop": 1,
+    "boxes": 3,
+    "image": "https://pbs.twimg.com/profile_images/1781307284284436481/QHkybIgy.jpg",
+    "points": 909,
+    "risk": 0,
+    "username": "godserengeti",
+    "wallet": ""
+  },
+  {
+    "id": "1793032221370073000",
+    "airdrop": 0,
+    "boxes": 0,
+    "image": "https://abs.twimg.com/sticky/default_profile_images/default_profile.png",
+    "points": 0,
+    "risk": 0,
+    "username": "mentallypr53522",
+    "wallet": ""
+  },
+  {
+    "id": "878268339629559800",
+    "airdrop": 1,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1779420711607570432/sEE1TE2v.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "NicoloPredazzer",
+    "wallet": ""
+  },
+  {
+    "id": "1430066530100859000",
+    "airdrop": 1,
+    "boxes": 21,
+    "image": "https://pbs.twimg.com/profile_images/1794499530852835328/GbZZhOos.jpg",
+    "points": 4349,
+    "risk": 0,
+    "username": "d_karpushkin",
+    "wallet": ""
+  },
+  {
+    "id": "4084988541",
+    "airdrop": 1,
+    "boxes": 23,
+    "image": "https://pbs.twimg.com/profile_images/1110665890167689222/lf3vz581.jpg",
+    "points": 14071,
+    "risk": 0,
+    "username": "Lalkanyas69",
+    "wallet": "4KufZKQNqRozWnM9QREUFWBVFCkNnks69razzaAEkQrf"
+  },
+  {
+    "id": "1537153958506029000",
+    "airdrop": 1,
+    "boxes": 9,
+    "image": "https://pbs.twimg.com/profile_images/1537154101561131013/468JBhpY.jpg",
+    "points": 2660,
+    "risk": 0,
+    "username": "NalivajkoAndrij",
+    "wallet": ""
+  },
+  {
+    "id": "1278505175293079600",
+    "airdrop": 1,
+    "boxes": 3,
+    "image": "https://pbs.twimg.com/profile_images/1278506930659614722/pCw72fd9.jpg",
+    "points": 698,
+    "risk": 0,
+    "username": "leafar_jimenez",
+    "wallet": "FDbFvAjiM6Li91ohrmozCMdVEqc8N7AbJ5kDuBoPTbFa"
+  },
+  {
+    "id": "1384228675",
+    "airdrop": 0,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1765335373834526721/xMOgD-t3.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "sanya10001000",
+    "wallet": "BJ5ckfyMEcVXhGR75eGzMqG6mGgG4s6BJpeAL9SMffJn"
+  },
+  {
+    "id": "1455945480274391000",
+    "airdrop": 1,
+    "boxes": 22,
+    "image": "https://pbs.twimg.com/profile_images/1764262841115189248/_egjZHrs.jpg",
+    "points": 14969,
+    "risk": 0,
+    "username": "daddyondablock",
+    "wallet": "EuipgWocyuHJgCT18MtvC8vQMuimLnEevdtvjQEVi7mo"
+  },
+  {
+    "id": "1684875526878417000",
+    "airdrop": 1,
+    "boxes": 22,
+    "image": "https://pbs.twimg.com/profile_images/1790839329469730819/_TL-yn18.jpg",
+    "points": 16810,
+    "risk": 0,
+    "username": "Aleks_Sha14",
+    "wallet": "4ajLqRmDrNdeoE1T4PU91Q99rkR5f4tiVDA7SkDm6Xqm"
+  },
+  {
+    "id": "622743831",
+    "airdrop": 1,
+    "boxes": 1,
+    "image": "https://pbs.twimg.com/profile_images/1681812212288049153/K95OgaU2.jpg",
+    "points": 4934,
+    "risk": 0,
+    "username": "GeormanZ",
+    "wallet": ""
+  },
+  {
+    "id": "1532018492232421400",
+    "airdrop": 1,
+    "boxes": 2,
+    "image": "https://pbs.twimg.com/profile_images/1532018599115767808/zZX7MBUI.png",
+    "points": 466,
+    "risk": 0,
+    "username": "Giovann97027113",
+    "wallet": ""
+  },
+  {
+    "id": "963312203070718000",
+    "airdrop": 0,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1520514002035814400/J6jPLCEi.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "houkiboshi_2018",
+    "wallet": "7NhGRYN3e3f6NThkiYTbLBRA9Xr1QvhrnBTd2Nx8ZLVS"
+  },
+  {
+    "id": "2612056671",
+    "airdrop": 1,
+    "boxes": 31,
+    "image": "https://pbs.twimg.com/profile_images/1453099896249196546/W2kHMWW3.jpg",
+    "points": 18874,
+    "risk": 0,
+    "username": "mishcharts",
+    "wallet": "9RxNP6NwgYCQmYJk4Gxp5nZ3QNirDN5kspmg6p41ePDo"
+  },
+  {
+    "id": "1764342030514221000",
+    "airdrop": 1,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1764342638218534914/tmRtKY-S.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "Rafael471160720",
+    "wallet": ""
+  },
+  {
+    "id": "1655952645088219100",
+    "airdrop": 1,
+    "boxes": 2,
+    "image": "https://pbs.twimg.com/profile_images/1750687996297265152/ftuMyKXp.jpg",
+    "points": 752,
+    "risk": 0,
+    "username": "0xCeli",
+    "wallet": "HcfsX7eRs1rUZYe6C2gNbUrcckDCDd5oZdpRpXAArbVu"
+  },
+  {
+    "id": "1742558375320146000",
+    "airdrop": 1,
+    "boxes": 4,
+    "image": "https://pbs.twimg.com/profile_images/1742558630275084288/Kkrfl1jr.jpg",
+    "points": 1303,
+    "risk": 0,
+    "username": "WeaverMelb93074",
+    "wallet": ""
+  },
+  {
+    "id": "1799274701849530400",
+    "airdrop": 0,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1799399810811760640/HB5XZtmQ.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "holorisky",
+    "wallet": "DJKVKEPy5otHBC97jrZypgCNM9JcBitgnQzx4J4xAXHX"
+  },
+  {
+    "id": "842976190050660400",
+    "airdrop": 1,
+    "boxes": 5,
+    "image": "https://pbs.twimg.com/profile_images/1678616443464876033/hhfLfPs_.jpg",
+    "points": 5000,
+    "risk": 0,
+    "username": "Gr3yscope",
+    "wallet": "ByMHYPBTHDdRLNPQLefF9VJanYADtvYV4m7W6Ni236W8"
+  },
+  {
+    "id": "823199328252653600",
+    "airdrop": 1,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1770881927530106880/53SKveUQ.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "NcamisileSitho3",
+    "wallet": "HX2wvNWU916m2XmBF1Haf1f8fx33SosTT1vPgJMTWuF1"
+  },
+  {
+    "id": "1730756124616364000",
+    "airdrop": 1,
+    "boxes": 22,
+    "image": "https://pbs.twimg.com/profile_images/1758592297229238272/HXWnIhH5.jpg",
+    "points": 15231,
+    "risk": 0,
+    "username": "oxysworld",
+    "wallet": "3t3vYfQwBPKkHav6u8VFV5Fv744PZkshhWscExg52Lrn"
+  },
+  {
+    "id": "1363659727926743000",
+    "airdrop": 0,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1569150498359459840/41qJunkF.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "sea_viva",
+    "wallet": ""
+  },
+  {
+    "id": "1661979393659400200",
+    "airdrop": 1,
+    "boxes": 7,
+    "image": "https://pbs.twimg.com/profile_images/1661979484449275904/iil-3kJS.png",
+    "points": 2070,
+    "risk": 0,
+    "username": "Shipshina123",
+    "wallet": "FimPZFKW1yhzyuwywes7eiBNoCAQbuSVWerTQ7ZZr1k4"
+  },
+  {
+    "id": "1585671309618548700",
+    "airdrop": 1,
+    "boxes": 3,
+    "image": "https://pbs.twimg.com/profile_images/1775272326134956032/MvS89FOe.jpg",
+    "points": 799,
+    "risk": 0,
+    "username": "fttcceo",
+    "wallet": ""
+  },
+  {
+    "id": "83982560",
+    "airdrop": 1,
+    "boxes": 6,
+    "image": "https://pbs.twimg.com/profile_images/1793969456361967616/jSQVWfOQ.png",
+    "points": 1590,
+    "risk": 0,
+    "username": "killstoryyy",
+    "wallet": ""
+  },
+  {
+    "id": "113883720",
+    "airdrop": 1,
+    "boxes": 20,
+    "image": "https://pbs.twimg.com/profile_images/1666155302914228247/WhKH_rmC.jpg",
+    "points": 5368,
+    "risk": 0,
+    "username": "newagno",
+    "wallet": "FZivJSsWSLtS9eCQXGMj3hHS5JX5kN8HoD8HW1toNw1s"
+  },
+  {
+    "id": "1460113959126651000",
+    "airdrop": 1,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1460309230271942656/2axFof4c.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "_dhruv_chauhan_",
+    "wallet": ""
+  },
+  {
+    "id": "1744026999247511600",
+    "airdrop": 1,
+    "boxes": 9,
+    "image": "https://pbs.twimg.com/profile_images/1760791485706825728/u3q7y4M_.jpg",
+    "points": 2495,
+    "risk": 0,
+    "username": "raduu779",
+    "wallet": ""
+  },
+  {
+    "id": "948742928247197700",
+    "airdrop": 1,
+    "boxes": 24,
+    "image": "https://pbs.twimg.com/profile_images/1545194119806554112/Vc04UPxH.jpg",
+    "points": 12128,
+    "risk": 0,
+    "username": "cryptovlat",
+    "wallet": ""
+  },
+  {
+    "id": "1066203726",
+    "airdrop": 1,
+    "boxes": 6,
+    "image": "https://pbs.twimg.com/profile_images/1745848295925198848/_cY14roT.jpg",
+    "points": 2801,
+    "risk": 0,
+    "username": "CryptoDevXP",
+    "wallet": ""
+  },
+  {
+    "id": "1425011139331645400",
+    "airdrop": 1,
+    "boxes": 12,
+    "image": "https://pbs.twimg.com/profile_images/1446501019853246466/MlK_CDqQ.jpg",
+    "points": 8052,
+    "risk": 0,
+    "username": "lucker_eth",
+    "wallet": ""
+  },
+  {
+    "id": "1309975018739323000",
+    "airdrop": 1,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1792922997096873984/JIsN4Ngi.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "vagifbn",
+    "wallet": ""
+  },
+  {
+    "id": "973596398401867800",
+    "airdrop": 1,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1330229398331678722/6cPpaM0e.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "MrLucky0ne",
+    "wallet": ""
+  },
+  {
+    "id": "1458108011713425400",
+    "airdrop": 1,
+    "boxes": 1,
+    "image": "https://pbs.twimg.com/profile_images/1458108098426511361/x4Ba2ewT.png",
+    "points": 301,
+    "risk": 0,
+    "username": "andrey_azure",
+    "wallet": ""
+  },
+  {
+    "id": "1801239068405309400",
+    "airdrop": 0,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1801239156431159296/9doKsLqZ.png",
+    "points": 0,
+    "risk": 0,
+    "username": "RAYGG111",
+    "wallet": ""
+  },
+  {
+    "id": "1466927356078141400",
+    "airdrop": 1,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1763179873688813569/9KZKDf_p.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "5amNft",
+    "wallet": "DJ97i6WpqjEjLPbm3K5H9DdgKUK4Xe8j9FTnViLDtiQ1"
+  },
+  {
+    "id": "1055340116",
+    "airdrop": 1,
+    "boxes": 2,
+    "image": "https://pbs.twimg.com/profile_images/1762352580179509248/ExFH0TIm.jpg",
+    "points": 531,
+    "risk": 0,
+    "username": "AgKidero",
+    "wallet": ""
+  },
+  {
+    "id": "1438592405201096700",
+    "airdrop": 1,
+    "boxes": 5,
+    "image": "https://pbs.twimg.com/profile_images/1791436166060781568/t7MSl2ze.jpg",
+    "points": 1700,
+    "risk": 0,
+    "username": "zefirium_crypto",
+    "wallet": ""
+  },
+  {
+    "id": "1371814088574075000",
+    "airdrop": 1,
+    "boxes": 6,
+    "image": "https://pbs.twimg.com/profile_images/1744397644657836032/2iosEMrW.jpg",
+    "points": 2221,
+    "risk": 0,
+    "username": "bitkingcoin00",
+    "wallet": "HsGDy2UJHrf4JxqyNFzeEg6tCsBQRbmTMnYpFhzxu5gE"
+  },
+  {
+    "id": "1437324326718541800",
+    "airdrop": 1,
+    "boxes": 4,
+    "image": "https://pbs.twimg.com/profile_images/1626984575019646976/0q3-Yxnb.jpg",
+    "points": 1084,
+    "risk": 0,
+    "username": "JohnSmith72873",
+    "wallet": ""
+  },
+  {
+    "id": "1458189298768007200",
+    "airdrop": 1,
+    "boxes": 10,
+    "image": "https://pbs.twimg.com/profile_images/1779929711491084288/4S3lJ9rO.jpg",
+    "points": 11321,
+    "risk": 0,
+    "username": "GreyHound0304",
+    "wallet": "Fv2dnC68GT4mvGuS2YFLAxXN8gNpiirZi9mwMBYPurcU"
+  },
+  {
+    "id": "53736838",
+    "airdrop": 0,
+    "boxes": 0,
+    "image": "https://pbs.twimg.com/profile_images/1801203048846438401/auQ-9R-g.jpg",
+    "points": 0,
+    "risk": 0,
+    "username": "Electronik161",
+    "wallet": ""
+  },
+  {
+    "id": "1448414346292301800",
+    "airdrop": 1,
+    "boxes": 4,
+    "image": "https://pbs.twimg.com/profile_images/1448425755189252098/hPtUTkSk.jpg",
+    "points": 1279,
+    "risk": 0,
+    "username": "0xmooseman",
+    "wallet": ""
+  },
+  {
+    "id": "1216023864091840500",
+    "airdrop": 1,
+    "boxes": 8,
+    "image": "https://pbs.twimg.com/profile_images/1216024380708392962/2eUk-3WT.jpg",
+    "points": 5005,
+    "risk": 0,
+    "username": "rtypicalcat",
+    "wallet": "DwttjUjVFaKruhQuTjLbf5giCATjnGt5MG5MnX4cHCfB"
   }
 ]

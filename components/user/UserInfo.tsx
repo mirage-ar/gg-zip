@@ -13,7 +13,7 @@ import { formatWalletAddress, formatPoints } from "@/utils";
 
 const UserInfo: React.FC = () => {
 
-  const { globalUser: user, closed } = useApplicationContext();
+  const { globalUser: user, closed, setShowOnboarding } = useApplicationContext();
 
 
   const { publicKey } = useWallet();
@@ -35,7 +35,7 @@ const UserInfo: React.FC = () => {
 
   return (
     <div className={styles.main} style={closed ? { marginRight: "70px" } : {}}>
-      <div className={styles.userDetails}>
+      <div className={styles.userDetails} onClick={() => setShowOnboarding(true)}>
         {/* --- WALLET ADDRESS --- */}
         {publicKey ? (
           <div>{formatWalletAddress(publicKey.toBase58())}</div>
