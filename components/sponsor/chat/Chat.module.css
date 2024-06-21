@@ -5,9 +5,10 @@
   width: 419px;
   height: calc(100vh - 300px);
   display: flex;
-  position: absolute;
+  position: fixed;
   bottom: 100px;
   left: 16px;
+  transition: all 0.3s ease-in-out;
 }
 
 .chatMessages {
@@ -24,6 +25,7 @@
 .chatMessageContainer {
   margin-bottom: 2px;
   padding: 10px 12px;
+  width: 419px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -36,8 +38,9 @@
 .chatMessageInfo {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 100%;
+  gap: 12px;
 }
 
 .chatMessageImageContainer {
@@ -87,10 +90,10 @@
   gap: 10px;
   padding: 6px;
   width: 420px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 1);
   backdrop-filter: blur(3px);
   border-radius: var(--corner4, 4px);
-  /* border: 1px solid var(--g2, #292929); */
+  transition: all 0.3s ease-in-out;
 }
 
 .chatInput {
@@ -130,4 +133,52 @@
   cursor: pointer;
 
   /* border: 1px solid red; */
+}
+
+.chatCloseButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
+  bottom: 18px;
+  left: 375px;
+  gap: 6px;
+  font-size: 14px;
+
+  color: var(--g);
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.closedContainer {
+  display: flex;
+  width: 419px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.messageCount {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--b);
+  position: absolute;
+  bottom: 75px;
+  left: 380px;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  background: var(--g);
+  border-radius: 50%;
+}
+
+.closedAnimation {
+  position: fixed;
+  bottom: 55px;
+  left: 16px;
+  transition: all 0.3s ease-in-out;
 }

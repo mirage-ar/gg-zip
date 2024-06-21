@@ -89,7 +89,7 @@
   justify-content: center;
   gap: 12px;
   width: 247px;
-  height: 52px;
+  height: 68px;
   flex-shrink: 0;
   border-radius: var(--corner4, 4px);
   background: #1f1f1f;
@@ -118,6 +118,10 @@
   animation: strobing 2s infinite;
 }
 
+.closeButton {
+  cursor: pointer;
+}
+
 @keyframes strobing {
   0% {
     opacity: 1;
@@ -128,4 +132,7 @@
   100% {
     opacity: 1;
   }
+}
+.transactionsContainer {
+  margin: 0 24px;
 }

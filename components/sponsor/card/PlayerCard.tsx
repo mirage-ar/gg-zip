@@ -19,6 +19,8 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, sponsorHoldings, showBu
   const [holdingAmountCard, setHoldingAmountCard] = useState<string>("card-0");
   const [amount, setAmount] = useState(1);
 
+  const holdingAmount = player.amount || sponsorHoldings?.find((user) => user.wallet === player.wallet)?.amount;
+
   // This function is used to calculate the color of the card based on the holding amount
   const calculateCardColor = (holdingAmount: number) => {
     if (holdingAmount > 25) {
@@ -78,11 +80,15 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, sponsorHoldings, showBu
 
         <div className={styles.playerCardAmountContainer}>
           <Image src="/assets/graphics/ball-white.svg" alt="sphere" width={30} height={30} />
-          <Image src="/assets/graphics/bar-spacer.svg" alt="spacer" width={35} height={2} />
-          <div className={styles.playerCardAmount}>
-            {player.amount || sponsorHoldings?.find((user) => user.wallet === player.wallet)?.amount || 0}
-            <Image src="/assets/icons/icons-16/card.svg" alt="holding amount" width={16} height={16} />
-          </div>
+          {holdingAmount && (
+            <>
+              <Image src="/assets/graphics/bar-spacer.svg" alt="spacer" width={35} height={2} />
+              <div className={styles.playerCardAmount}>
+                {holdingAmount}
+                <Image src="/assets/icons/icons-16/card.svg" alt="holding amount" width={16} height={16} />
+              </div>
+            </>
+          )}
         </div>
       </div>
 

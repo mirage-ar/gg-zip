@@ -3,26 +3,23 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 16px;
-  margin-top: 50px;
   height: 100%;
   overflow: auto;
 }
 
 .title {
-  width: 90%;
+  width: 100%;
   color: var(--g);
   font-family: var(--connect);
   font-size: 24px;
   text-transform: uppercase;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--g3);
+  padding: 0 16px;
 }
 
 .scrollable {
   overflow-y: auto;
   flex-grow: 1;
-  margin-bottom: 63px;
+  margin-bottom: 63px; /* to allow room for update profile button */
 }
 
 .playerCards {
@@ -31,6 +28,7 @@
   justify-content: flex-start;
   gap: 10px;
   margin-bottom: 60px;
+  margin-left: 12px;
 }
 
 .editProfile {
@@ -49,4 +47,105 @@
   border: none;
   text-transform: uppercase;
   cursor: pointer;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 16px 35px;
+}
+
+.headerButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 249px;
+  height: 68px;
+  color: var(--w);
+  text-align: center;
+  font-size: 18px;
+  text-transform: uppercase;
+  font-family: var(--connect);
+  background: var(--b);
+  border: 1px solid var(--g2);
+  cursor: pointer;
+}
+
+.selected {
+  background: var(--g);
+  border: none;
+  color: var(--b);
+}
+
+.left {
+  border-radius: 4px 0 0 4px;
+}
+
+.right {
+  border-radius: 0 4px 4px 0;
+}
+
+.spacer {
+  margin: 16px 0 16px;
+  border-bottom: 1px solid #292929;
+  width: 498px;
+}
+
+.username {
+  color: var(--g, #42ff60);
+  font-size: 18px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.wallet {
+  color: var(--g3, #373737);
+  font-size: 14px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 12px;
+}
+
+.earningsContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.earningsContainer span {
+  color: var(--g);
+  font-size: 18px;
+  font-family: var(--connect);
+}
+
+.withdrawContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.withdrawButton {
+  display: flex;
+  width: 119px;
+  padding: 12px;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--corner4, 4px);
+  background: var(--g, #42ff60);
+  color: var(--b, #000);
+  font-size: 14px;
+  text-transform: uppercase;
+  border: none;
+  margin-left: 6px;
+  cursor: pointer;
+}
+
+.withdrawButton:disabled {
+  background-color: var(--g3);
+  cursor: not-allowed;
 }

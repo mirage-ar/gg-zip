@@ -13,9 +13,10 @@ import { TRANSACTION_COUNT } from "@/utils/constants";
 
 interface TransactionsProps {
   playerList: Player[];
+  isProfile?: boolean;
 }
 
-const Transactions: React.FC<TransactionsProps> = ({ playerList }) => {
+const Transactions: React.FC<TransactionsProps> = ({ playerList, isProfile }) => {
   const [transactions, setTransactions] = useState<TransactionData[]>([]);
   const { program } = useSolana();
 
@@ -60,7 +61,6 @@ const Transactions: React.FC<TransactionsProps> = ({ playerList }) => {
 
         await wait(10);
       })
-      
     );
 
     const orderedTransactions = transactions.sort((a, b) => b.timestamp - a.timestamp);
@@ -74,21 +74,24 @@ const Transactions: React.FC<TransactionsProps> = ({ playerList }) => {
 
     fetchTransactions();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [program, playerList]);
 
   return (
     <div className={styles.main}>
       {/* ----- HEADER ----- */}
       <div className={styles.header}>
-        <span style={{width: "100px"}}>Wallet</span>
-        <span style={{width: "50px"}}>Type</span>
-        <span style={{width: "150px"}}>Card</span>
-        <span style={{width: "100px"}}>Price</span>
+        <span style={{ width: "90px" }}>Wallet</span>
+        <span style={{ width: "50px" }}>Type</span>
+        <span style={{ width: "150px" }}>Card</span>
+        <span className={styles.priceHeader} style={{ width: "100px" }}>
+          {isProfile ? "Earn" : "Price"}
+          <Image src="/assets/icons/icons-24/solana.svg" alt="solana icon" width={24} height={24} />
+        </span>
       </div>
 
       <div className={styles.transactions}>
-        {transactions.length === 0 && <p style={{paddingLeft: "24px"}}>Loading...</p>}
+        {transactions.length === 0 && <p style={{ padding: "24px" }}>Loading...</p>}
         {transactions.map((transaction, index) => {
           const player = playerList.find((player) => player.wallet === transaction.subject);
           if (!player) {
@@ -106,9 +109,9 @@ const Transactions: React.FC<TransactionsProps> = ({ playerList }) => {
                 <p>@{abbreviateString(player?.username)}</p>
               </div>
               <div className={styles.priceContainer}>
-                <p>{withCommas(Number(transaction.amount).toFixed(3))}</p>
+                <p>+ {withCommas((Number(transaction.amount) * 0.15).toFixed(3))}</p>
                 {/* TODO: remove cluster get param on launch */}
-                <Link href={`https://solscan.io/tx/${transaction.signature}?cluster=devnet`} target="_blank"> 
+                <Link href={`https://solscan.io/tx/${transaction.signature}?cluster=devnet`} target="_blank">
                   <Image src="/assets/icons/icons-16/transaction.svg" alt="transaction link" width={16} height={16} />
                 </Link>
               </div>

@@ -33,89 +33,7 @@ const SponsorLeaderboard: React.FC<SponsorLeaderboardProps> = ({ flyToMarker, pl
   const [showHoldings, setShowHoldings] = useState<string | null>(null);
   const [holdingsViewPlayers, setHoldingsViewPlayers] = useState<Player[]>([]);
 
-  const { transactionPending } = useApplicationContext();
   const { fetchSponsorHoldings } = useSolana();
-
-  useEffect(() => {
-    // TODO: sponsor points need to be IN GAME - not overall
-    const fetchSponsors = async () => {
-      const response = await fetch(`api/sponsors`);
-      const result = await response.json();
-      const sponsors = result.data;
-
-      setSponsors(sponsors);
-    };
-
-    fetchSponsors();
-
-    // SPONSOR LEADERBOARD IS NOT LIVE !! too many alchemy requests
-    // const interval = setInterval(() => {
-    //   if (document.visibilityState === "visible") {
-    //     fetchSponsors();
-    //   }
-    // }, POLLING_TIME);
-
-    // return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    // Function to apply sorting and filtering
-    const applySortingAndFiltering = async () => {
-      let sortedSponsors: Sponsor[] = [...sponsors];
-
-      // set sponsor rank + holdings
-      for (let i = 0; i < sortedSponsors.length; i++) {
-        sortedSponsors[i].rank = i + 1;
-      }
-
-      if (pointsSorted !== Sort.NONE) {
-        sortedSponsors =
-          pointsSorted === Sort.ASCENDING
-            ? sortedSponsors.sort((a, b) => b.points - a.points)
-            : sortedSponsors.sort((a, b) => a.points - b.points);
-      }
-
-      sortedSponsors = sortedSponsors.filter((sponsor) =>
-        sponsor.username.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-
-      setFilteredSponsors(sortedSponsors);
-    };
-
-    applySortingAndFiltering();
-  }, [searchQuery, pointsSorted, sponsors]);
-
-  function openTradingView(player: Player) {
-    setTradingViewPlayer(player);
-    setShowOverlay(true);
-  }
-
-  function togglePointsSort() {
-    const newSort = pointsSorted === Sort.ASCENDING ? Sort.DESCENDING : Sort.ASCENDING;
-    setPointsSorted(newSort);
-  }
-
-  let pointsIcon;
-
-  switch (pointsSorted) {
-    case Sort.ASCENDING:
-      pointsIcon = (
-        <Image src="/assets/icons/icons-24/sort-ascending.svg" alt="Sort Ascending" width={24} height={24} />
-      );
-      break;
-    case Sort.DESCENDING:
-      pointsIcon = (
-        <Image src="/assets/icons/icons-24/sort-descending.svg" alt="Sort Descending" width={24} height={24} />
-      );
-      break;
-    case Sort.NONE:
-      pointsIcon = <Image src="/assets/icons/icons-24/sort-none.svg" alt="Sort None" width={24} height={24} />;
-      break;
-    default:
-      pointsIcon = (
-        <Image src="/assets/icons/icons-24/sort-ascending.svg" alt="Sort Ascending" width={24} height={24} />
-      );
-  }
 
   const showHoldingsView = async (wallet: string) => {
     setLoading(true);
@@ -146,6 +64,91 @@ const SponsorLeaderboard: React.FC<SponsorLeaderboardProps> = ({ flyToMarker, pl
     }
     setLoading(false);
   };
+
+  function togglePointsSort() {
+    const newSort = pointsSorted === Sort.ASCENDING ? Sort.DESCENDING : Sort.ASCENDING;
+    setPointsSorted(newSort);
+  }
+
+  let pointsIcon;
+  switch (pointsSorted) {
+    case Sort.ASCENDING:
+      pointsIcon = (
+        <Image src="/assets/icons/icons-24/sort-ascending.svg" alt="Sort Ascending" width={24} height={24} />
+      );
+      break;
+    case Sort.DESCENDING:
+      pointsIcon = (
+        <Image src="/assets/icons/icons-24/sort-descending.svg" alt="Sort Descending" width={24} height={24} />
+      );
+      break;
+    case Sort.NONE:
+      pointsIcon = <Image src="/assets/icons/icons-24/sort-none.svg" alt="Sort None" width={24} height={24} />;
+      break;
+    default:
+      pointsIcon = (
+        <Image src="/assets/icons/icons-24/sort-ascending.svg" alt="Sort Ascending" width={24} height={24} />
+      );
+  }
+
+  // FETCH DATA
+  useEffect(() => {
+    // TODO: sponsor points need to be IN GAME - not overall
+    const fetchSponsors = async () => {
+      try {
+      const response = await fetch(`api/sponsors`);
+      const result = await response.json();
+
+      if (!result.success) throw new Error("Failed to fetch sponsors");
+
+      const sponsors = result.data;
+
+      setSponsors(sponsors);
+
+      } catch (error) {
+        throw new Error(`FETCH SPONSORS ERROR: ${error}`);
+      }
+    };
+
+    fetchSponsors();
+
+    // SPONSOR LEADERBOARD IS NOT LIVE !! too many alchemy requests
+    // const interval = setInterval(() => {
+    //   if (document.visibilityState === "visible") {
+    //     fetchSponsors();
+    //   }
+    // }, POLLING_TIME);
+
+    // return () => clearInterval(interval);
+  }, []);
+
+  // SORTING AND FILTERING
+  useEffect(() => {
+    // Function to apply sorting and filtering
+    const applySortingAndFiltering = async () => {
+      let sortedSponsors: Sponsor[] = [...sponsors];
+
+      // set sponsor rank + holdings
+      for (let i = 0; i < sortedSponsors.length; i++) {
+        sortedSponsors[i].rank = i + 1;
+      }
+
+      if (pointsSorted !== Sort.NONE) {
+        sortedSponsors =
+          pointsSorted === Sort.ASCENDING
+            ? sortedSponsors.sort((a, b) => b.points - a.points)
+            : sortedSponsors.sort((a, b) => a.points - b.points);
+      }
+
+      sortedSponsors = sortedSponsors.filter((sponsor) =>
+        sponsor.username.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+
+      setFilteredSponsors(sortedSponsors);
+    };
+
+    applySortingAndFiltering();
+  }, [searchQuery, pointsSorted, sponsors]);
 
   return (
     <div className={styles.container}>

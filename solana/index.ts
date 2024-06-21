@@ -1,7 +1,6 @@
 import BN from "bn.js";
-import { rand } from "@/utils";
 
-function lamportsToSol(lamports: bigint): number {
+export function lamportsToSol(lamports: bigint): number {
   return Number(lamports) / 1000000000;
 }
 

@@ -1,17 +1,18 @@
 import { useState, useEffect, useMemo } from "react";
 import * as anchor from "@project-serum/anchor";
-
 import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
 import { SystemProgram, PublicKey, Transaction } from "@solana/web3.js";
 import { useApplicationContext } from "@/state/ApplicationContext";
 import { bnToNumber, getBuyPrice, getSellPrice } from "@/solana";
-import { wait } from "@/utils";
+import BN from "bn.js";
 
-import type { SponsorHoldings } from "@/types";
+import type { Player, SponsorHoldings } from "@/types";
 import { PROGRAM_ID } from "@/utils/constants";
 
 import IDL from "@/solana/idl.json";
+
+import { wait } from "@/utils";
 
 export default function useSolana(playerWalletAddress?: string) {
   const [buyPrice, setBuyPrice] = useState<number>(0);
@@ -96,11 +97,10 @@ export default function useSolana(playerWalletAddress?: string) {
       // console.log(signature);
       // const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
       console.log(transaction);
-
-      wait(5000);
-      setTransactionPending(false);
     } catch (error) {
       console.error("buyPlayerCard", error);
+      throw new Error("Failed to buy player card");
+    } finally {
       setTransactionPending(false);
     }
   }
@@ -144,11 +144,12 @@ export default function useSolana(playerWalletAddress?: string) {
 
       // const signature = await sendTransaction(transaction, connection, { minContextSlot });
       // const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
-      console.log(transaction);
 
-      setTransactionPending(false);
+      console.log("Transaction: ", transaction);
     } catch (error) {
       console.error("sellPlayerCard", error);
+      throw new Error("Failed to sell player card");
+    } finally {
       setTransactionPending(false);
     }
   }
@@ -184,13 +185,12 @@ export default function useSolana(playerWalletAddress?: string) {
       // const signature = await sendTransaction(transaction, connection, { minContextSlot });
       // console.log(signature);
       // const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
-      console.log(transaction);
-      setTransactionPending(false);
       return true;
     } catch (error) {
       console.error("mintPlayerCard", error);
+      throw new Error("Failed to mint player card");
+    } finally {
       setTransactionPending(false);
-      return false;
     }
   }
 
@@ -219,6 +219,54 @@ export default function useSolana(playerWalletAddress?: string) {
       return 0;
     }
     return 0;
+  }
+
+  async function calculateTotalHoldings(playerList: Player[], sponsorHoldings: string[]): Promise<number> {
+    if (!program || !publicKey) {
+      return 0;
+    }
+
+    const holdingPlayers = playerList.filter((player: Player) => sponsorHoldings.includes(player.wallet));
+
+    let totalHoldings = 0;
+    await Promise.all(
+      holdingPlayers.map(async (player) => {
+        try {
+          // fetch how much of each player the sponsor holds
+          const walletPublicKey = new PublicKey(player.wallet);
+          const walletBuffer = walletPublicKey.toBuffer();
+
+          const [tokenPda] = await findProgramAddressSync(
+            [Buffer.from("TOKEN"), publicKey.toBuffer(), walletBuffer],
+            program.programId
+          );
+
+          const tokenAccount = await program.account.tokenAccount.fetch(tokenPda);
+
+          const tokenTotal = await fetchPlayerCardCount(player.wallet);
+
+          if (tokenAccount && tokenTotal) {
+            const tokenCount = bnToNumber(tokenAccount.amount as BN);
+
+            let totalSellPrice: number = 0;
+
+            for (let i = 0; i < tokenCount; i++) {
+              const currentPrice = getSellPrice(tokenTotal - i, 1);
+              totalSellPrice += currentPrice;
+            }
+
+            totalHoldings += totalSellPrice;
+          }
+        } catch (error) {
+          console.error("calculateTotalHoldings", error);
+          throw new Error(`Failed to calculate total holdings: ${error}`);
+        } finally {
+          return totalHoldings;
+        }
+      })
+    );
+
+    return totalHoldings;
   }
 
   async function fetchSponsorHoldings(wallet?: string): Promise<SponsorHoldings[]> {
@@ -266,15 +314,15 @@ export default function useSolana(playerWalletAddress?: string) {
     if (!program || !publicKey) {
       return false;
     }
-  
+
     try {
       const subjectPublicKey = publicKey;
       const subjectBuffer = subjectPublicKey.toBuffer();
       const [mintPda] = await findProgramAddressSync([Buffer.from("MINT"), subjectBuffer], program.programId);
-  
+
       // Fetch the account info for the mint PDA
       const accountInfo = await program.provider.connection.getAccountInfo(mintPda);
-  
+
       // If accountInfo is not null, the account exists
       return accountInfo !== null;
     } catch (error) {
@@ -282,7 +330,6 @@ export default function useSolana(playerWalletAddress?: string) {
       return false;
     }
   };
-  
 
   async function fetchPrices() {
     if (!program || !playerWalletAddress) {
@@ -305,6 +352,57 @@ export default function useSolana(playerWalletAddress?: string) {
     }
   }
 
+  async function getPlayerMintAccount(playerWalletAddress: string) {
+    if (!program || !playerWalletAddress) {
+      return;
+    }
+
+    try {
+      const walletPublicKey = new PublicKey(playerWalletAddress);
+      const walletBuffer = walletPublicKey.toBuffer();
+
+      const [mintPda, mintBump] = await findProgramAddressSync([Buffer.from("MINT"), walletBuffer], program.programId);
+
+      const balance = await connection.getBalance(mintPda);
+      const playerAccount = await program.account.mintAccount.fetch(mintPda);
+
+      return {
+        ...playerAccount,
+        balance
+      };
+    } catch (error) {
+      console.error("getPlayerMintAccount", error);
+    }
+  }
+
+  async function withdrawFromMint() {
+    if (!program || !publicKey) {
+      return;
+    }
+
+    try {
+      setTransactionPending(true);
+      const subjectPublicKey = publicKey;
+      const subjectBuffer = subjectPublicKey.toBuffer();
+
+      const [mintPda] = await findProgramAddressSync([Buffer.from("MINT"), subjectBuffer], program.programId);
+
+      const transaction = await program.methods
+      .withdrawFromMint()
+      .accounts({
+        authority: publicKey,
+        mint: mintPda,
+      })
+      .rpc();
+
+      console.log(transaction);
+    } catch (error) {
+      console.error("withdrawFromMint", error);
+    } finally {
+      setTransactionPending(false);
+    }
+  }
+
   useEffect(() => {
     async function init() {
       fetchPrices();
@@ -312,9 +410,12 @@ export default function useSolana(playerWalletAddress?: string) {
       setCardHoldings(cardHoldings);
     }
 
-    init();
+    if (playerWalletAddress) {
+      init();
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [program]);
+  }, [program, playerWalletAddress]);
 
   return {
     program,
@@ -324,8 +425,11 @@ export default function useSolana(playerWalletAddress?: string) {
     buyPlayerCard,
     sellPlayerCard,
     mintPlayerCard,
+    calculateTotalHoldings,
     fetchSponsorHoldings,
     fetchPlayerCardCount,
     isMinted,
+    getPlayerMintAccount,
+    withdrawFromMint,
   };
 }

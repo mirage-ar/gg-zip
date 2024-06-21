@@ -31,6 +31,16 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
   const [inputMessage, setInputMessage] = useState<string>("");
   const webSocket = useRef<WebSocket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [closed, setClosed] = useState<boolean>(false);
+  const closedRef = useRef<boolean>(closed);
+  const messageCount = useRef<number>(0);
+
+  useEffect(() => {
+    closedRef.current = closed;
+    if (!closed) {
+      messageCount.current = 0;
+    }
+  }, [closed]);
 
   // Connect to Chat WebSocket
   useEffect(() => {
@@ -49,6 +59,10 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
     webSocket.current.onmessage = (event: MessageEvent) => {
       const message: ChatMessage = JSON.parse(event.data);
 
+      if (closedRef.current) {
+        messageCount.current += 1;
+      }
+
       setMessages((prevMessages) => {
         const newMessages = [...prevMessages, message];
         return newMessages.slice(-500);
@@ -60,6 +74,7 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
     };
   }, []);
 
+  // TRANSACTIONS
   // Connect to Transaction WebSocket
   useEffect(() => {
     if (!program) return;
@@ -170,64 +185,89 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
     }
   };
 
+  const chatMessage = (message: ChatMessage, index: number) => {
+    return (
+      <div key={index} className={styles.chatMessageContainer}>
+        <div className={styles.chatMessageInfo}>
+          <div className={styles.chatMessageImageContainer}>
+            <Image
+              src={message.image}
+              alt={message.username}
+              width={20}
+              height={20}
+              className={styles.chatMessageImage}
+              style={message.source === "hunter" ? { borderColor: "#42FF60" } : {}}
+            />
+            <p className={styles.chatMessageName} style={message.source === "hunter" ? { color: "#42FF60" } : {}}>
+              {message.username}
+            </p>
+            <Image
+              src={`/assets/icons/icons-16/${message.source === "hunter" ? "sword" : "case"}.svg`}
+              alt="sponsor case"
+              width={16}
+              height={16}
+            />
+          </div>
+          <p className={styles.chatMessageTimestamp}>
+            {DateFNS.formatDistance(new Date(message.timestamp), new Date(), { addSuffix: true })}
+          </p>
+        </div>
+        <p className={styles.chatMessage} style={message.source === "system" ? { color: "#FF61EF" } : {}}>
+          {message.message}
+        </p>
+      </div>
+    );
+  };
+
   return (
     <>
-      <div className={styles.container}>
-        <div className={styles.chatMessages}>
-          {messages.map((message, index) => (
-            <div key={index} className={styles.chatMessageContainer}>
-              <div className={styles.chatMessageInfo}>
-                <div className={styles.chatMessageImageContainer}>
-                  <Image
-                    src={message.image}
-                    alt={message.username}
-                    width={20}
-                    height={20}
-                    className={styles.chatMessageImage}
-                    style={message.source === "hunter" ? { borderColor: "#42FF60" } : {}}
-                  />
-                  <p className={styles.chatMessageName} style={message.source === "hunter" ? { color: "#42FF60" } : {}}>
-                    {message.username}
-                  </p>
-                  <Image
-                    src={`/assets/icons/icons-16/${message.source === "hunter" ? "sword" : "case"}.svg`}
-                    alt="sponsor case"
-                    width={16}
-                    height={16}
-                  />
-                </div>
-                <p className={styles.chatMessageTimestamp}>
-                  {DateFNS.formatDistance(new Date(message.timestamp), new Date(), { addSuffix: true })}
-                </p>
-              </div>
-              <p className={styles.chatMessage} style={message.source === "system" ? { color: "#FF61EF" } : {}}>
-                {message.message}
-              </p>
-            </div>
-          ))}
-          <div ref={messagesEndRef} />
-        </div>
-      </div>
+      <button onClick={() => setClosed(!closed)} className={styles.chatCloseButton}>
+        <Image src={`/assets/icons/icons-16/${closed ? "close" : "open"}.svg`} alt="close" width={16} height={16} />
+        Chat
+      </button>
 
-      <div className={styles.chatInputContainer}>
-        <textarea
-          className={styles.chatInput}
-          value={inputMessage}
-          onChange={(e) => setInputMessage(e.target.value)}
-          onKeyDown={handleKeyPress}
-          placeholder="Send a message..."
-        />
-        {publicKey ? (
-          <button onClick={handleFormSubmit} className={styles.chatSendButton} style={{justifyContent: "flex-end", paddingRight: "16px"}}>
-            <Image src="/assets/icons/icons-24/send.svg" alt="send message" width={24} height={24} />
-          </button>
-        ) : (
-          <button onClick={() => setVisible(true)} className={styles.chatSendButton}>
-            Connect
-            <Image src="/assets/icons/icons-24/plus.svg" alt="connect wallet" width={24} height={24} />
-          </button>
-        )}
-      </div>
+      <>
+        <div className={styles.container} style={!closed ? { marginBottom: "-1000px" } : { marginBottom: "0px" }}>
+          <div className={styles.chatMessages}>
+            {messages.map((message, index) => chatMessage(message, index))}
+            <div ref={messagesEndRef} />
+          </div>
+        </div>
+
+        <div
+          className={styles.chatInputContainer}
+          style={!closed ? { marginBottom: "-1000px" } : { marginBottom: "0px" }}
+        >
+          <textarea
+            className={styles.chatInput}
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            onKeyDown={handleKeyPress}
+            placeholder="Send a message..."
+          />
+          {publicKey ? (
+            <button
+              onClick={handleFormSubmit}
+              className={styles.chatSendButton}
+              style={{ justifyContent: "flex-end", paddingRight: "16px" }}
+            >
+              <Image src="/assets/icons/icons-24/send.svg" alt="send message" width={24} height={24} />
+            </button>
+          ) : (
+            <button onClick={() => setVisible(true)} className={styles.chatSendButton}>
+              Connect
+              <Image src="/assets/icons/icons-24/plus.svg" alt="connect wallet" width={24} height={24} />
+            </button>
+          )}
+        </div>
+      </>
+
+      {messages.length > 0 && (
+        <div className={styles.closedAnimation} style={closed ? { marginBottom: "-200px" } : { marginBottom: "0px" }}>
+          <div className={styles.closedContainer}>{chatMessage(messages[messages.length - 1], 0)}</div>
+          {messageCount.current > 0 && <div className={styles.messageCount}>{messageCount.current}</div>}
+        </div>
+      )}
     </>
   );
 };

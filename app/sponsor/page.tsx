@@ -1,5 +1,6 @@
 "use client";
 
+// COMPONENT IMPORTS
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import MapboxMap from "@/components/map/MapboxMap";
@@ -7,45 +8,44 @@ import LiveLeaderboard from "@/components/sponsor/leaderboard/LiveLeaderboard";
 import Chat from "@/components/sponsor/chat/Chat";
 import SponsorNavigation from "@/components/sponsor/navigation/SponsorNavigation";
 import Transactions from "@/components/sponsor/transactions/Transactions";
+import Powerups from "@/components/sponsor/powerups/Powerups";
+import Profile from "@/components/sponsor/profile/Profile";
+import SponsorLeaderboard from "@/components/sponsor/leaderboard/SponsorLeaderboard";
 
+// STYLES
 import styles from "./page.module.css";
 
-import { PublicKey } from "@solana/web3.js";
+// SOLANA UTILS
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
-import { Page, Tab, Player, MarkersObject, SponsorHoldings } from "@/types";
 import { getBuyPrice, getSellPrice, bnToNumber } from "@/solana";
-import { useSolana, useUser } from "@/hooks";
-import { withCommas } from "@/utils";
-import { GAME_API } from "@/utils/constants";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
 import BN from "bn.js";
 
-import accounts from "./accounts.json";
-
-import { POLLING_TIME } from "@/utils/constants";
-import Powerups from "@/components/sponsor/powerups/Powerups";
+// UTILS
+import { Page, Tab, Player, MarkersObject, SponsorHoldings } from "@/types";
 import { useApplicationContext } from "@/state/ApplicationContext";
-import Profile from "@/components/sponsor/profile/Profile";
-import { useWallet } from "@solana/wallet-adapter-react";
-import SponsorLeaderboard from "@/components/sponsor/leaderboard/SponsorLeaderboard";
+import { useSolana, useUser } from "@/hooks";
+import { withCommas } from "@/utils";
+import { GAME_API, POLLING_TIME } from "@/utils/constants";
+
+import accounts from "./accounts.json";
 
 export default function Home() {
   const [tab, setTab] = useState(Tab.LEADERBOARD);
   const [page, setPage] = useState(Page.LEADERBOARD);
   const [totalHoldings, setTotalHoldings] = useState<number>(0);
-
   const [playerList, setPlayerList] = useState<Player[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
   const [sponsorHoldings, setSponsorHoldings] = useState<SponsorHoldings[]>([]);
   const [sponsorPoints, setSponsorPoints] = useState<number>(0);
 
-  const { closed, setClosed, gameEnding } = useApplicationContext();
-
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<MarkersObject>({});
 
-  const { program, fetchSponsorHoldings, fetchPlayerCardCount } = useSolana();
+  const { closed, setClosed, gameEnding } = useApplicationContext();
+  const { program, fetchSponsorHoldings, calculateTotalHoldings } = useSolana();
   const { publicKey } = useWallet();
-
   const { fetchUser } = useUser();
 
   const fetchPlayerData = async (profile: boolean, sponsorHoldings: string[]): Promise<Player[]> => {
@@ -89,51 +89,12 @@ export default function Home() {
       })
     );
 
+    // set player rank for each player - mutation not ideal
     for (let i = 0; i < playerList.length; i++) {
       playerList[i].rank = i + 1;
     }
+
     return playerList;
-  };
-
-  const calculateTotalHoldings = async (playerList: Player[], sponsorHoldings: string[]): Promise<number> => {
-    if (!program || !publicKey) {
-      return 0;
-    }
-
-    const holdingPlayers = playerList.filter((player: Player) => sponsorHoldings.includes(player.wallet));
-
-    let totalHoldings = 0;
-    await Promise.all(
-      holdingPlayers.map(async (player) => {
-        // fetch how much of each player the sponsor holds
-        const walletPublicKey = new PublicKey(player.wallet);
-        const walletBuffer = walletPublicKey.toBuffer();
-
-        const [tokenPda] = await findProgramAddressSync(
-          [Buffer.from("TOKEN"), publicKey.toBuffer(), walletBuffer],
-          program.programId
-        );
-
-        const tokenAccount = await program.account.tokenAccount.fetch(tokenPda);
-
-        const tokenTotal = await fetchPlayerCardCount(player.wallet);
-
-        if (tokenAccount && tokenTotal) {
-          const tokenCount = bnToNumber(tokenAccount.amount as BN);
-
-          let totalSellPrice: number = 0;
-
-          for (let i = 0; i < tokenCount; i++) {
-            const currentPrice = getSellPrice(tokenTotal - i, 1);
-            totalSellPrice += currentPrice;
-          }
-
-          totalHoldings += totalSellPrice;
-        }
-      })
-    );
-
-    return totalHoldings;
   };
 
   // FLY TO USER LOCATION
@@ -149,6 +110,17 @@ export default function Home() {
     }
   };
 
+  // GET ONLINE USERS
+  const checkOnlineUsers = (): string[] => {
+    if (markersRef.current) {
+      const markers = markersRef.current;
+      const onlineUsers = Object.keys(markers);
+      return onlineUsers;
+    }
+    return [];
+  };
+
+  // PAGE NAME FOR TOP BAR
   const getPageName = (page: Page) => {
     switch (page) {
       case Page.LEADERBOARD:
@@ -159,18 +131,12 @@ export default function Home() {
         return "Transactions";
       case Page.POWERUPS:
         return "Powerups";
+      case Page.PROFILE:
+        return "Profile";
     }
   };
 
-  const checkOnlineUsers = (): string[] => {
-    if (markersRef.current) {
-      const markers = markersRef.current;
-      const onlineUsers = Object.keys(markers);
-      return onlineUsers;
-    }
-    return [];
-  };
-
+  // FETCH ALL DATA AND SET STATE
   useEffect(() => {
     const fetchData = async () => {
       // check online users and set state
@@ -190,7 +156,6 @@ export default function Home() {
       const holdings = await calculateTotalHoldings(players, sponsorHoldingsWallets);
       setTotalHoldings(holdings);
 
-      // TODO: UPDATE TO SST USER
       if (publicKey) {
         const user = await fetchUser(publicKey.toBase58());
         if (user) {
@@ -225,7 +190,12 @@ export default function Home() {
         <div className={styles.overlay} style={closed ? { marginRight: "-480px" } : { marginRight: "0" }}>
           <div className={styles.titleBar}>
             <div className={styles.closeButton} onClick={() => setClosed(!closed)}>
-              <Image src="/assets/icons/icons-16/close.svg" alt="Left Image" width={16} height={16} />
+              <Image
+                src={`/assets/icons/icons-16/${closed ? "open" : "close"}.svg`}
+                alt="close"
+                width={16}
+                height={16}
+              />
             </div>
             <div className={styles.title}>{getPageName(page)}</div>
           </div>
@@ -295,14 +265,14 @@ export default function Home() {
                     );
                   case Page.SPONSORS:
                     return (
-                      <SponsorLeaderboard
-                        flyToMarker={flyToMarker}
-                        playerList={playerList}
-                        onlineUsers={onlineUsers}
-                      />
+                      <SponsorLeaderboard flyToMarker={flyToMarker} playerList={playerList} onlineUsers={onlineUsers} />
                     );
                   case Page.TRANSACTIONS:
-                    return <Transactions playerList={playerList} />;
+                    return (
+                      <div className={styles.transactionsContainer}>
+                        <Transactions playerList={playerList} />
+                      </div>
+                    );
                   case Page.POWERUPS:
                     return (
                       <Powerups
