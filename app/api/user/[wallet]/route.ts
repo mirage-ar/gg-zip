@@ -4,6 +4,8 @@ import prisma from "@/utils/prisma";
 export async function GET(request: Request, { params }: { params: { wallet: string } }) {
   const wallet = params.wallet;
 
+  console.log("QUERY USER: ", wallet);
+
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -55,7 +57,7 @@ export async function POST(request: Request, { params }: { params: { wallet: str
     });
 
     if (!user) {
-      return Response.json({ success: false, message: "User does not exist" });
+      return Response.json({ success: false, message: "Could not create user" });
     }
 
     return Response.json({ success: true, data: user });

@@ -17,6 +17,8 @@ import { getGameStartTime } from "@/utils";
 import { GAME_API, GAME_DATE, PLAYER_COUNT, POLLING_TIME, PAUSE } from "@/utils/constants";
 
 const FIVE_MINUTES = 1000 * 60 * 5;
+const ONE_HOUR = 1000 * 60 * 60;
+const ONE_DAY = 1000 * 60 * 60 * 24;
 
 export default function Home() {
   const mapRef = useRef<mapboxgl.Map | null>(null);
@@ -49,7 +51,6 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [timeRemaining]);
 
-  // TODO: PLAYER COUNT POLLING - needs to be updated
   useEffect(() => {
     const getPlayerCount = async () => {
       try {
@@ -61,15 +62,18 @@ export default function Home() {
       }
     };
 
-    getPlayerCount();
+    // only poll for player count on game day
+    if (timeRemaining <= ONE_DAY) {
+      getPlayerCount();
 
-    const interval = setInterval(() => {
-      if (document.visibilityState === "visible") {
-        getPlayerCount();
-      }
-    }, POLLING_TIME);
+      const interval = setInterval(() => {
+        if (document.visibilityState === "visible") {
+          getPlayerCount();
+        }
+      }, POLLING_TIME);
 
-    return () => clearInterval(interval);
+      return () => clearInterval(interval);
+    }
   }, []);
 
   const joinGame = () => {

@@ -10,7 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-//TODO: add db index for wallet address
 model User {
   id        String   @id @default(uuid())
   twitterId String?  @unique
@@ -23,6 +22,8 @@ model User {
   risk      Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([wallet])
 }
 
 model Points {
@@ -36,4 +37,6 @@ model Points {
   points    Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([wallet])
 }
