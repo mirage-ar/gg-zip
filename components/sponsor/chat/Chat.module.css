@@ -16,6 +16,7 @@
   width: 100%;
   /* padding: 6px; */
   position: relative;
+  height: calc(100vh - 320px);
 
   /* Apply a mask for the fade effect */
   -webkit-mask-image: linear-gradient(to bottom, transparent, black 100px);
@@ -166,14 +167,15 @@
   align-items: center;
   justify-content: center;
   color: var(--b);
-  position: absolute;
-  bottom: 75px;
-  left: 380px;
+  position: relative;
+  bottom: -56px;
+  left: 370px;
   width: 36px;
   height: 36px;
   flex-shrink: 0;
   background: var(--g);
   border-radius: 50%;
+  z-index: 1000;
 }
 
 .closedAnimation {

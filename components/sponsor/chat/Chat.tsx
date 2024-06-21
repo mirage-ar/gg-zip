@@ -36,10 +36,11 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
   const messageCount = useRef<number>(0);
 
   useEffect(() => {
-    closedRef.current = closed;
     if (!closed) {
       messageCount.current = 0;
     }
+
+    closedRef.current = closed;
   }, [closed]);
 
   // Connect to Chat WebSocket
@@ -222,12 +223,12 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
   return (
     <>
       <button onClick={() => setClosed(!closed)} className={styles.chatCloseButton}>
-        <Image src={`/assets/icons/icons-16/${closed ? "close" : "open"}.svg`} alt="close" width={16} height={16} />
+        <Image src={`/assets/icons/icons-16/${closed ? "open" : "close"}.svg`} alt="close" width={16} height={16} />
         Chat
       </button>
 
       <>
-        <div className={styles.container} style={!closed ? { marginBottom: "-1000px" } : { marginBottom: "0px" }}>
+        <div className={styles.container} style={closed ? { marginBottom: "-1000px" } : { marginBottom: "0px" }}>
           <div className={styles.chatMessages}>
             {messages.map((message, index) => chatMessage(message, index))}
             <div ref={messagesEndRef} />
@@ -236,7 +237,7 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
 
         <div
           className={styles.chatInputContainer}
-          style={!closed ? { marginBottom: "-1000px" } : { marginBottom: "0px" }}
+          style={closed ? { marginBottom: "-1000px" } : { marginBottom: "0px" }}
         >
           <textarea
             className={styles.chatInput}
@@ -263,9 +264,9 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
       </>
 
       {messages.length > 0 && (
-        <div className={styles.closedAnimation} style={closed ? { marginBottom: "-200px" } : { marginBottom: "0px" }}>
-          <div className={styles.closedContainer}>{chatMessage(messages[messages.length - 1], 0)}</div>
+        <div className={styles.closedAnimation} style={!closed ? { marginBottom: "-200px" } : { marginBottom: "0px" }}>
           {messageCount.current > 0 && <div className={styles.messageCount}>{messageCount.current}</div>}
+          <div className={styles.closedContainer}>{chatMessage(messages[messages.length - 1], 0)}</div>
         </div>
       )}
     </>
