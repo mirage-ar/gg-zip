@@ -4,6 +4,7 @@ import PlayerCard from "@/components/sponsor/card/PlayerCard";
 import Transactions from "@/components/sponsor/transactions/Transactions";
 
 import styles from "./Profile.module.css";
+
 import { Player, SponsorHoldings } from "@/types";
 import { useApplicationContext } from "@/state/ApplicationContext";
 import { formatWalletAddress } from "@/utils";
@@ -124,7 +125,8 @@ const Profile: React.FC<ProfileProps> = ({ playerList, sponsorHoldings }) => {
         Edit Profile
         <Image src="/assets/icons/icons-24/settings.svg" alt="settings" width={24} height={24} />
       </button>
-      {/* TODO: update to see if user has a mint account */}
+
+      {/* IS HUNTER - SHOW BUTTONS */}
       {hunter && (
         <div className={styles.header}>
           <button

@@ -93,7 +93,6 @@ const SponsorLeaderboard: React.FC<SponsorLeaderboardProps> = ({ flyToMarker, pl
 
   // FETCH DATA
   useEffect(() => {
-    // TODO: sponsor points need to be IN GAME - not overall
     const fetchSponsors = async () => {
       try {
       const response = await fetch(`api/sponsors`);
@@ -106,7 +105,7 @@ const SponsorLeaderboard: React.FC<SponsorLeaderboardProps> = ({ flyToMarker, pl
       setSponsors(sponsors);
 
       } catch (error) {
-        throw new Error(`FETCH SPONSORS ERROR: ${error}`);
+        throw new Error(`Fetch sponsors error: ${error}`);
       }
     };
 

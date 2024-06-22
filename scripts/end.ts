@@ -11,9 +11,14 @@ type Hunter = {
   wallet: string;
 };
 
+type RankResult = {
+  id: string;
+  rank: number;
+};
+
 async function getHunters(): Promise<Hunter[]> {
   try {
-    const response = await axios.get("https://ybobrsrwn3.execute-api.us-east-1.amazonaws.com/users");
+    const response = await axios.get("https://api.koji.im/users");
     return response.data;
   } catch (error) {
     console.error("Error fetching hunters:", error);
@@ -24,47 +29,58 @@ async function getHunters(): Promise<Hunter[]> {
 async function main() {
   const hunters = await getHunters();
 
-  // TODO: update user rank for each player
-
+  // First, update points for each hunter
   for (const hunter of hunters) {
     try {
-      // apply user points
-      const user = await prisma.user.update({
-        where: { twitterId: hunter.id },
-        data: {
-          points: {
-            increment: hunter.points,
-          },
-        },
-      });
-
-      // get user rank based on point totals
-      const rankResult: any = await prisma.$queryRaw`
-        SELECT rank FROM (
-          SELECT 
-            id, 
-            RANK() OVER (ORDER BY points DESC) as rank
-          FROM 
-            "User"
-        ) as ranks
-        WHERE 
-          id = ${user.id}
-      `;
-
-      // apply user rank update
       await prisma.user.update({
         where: { twitterId: hunter.id },
         data: {
           points: {
             increment: hunter.points,
           },
-          rank: parseInt(rankResult[0].rank),
         },
       });
     } catch (error) {
-      console.error("Error updating hunter:", error);
+      console.error("Error updating points for hunter:", error);
+    }
+  }
+
+  // Get all users' ranks based on updated points
+  const rankResults: RankResult[] = await prisma.$queryRaw`
+    SELECT id, RANK() OVER (ORDER BY points DESC) as rank
+    FROM "User"
+  `;
+
+  const rankMap: { [key: string]: number } = {};
+  rankResults.forEach((result: RankResult) => {
+    rankMap[result.id] = result.rank;
+  });
+
+  // Update rank for each hunter
+  for (const hunter of hunters) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { twitterId: hunter.id },
+      });
+
+      if (user) {
+        await prisma.user.update({
+          where: { twitterId: hunter.id },
+          data: {
+            rank: rankMap[user.id],
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error updating rank for hunter:", error);
     }
   }
 }
 
-main();
+main()
+  .catch((error) => {
+    console.error("Error in main function:", error);
+  })
+  .finally(() => {
+    prisma.$disconnect();
+  });

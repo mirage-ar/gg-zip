@@ -176,7 +176,6 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
         </div>
       )}
 
-      {/* TODO: figure a better way of having this bottom padding */}
       <div className={styles.scrollable} style={showSearch ? { marginBottom: "63px" } : {}}>
         {/* ----- LEADERBOARD ------ */}
         {filteredPlayers.length > 0 &&
