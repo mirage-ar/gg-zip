@@ -12,9 +12,8 @@ export async function GET(request: Request) {
           gt: 0,
         },
         updatedAt: {
-          // TODO: for game, update this to 1 hour
-          // gte: new Date(new Date().getTime() - 1000 * 60 * 60 * 1), // last hour
-          gte: new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 1), // last 24 hours
+          gte: new Date(new Date().getTime() - 1000 * 60 * 60 * 1), // last hour
+          // gte: new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 1), // last 24 hours
         },
       },
     });

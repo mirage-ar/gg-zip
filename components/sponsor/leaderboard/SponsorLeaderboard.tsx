@@ -209,13 +209,14 @@ const SponsorLeaderboard: React.FC<SponsorLeaderboardProps> = ({ flyToMarker, pl
                         onClick={async () => await showHoldingsView(sponsor.wallet)}
                       >
                         {showHoldings === sponsor.wallet ? (
-                          <Image src="/assets/icons/icons-16/arrow-up.svg" alt="Cards Icon" width={16} height={16} />
+                          <Image src="/assets/icons/icons-16/arrow-up.svg" alt="up arrow" width={16} height={16} />
                         ) : (
-                          <Image src="/assets/icons/icons-16/arrow-d.svg" alt="Cards Icon" width={16} height={16} />
+                          <Image src="/assets/icons/icons-16/arrow-d.svg" alt="down arrow" width={16} height={16} />
                         )}
                       </button>
                     </div>
                   </div>
+                  {loading && showHoldings === sponsor.wallet && <div className={styles.loading}>Loading...</div>}
                   {showHoldings === sponsor.wallet && !loading && (
                     <div className={styles.holdingsContainer}>
                       {sponsor.holdings && sponsor.holdings.length > 0 ? (
