@@ -1,5 +1,6 @@
-import React, { useState, ChangeEvent, MouseEvent, useEffect } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useApplicationContext } from "@/state/ApplicationContext";
 import styles from "./Onboarding.module.css";
 
@@ -16,27 +17,23 @@ const Onboarding: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const { publicKey } = useWallet();
+  const pathname = usePathname();
 
   const { createUpdateUser } = useUser();
-  const { showOnboarding, setShowOnboarding } = useApplicationContext();
+  const { showOnboarding, setShowOnboarding, globalUser } = useApplicationContext();
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      if (publicKey) {
-        const response = await fetch(`/api/user/${publicKey.toBase58()}`);
-        const result = await response.json();
-        if (result.success) {
-          setUsername(result.data.username);
-          setPreview(result.data.image);
-        } else {
-          setUsername(`#${new Date().getTime().toString().substring(8)}`);
-          setPreview(null);
-        }
-      }
-    };
+    if (!publicKey) return;
 
-    fetchUserData();
-  }, [publicKey]);
+    if (globalUser) {
+      setUsername(globalUser.username);
+      setPreview(globalUser.image);
+    } else {
+      setUsername(`#${new Date().getTime().toString().substring(8)}`);
+      setPreview(null);
+    }
+
+  }, [publicKey, globalUser]);
 
   // Function to stop event propagation
   const handleContainerClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -71,7 +68,7 @@ const Onboarding: React.FC = () => {
     }
 
     if (preview && !image) {
-      createUpdateUser(publicKey.toBase58(), username, preview);
+      createUpdateUser(username, preview);
       setShowOnboarding(false);
       return;
     }
@@ -84,6 +81,7 @@ const Onboarding: React.FC = () => {
         const resizedImage = await resizeImage(image);
 
         const base64Image = resizedImage.split(",")[1];
+
         const response = await fetch(`${UPLOAD_API}/upload`, {
           method: "POST",
           body: JSON.stringify({ image: base64Image }),
@@ -92,7 +90,7 @@ const Onboarding: React.FC = () => {
         const data = await response.json();
         console.log("Image uploaded:", data.url);
 
-        await createUpdateUser(publicKey.toBase58(), username, data.url);
+        await createUpdateUser(username, data.url);
 
         setLoading(false);
         setShowOnboarding(false);
@@ -100,9 +98,15 @@ const Onboarding: React.FC = () => {
     }
   };
 
+  const attemptToClose = () => {
+    if (pathname !== "/") {
+      setShowOnboarding(false);
+    }
+  }
+
   return (
     showOnboarding && (
-      <div className={styles.main} onClick={() => setShowOnboarding(false)}>
+      <div className={styles.main} onClick={attemptToClose}>
         <div className={styles.container} onClick={handleContainerClick}>
           <h4>EDIT PROFILE</h4>
           <div className={styles.profilePhotoContainer}>

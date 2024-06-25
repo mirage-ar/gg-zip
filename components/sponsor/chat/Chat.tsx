@@ -20,12 +20,12 @@ interface ChatProps {
 }
 
 const Chat: React.FC<ChatProps> = ({ playerList }) => {
-  const { globalUser: user } = useApplicationContext();
-
   const { fetchUser } = useUser();
   const { publicKey } = useWallet();
   const { setVisible } = useWalletModal();
   const { program } = useSolana();
+
+  const { setShowOnboarding } = useApplicationContext();
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
@@ -128,8 +128,6 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
               return newMessages.slice(-500);
             });
           }
-
-          // get user from db here
         }
       },
       "confirmed"
@@ -146,17 +144,24 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
   }, [messages]);
 
   // Send a message
-  const sendMessage = () => {
-    if (inputMessage !== "" && webSocket.current) {
+  const sendMessage = async () => {
+    const user = await fetchUser(publicKey?.toBase58() || "");
+    if (inputMessage !== "" && webSocket.current && user) {
       const messageData: ChatMessage = {
         message: inputMessage,
         timestamp: Date.now(),
-        username: user?.username || (publicKey && formatWalletAddress(publicKey.toBase58())) || "Anonymous",
-        image: user?.image || "https://gg.zip/assets/graphics/koji.png",
+        username: user.username,
+        image: user.image,
         source: "sponsor",
       };
       webSocket.current.send(JSON.stringify({ action: "sendmessage", data: messageData }));
       setInputMessage("");
+    } else {
+      console.error("Failed to send message: User not found.");
+
+      // show onboarding if no user
+      // TODO: test this with new wallet
+      setShowOnboarding(true);
     }
   };
 

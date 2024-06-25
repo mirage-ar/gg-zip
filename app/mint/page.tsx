@@ -9,9 +9,10 @@ import styles from "./page.module.css";
 
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { useSolana, useUser } from "@/hooks";
-import { formatWalletAddress } from "@/utils";
+import { formatWalletAddress, convertImageToBase64 } from "@/utils";
 import { Player, TwitterUser } from "@/types";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { UPLOAD_API } from "@/utils/constants";
 
 enum Step {
   CONNECT_WALLET = 1,
@@ -65,25 +66,43 @@ export default function Mint() {
     } else {
       setStep(Step.CONNECT_WALLET);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publicKey]);
 
   useEffect(() => {
     if (publicKey && playerCard) {
       checkIfMinted();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publicKey, playerCard]);
 
   const createUser = async () => {
     if (!publicKey) {
-      console.error("publicKey is null");
-      return;
-    }
-    if (!playerCard) {
-      console.error("playerCard is null");
+      setError("Wallet address not found.");
       return;
     }
 
-    await createUpdateUser(publicKey.toBase58(), playerCard.username, playerCard.image, playerCard.id);
+    const session = await getSession();
+    const twitterUser = session?.user as TwitterUser;
+
+    if (twitterUser) {
+      const imageUrl = twitterUser.image;
+      const base64Image = await convertImageToBase64(imageUrl);
+
+      const response = await fetch(`${UPLOAD_API}/upload`, {
+        method: "POST",
+        body: JSON.stringify({ image: base64Image.split(",")[1] }),
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      console.log("Image uploaded:", data.url);
+
+
+      await createUpdateUser(twitterUser.username, data.url, twitterUser.id);
+    } else {
+      setError("Could not create user account.");
+      throw new Error("MINT: could not create user account", twitterUser);
+    }
   };
 
   const mintCard = async () => {

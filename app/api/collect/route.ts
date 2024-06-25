@@ -1,13 +1,33 @@
 import * as anchor from "@project-serum/anchor";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
 import { Connection, PublicKey } from "@solana/web3.js";
-import { bnToNumber } from "@/solana";
 
 import prisma from "@/utils/prisma";
 
 import { RPC, PROGRAM_ID } from "@/utils/constants";
 
 import IDL from "@/solana/idl.json";
+
+function bnToNumber(bn: any): number {
+  if (!bn) {
+    console.warn('Attempted to convert an undefined or null value to number');
+    return 0;
+  }
+  
+  // Check if bn is an instance of anchor.BN and has a toNumber method
+  if (bn instanceof anchor.BN && typeof bn.toNumber === 'function') {
+    try {
+      return bn.toNumber();
+    } catch (error) {
+      console.error('Failed to convert BN to number:', error);
+      return 0;
+    }
+  } else {
+    console.warn('Provided value is not an anchor.BN object');
+    return 0;
+  }
+}
+
 
 async function getTotalShares(program: anchor.Program, wallet: string): Promise<number> {
   try {
@@ -17,7 +37,7 @@ async function getTotalShares(program: anchor.Program, wallet: string): Promise<
     const [mintPda, mintBump] = await findProgramAddressSync([Buffer.from("MINT"), walletBuffer], program.programId);
 
     const playerAccount = await program.account.mintAccount.fetch(mintPda);
-    const playerCardCount = bnToNumber(playerAccount.amount as anchor.BN);
+    const playerCardCount = bnToNumber(playerAccount.amount);
 
     return playerCardCount || 0;
   } catch (error) {
@@ -68,8 +88,10 @@ export async function POST(request: Request) {
   const allSponsorAccounts = await getSponsorAccounts(program, subject);
 
   const filteredSponsorAccounts = allSponsorAccounts?.filter((account) => {
-    return (account.account.amount as anchor.BN).toNumber() > 0;
+    return bnToNumber(account.account.amount) > 0;
   });
+
+  const totalShares = await getTotalShares(program, subject);
 
   const promises = (filteredSponsorAccounts || []).map(async (account) => {
     const wallet: string = (account.account.owner as anchor.web3.PublicKey).toBase58();
@@ -79,12 +101,14 @@ export async function POST(request: Request) {
       return Response.json({ success: false, message: "Sponsor account not found" });
     }
 
+    if (!sponsorAccount.amount) {
+      console.log("Sponsor not holding any shares - shouldn't be possible");
+      return Response.json({ success: false, message: "Sponsor has 0 holding" });
+    }
+
     try {
-      console.log("Points: ", points);
-      const sponsorShares = bnToNumber(sponsorAccount.amount as anchor.BN);
+      const sponsorShares = bnToNumber(sponsorAccount.amount);
       console.log("Sponsor shares: ", sponsorShares);
-      const totalShares = await getTotalShares(program, subject);
-      console.log("Total shares: ", totalShares);
       const sponsorPercentage = sponsorShares / totalShares;
       console.log("Sponsor percentage: ", sponsorPercentage);
       const pointsToGive = points * 3 * sponsorPercentage;

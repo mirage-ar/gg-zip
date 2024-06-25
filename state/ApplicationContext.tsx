@@ -36,6 +36,8 @@ export function ApplicationProvider({ children }: { children: React.ReactNode })
   const [transactionPending, setTransactionPending] = useState<boolean>(false);
   const [closed, setClosed] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
+
+  // IMPORTANT: global user is used to sync user info and sponsor navigation // onboarding
   const [globalUser, setGlobalUser] = useState<Player | null>(null);
   const [gameEnding, setGameEnding] = useState(false);
 

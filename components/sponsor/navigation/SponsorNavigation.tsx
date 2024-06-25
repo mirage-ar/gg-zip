@@ -3,7 +3,6 @@ import Image from "next/image";
 import styles from "./SponsorNavigation.module.css";
 
 import { Page } from "@/types";
-import { useUser } from "@/hooks";
 import { useApplicationContext } from "@/state/ApplicationContext";
 
 interface SponsorNavigationProps {
@@ -14,17 +13,20 @@ interface SponsorNavigationProps {
 }
 
 const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, closed, setClosed }) => {
-  const { globalUser: user } = useApplicationContext();
+  const { globalUser: user, setShowOnboarding } = useApplicationContext();
 
   const handlePageChange = (page: Page) => {
-    setPage(page);
-    setClosed(false);
+    if (!user) {
+      setShowOnboarding(true);
+    } else {
+      setPage(page);
+      setClosed(false);
+    }
   };
 
   return (
     <div className={styles.main} style={closed ? { right: "50px" } : {}}>
       <div className={styles.nav} style={page === Page.PROFILE ? { backgroundColor: "#42FF60" } : {}}>
-
         {/* LEADERBOARD BUTTON */}
         <button
           className={styles.navButton}
@@ -81,7 +83,7 @@ const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, cl
           />
         </button> */}
 
-{/* PROFILE BUTTON */}
+        {/* PROFILE BUTTON */}
         <div
           className={styles.navIcon}
           onClick={() => handlePageChange(Page.PROFILE)}
