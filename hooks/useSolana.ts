@@ -226,14 +226,14 @@ export default function useSolana(playerWalletAddress?: string) {
       return 0;
     }
 
-    const holdingPlayers = playerList.filter((player: Player) => sponsorHoldings.includes(player.wallet));
+    // const holdingPlayers = playerList.filter((player: Player) => sponsorHoldings.includes(player.wallet));
 
     let totalHoldings = 0;
     await Promise.all(
-      holdingPlayers.map(async (player) => {
+      sponsorHoldings.map(async (wallet) => {
         try {
           // fetch how much of each player the sponsor holds
-          const walletPublicKey = new PublicKey(player.wallet);
+          const walletPublicKey = new PublicKey(wallet);
           const walletBuffer = walletPublicKey.toBuffer();
 
           const [tokenPda] = await findProgramAddressSync(
@@ -243,7 +243,7 @@ export default function useSolana(playerWalletAddress?: string) {
 
           const tokenAccount = await program.account.tokenAccount.fetch(tokenPda);
 
-          const tokenTotal = await fetchPlayerCardCount(player.wallet);
+          const tokenTotal = await fetchPlayerCardCount(wallet);
 
           if (tokenAccount && tokenTotal) {
             const tokenCount = bnToNumber(tokenAccount.amount as BN);
