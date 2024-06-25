@@ -226,6 +226,7 @@ export default function useSolana(playerWalletAddress?: string) {
       return 0;
     }
 
+    // TODO: remove playerlist, clean this up
     // const holdingPlayers = playerList.filter((player: Player) => sponsorHoldings.includes(player.wallet));
 
     let totalHoldings = 0;
