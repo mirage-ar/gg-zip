@@ -18,7 +18,6 @@ export async function GET(request: Request, { params }: { params: { wallet: stri
     }
 
     return Response.json({ success: true, data: user });
-    
   } catch (error) {
     console.error("Error fetching user:", error);
     return Response.json({ success: false, message: "Error fetching user" });
@@ -37,6 +36,7 @@ export async function POST(request: Request, { params }: { params: { wallet: str
       },
     });
 
+    // TODO: clean this up after next game
     const userHasTwitterId = await prisma.user.findUnique({
       where: {
         twitterId: twitterId,
@@ -44,6 +44,20 @@ export async function POST(request: Request, { params }: { params: { wallet: str
     });
 
     if (userHasTwitterId) {
+      const userHasWallet = await prisma.user.findUnique({
+        where: {
+          wallet: wallet,
+        },
+      });
+
+      if (userHasWallet) {
+        await prisma.user.delete({
+          where: {
+            wallet: wallet,
+          },
+        });
+      }
+
       await prisma.user.update({
         where: {
           twitterId: twitterId,

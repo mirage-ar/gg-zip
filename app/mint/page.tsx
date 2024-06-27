@@ -125,7 +125,7 @@ export default function Mint() {
       return;
     }
 
-    await createUser();
+    // await createUser();
     setStep(Step.FINISHED);
     setLoading(false);
   };
