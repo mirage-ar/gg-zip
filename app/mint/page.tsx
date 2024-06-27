@@ -66,14 +66,14 @@ export default function Mint() {
     } else {
       setStep(Step.CONNECT_WALLET);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publicKey]);
 
   useEffect(() => {
     if (publicKey && playerCard) {
       checkIfMinted();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publicKey, playerCard]);
 
   const createUser = async () => {
@@ -96,7 +96,6 @@ export default function Mint() {
       });
       const data = await response.json();
       console.log("Image uploaded:", data.url);
-
 
       await createUpdateUser(twitterUser.username, data.url, twitterUser.id);
     } else {
@@ -130,6 +129,15 @@ export default function Mint() {
     setStep(Step.FINISHED);
     setLoading(false);
   };
+
+  useEffect(() => {
+    const attemptToUpdateUser = async () => {
+      await createUser();
+    };
+    if (step === Step.FINISHED) {
+      attemptToUpdateUser();
+    }
+  }, [step]);
 
   const connectTwiiter = async () => {
     signIn("twitter", { callbackUrl: "/mint" });

@@ -37,6 +37,23 @@ export async function POST(request: Request, { params }: { params: { wallet: str
       },
     });
 
+    const userHasTwitterId = await prisma.user.findUnique({
+      where: {
+        twitterId: twitterId,
+      },
+    });
+
+    if (userHasTwitterId) {
+      await prisma.user.update({
+        where: {
+          twitterId: twitterId,
+        },
+        data: {
+          wallet: wallet,
+        },
+      });
+    }
+
     const user = await prisma.user.upsert({
       where: {
         wallet: wallet,
