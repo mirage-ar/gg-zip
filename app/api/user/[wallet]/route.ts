@@ -38,37 +38,16 @@ export async function POST(request: Request, { params }: { params: { wallet: str
       },
     });
 
-    // TODO: clean this up after next game
-    const userHasTwitterId = await prisma.user.findUnique({
-      where: {
-        twitterId: twitterId,
-      },
-    });
-
-    if (userHasTwitterId) {
-      const userHasWallet = await prisma.user.findUnique({
-        where: {
-          wallet: wallet,
-        },
-      });
-
-      if (userHasWallet) {
-        await prisma.user.delete({
-          where: {
-            wallet: wallet,
-          },
-        });
-      }
-
+    if (!twitterId) {
       const user = await prisma.user.upsert({
         where: {
-          twitterId: twitterId,
+          wallet: wallet,
         },
         update: {
           username: username,
           image: image,
           points: userPoints?.points,
-          wallet: wallet,
+          twitterId: twitterId,
         },
         create: {
           username: username,
@@ -85,30 +64,78 @@ export async function POST(request: Request, { params }: { params: { wallet: str
 
       return Response.json({ success: true, data: user });
     } else {
-      const user = await prisma.user.upsert({
+      // TODO: clean this up after next game
+      const userHasTwitterId = await prisma.user.findUnique({
         where: {
-          wallet: wallet,
-        },
-        update: {
-          username: username,
-          image: image,
-          points: userPoints?.points,
           twitterId: twitterId,
-        },
-        create: {
-          username: username,
-          twitterId: twitterId,
-          image: image,
-          wallet: wallet,
-          points: userPoints?.points || 0,
         },
       });
 
-      if (!user) {
-        return Response.json({ success: false, message: "Could not create user" });
-      }
+      if (userHasTwitterId) {
+        const userHasWallet = await prisma.user.findUnique({
+          where: {
+            wallet: wallet,
+          },
+        });
 
-      return Response.json({ success: true, data: user });
+        if (userHasWallet) {
+          await prisma.user.delete({
+            where: {
+              wallet: wallet,
+            },
+          });
+        }
+
+        const user = await prisma.user.upsert({
+          where: {
+            twitterId: twitterId,
+          },
+          update: {
+            username: username,
+            image: image,
+            points: userPoints?.points,
+            wallet: wallet,
+          },
+          create: {
+            username: username,
+            twitterId: twitterId,
+            image: image,
+            wallet: wallet,
+            points: userPoints?.points || 0,
+          },
+        });
+
+        if (!user) {
+          return Response.json({ success: false, message: "Could not create user" });
+        }
+
+        return Response.json({ success: true, data: user });
+      } else {
+        const user = await prisma.user.upsert({
+          where: {
+            wallet: wallet,
+          },
+          update: {
+            username: username,
+            image: image,
+            points: userPoints?.points,
+            twitterId: twitterId,
+          },
+          create: {
+            username: username,
+            twitterId: twitterId,
+            image: image,
+            wallet: wallet,
+            points: userPoints?.points || 0,
+          },
+        });
+
+        if (!user) {
+          return Response.json({ success: false, message: "Could not create user" });
+        }
+
+        return Response.json({ success: true, data: user });
+      }
     }
   } catch (error) {
     console.error("Error updating user:", error);
