@@ -29,6 +29,8 @@ export async function POST(request: Request, { params }: { params: { wallet: str
   const data = await request.json();
   const { username, image, twitterId } = data;
 
+  console.log("UPDATE USER: ", wallet);
+
   try {
     const userPoints = await prisma.points.findUnique({
       where: {
@@ -58,40 +60,56 @@ export async function POST(request: Request, { params }: { params: { wallet: str
         });
       }
 
-      await prisma.user.update({
+      const user = await prisma.user.upsert({
         where: {
           twitterId: twitterId,
         },
-        data: {
+        update: {
+          username: username,
+          image: image,
+          points: userPoints?.points,
           wallet: wallet,
         },
+        create: {
+          username: username,
+          twitterId: twitterId,
+          image: image,
+          wallet: wallet,
+          points: userPoints?.points || 0,
+        },
       });
+
+      if (!user) {
+        return Response.json({ success: false, message: "Could not create user" });
+      }
+
+      return Response.json({ success: true, data: user });
+    } else {
+      const user = await prisma.user.upsert({
+        where: {
+          wallet: wallet,
+        },
+        update: {
+          username: username,
+          image: image,
+          points: userPoints?.points,
+          twitterId: twitterId,
+        },
+        create: {
+          username: username,
+          twitterId: twitterId,
+          image: image,
+          wallet: wallet,
+          points: userPoints?.points || 0,
+        },
+      });
+
+      if (!user) {
+        return Response.json({ success: false, message: "Could not create user" });
+      }
+
+      return Response.json({ success: true, data: user });
     }
-
-    const user = await prisma.user.upsert({
-      where: {
-        wallet: wallet,
-      },
-      update: {
-        username: username,
-        image: image,
-        points: userPoints?.points,
-        twitterId: twitterId,
-      },
-      create: {
-        username: username,
-        twitterId: twitterId,
-        image: image,
-        wallet: wallet,
-        points: userPoints?.points || 0,
-      },
-    });
-
-    if (!user) {
-      return Response.json({ success: false, message: "Could not create user" });
-    }
-
-    return Response.json({ success: true, data: user });
   } catch (error) {
     console.error("Error updating user:", error);
     return Response.json({ success: false, message: "Error updating user" });
