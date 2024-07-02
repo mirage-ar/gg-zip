@@ -38,6 +38,8 @@ export async function POST(request: Request, { params }: { params: { wallet: str
       },
     });
 
+    // TODO: clean this up after next game
+    
     if (!twitterId) {
       const user = await prisma.user.upsert({
         where: {
@@ -64,7 +66,6 @@ export async function POST(request: Request, { params }: { params: { wallet: str
 
       return Response.json({ success: true, data: user });
     } else {
-      // TODO: clean this up after next game
       const userHasTwitterId = await prisma.user.findUnique({
         where: {
           twitterId: twitterId,

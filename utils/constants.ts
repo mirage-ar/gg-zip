@@ -14,12 +14,12 @@ export const POLLING_TIME = 5000;
 
 export const GAME_DATE = {
   year: 2024,
-  month: 6,
-  day: 25,
+  month: 7,
+  day: 3,
 };
 
 export const GAME_TIME = 9;
 export const GAME_LENGTH = 60 * 60 * 1000;
 export const PLAYER_COUNT = 150;
 
-export const PAUSE = true;
+export const PAUSE = false;
