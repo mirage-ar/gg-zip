@@ -117,9 +117,10 @@ export default function Mint() {
     }
 
     setLoading(true);
-    const success = await mintPlayerCard();
+    const result = await mintPlayerCard();
+    console.log(result)
 
-    if (!success) {
+    if (!result.success) {
       setLoading(false);
       setError("Transaction failed. Please make sure you have testnet sol.");
       return;

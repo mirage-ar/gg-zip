@@ -154,9 +154,9 @@ export default function useSolana(playerWalletAddress?: string) {
     }
   }
 
-  async function mintPlayerCard(): Promise<boolean> {
+  async function mintPlayerCard(): Promise<{ success: boolean; message?: string }> {
     if (!program || !publicKey) {
-      return false;
+      return { success: false, message: "No program or public key found." };
     }
 
     try {
@@ -185,10 +185,11 @@ export default function useSolana(playerWalletAddress?: string) {
       // const signature = await sendTransaction(transaction, connection, { minContextSlot });
       // console.log(signature);
       // const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
-      return true;
+      return { success: true };
     } catch (error) {
       console.error("mintPlayerCard", error);
-      throw new Error("Failed to mint player card");
+      // @ts-ignore
+      return { success: false, message: error?.message || "Failed to mint player card" };
     } finally {
       setTransactionPending(false);
     }
@@ -369,7 +370,7 @@ export default function useSolana(playerWalletAddress?: string) {
 
       return {
         ...playerAccount,
-        balance
+        balance,
       };
     } catch (error) {
       console.error("getPlayerMintAccount", error);
@@ -389,12 +390,12 @@ export default function useSolana(playerWalletAddress?: string) {
       const [mintPda] = await findProgramAddressSync([Buffer.from("MINT"), subjectBuffer], program.programId);
 
       const transaction = await program.methods
-      .withdrawFromMint()
-      .accounts({
-        authority: publicKey,
-        mint: mintPda,
-      })
-      .rpc();
+        .withdrawFromMint()
+        .accounts({
+          authority: publicKey,
+          mint: mintPda,
+        })
+        .rpc();
 
       console.log(transaction);
     } catch (error) {
