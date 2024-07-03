@@ -11,17 +11,18 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  twitterId String?  @unique
-  username  String
-  wallet    String?  @unique
-  image     String?
-  points    Int      @default(0)
-  boxes     Int      @default(0)
-  rank      Int      @default(0)
-  risk      Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(uuid())
+  twitterId  String?  @unique
+  username   String
+  wallet     String?  @unique
+  image      String?
+  points     Int      @default(0)
+  gamePoints Int      @default(0)
+  boxes      Int      @default(0)
+  rank       Int      @default(0)
+  risk       Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@index([wallet])
 }

@@ -120,7 +120,7 @@ export async function POST(request: Request) {
             wallet: wallet,
           },
           data: {
-            points: {
+            gamePoints: {
               increment: pointsToGive,
             },
           },

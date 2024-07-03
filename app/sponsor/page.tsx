@@ -159,7 +159,7 @@ export default function Home() {
       if (publicKey) {
         const user = await fetchUser(publicKey.toBase58());
         if (user) {
-          setSponsorPoints(user.points);
+          setSponsorPoints(user.gamePoints);
         }
       }
     };

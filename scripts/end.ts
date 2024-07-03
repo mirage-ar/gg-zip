@@ -45,6 +45,24 @@ async function end() {
     }
   }
 
+  const allUsers = await prisma.user.findMany();
+
+  for (const user of allUsers) {
+    try {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          points: {
+            increment: user.gamePoints
+          },
+          gamePoints: 0,
+        },
+      });
+    } catch (error) {
+      console.error("Error updating game points for user:", error);
+    }
+  }
+
   // Get all users' ranks based on updated points
   const rankResults: RankResult[] = await prisma.$queryRaw`
     SELECT id, RANK() OVER (ORDER BY points DESC) as rank

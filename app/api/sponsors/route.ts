@@ -8,13 +8,8 @@ export async function GET(request: Request) {
     // Fetch sponsors 
     const users = await prisma.user.findMany({
       where: {
-        points: {
+        gamePoints: {
           gt: 0,
-        },
-        updatedAt: {
-          // TODO: update this to use gametimer
-          gte: new Date(new Date().getTime() - 1000 * 60 * 60 * 1), // last hour
-          // gte: new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 1), // last 24 hours
         },
       },
     });

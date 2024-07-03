@@ -4,6 +4,7 @@ export type Player = {
   image: string;
   wallet: string;
   points: number;
+  gamePoints: number;
   boxes: number;
   rank?: number;
   buyPrice?: number;
