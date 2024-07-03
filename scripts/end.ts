@@ -26,7 +26,7 @@ async function getHunters(): Promise<Hunter[]> {
   }
 }
 
-async function main() {
+async function end() {
   const hunters = await getHunters();
 
   // First, update points for each hunter
@@ -57,6 +57,7 @@ async function main() {
   });
 
   // Update rank for each hunter
+  // TODO: update this to be for ALL USERS, not just hunters
   for (const hunter of hunters) {
     try {
       const user = await prisma.user.findUnique({
@@ -77,7 +78,7 @@ async function main() {
   }
 }
 
-main()
+end()
   .catch((error) => {
     console.error("Error in main function:", error);
   })
