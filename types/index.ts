@@ -4,8 +4,8 @@ export type Player = {
   image: string;
   wallet: string;
   points: number;
-  gamePoints: number;
   boxes: number;
+  gamePoints?: number;
   rank?: number;
   buyPrice?: number;
   sellPrice?: number;
@@ -42,6 +42,7 @@ export type ChatMessage = {
   username: string;
   image: string;
   source: string;
+  type: string;
 };
 
 export type MarkersObject = {

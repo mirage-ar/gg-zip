@@ -64,7 +64,11 @@ I just claimed ${points}🇬 #gg`;
   return twitterIntentUrl;
 }
 
-export const withCommas = (x: number | string): string => {
+export const withCommas = (x: number | string | undefined): string => {
+  if (!x) {
+    return "0";
+  }
+  
   if (typeof x === "number" && x < 1) {
     return x.toString();
   }

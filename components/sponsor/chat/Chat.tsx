@@ -6,6 +6,8 @@ import { useUser } from "@/hooks";
 import * as DateFNS from "date-fns";
 import styles from "./Chat.module.css";
 
+import TradingView from "@/components/sponsor/trade/TradingView";
+
 import { ChatMessage, Player, TransactionData } from "@/types";
 import { GET_MESSAGES_URL, CHAT_SOCKET_URL, RPC } from "@/utils/constants";
 import { formatWalletAddress } from "@/utils";
@@ -17,6 +19,11 @@ import useSolana from "@/hooks/useSolana";
 
 interface ChatProps {
   playerList: Player[];
+}
+
+enum MessageType {
+  USER = "user",
+  TRANSACTION = "transaction",
 }
 
 const Chat: React.FC<ChatProps> = ({ playerList }) => {
@@ -34,6 +41,9 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
   const [closed, setClosed] = useState<boolean>(false);
   const closedRef = useRef<boolean>(closed);
   const messageCount = useRef<number>(0);
+
+  const [showOverlay, setShowOverlay] = useState<boolean>(false);
+  const [tradingViewPlayer, setTradingViewPlayer] = useState<Player | null>(null);
 
   useEffect(() => {
     if (!closed) {
@@ -77,66 +87,67 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
 
   // TRANSACTIONS
   // Connect to Transaction WebSocket
-  // useEffect(() => {
-  //   if (!program) return;
-  //   if (playerList.length === 0) return;
+  useEffect(() => {
+    if (!program) return;
+    if (playerList.length === 0) return;
 
-  //   const connection = new Connection("https://api.devnet.solana.com", "confirmed");
-  //   const programId = program.programId;
-  //   const programPublicKey = new PublicKey(programId);
+    const connection = new Connection("https://api.devnet.solana.com", "confirmed");
+    const programId = program.programId;
+    const programPublicKey = new PublicKey(programId);
 
-  //   const subscriptionId = connection.onLogs(
-  //     programPublicKey,
-  //     async (logs) => {
-  //       const transactionResponse = await connection.getParsedTransaction(logs.signature);
-  //       const transactionLogs = transactionResponse?.meta?.logMessages?.filter((message) =>
-  //         message.includes("Program log")
-  //       );
+    const subscriptionId = connection.onLogs(
+      programPublicKey,
+      async (logs) => {
+        const transactionResponse = await connection.getParsedTransaction(logs.signature);
+        const transactionLogs = transactionResponse?.meta?.logMessages?.filter((message) =>
+          message.includes("Program log")
+        );
 
-  //       if (transactionLogs && transactionLogs[0]?.includes("Shares")) {
-  //         const firstLog = transactionLogs[0];
-  //         const transactiontype = firstLog
-  //           .substring(firstLog.indexOf("Shares") - 4, firstLog.indexOf("Shares"))
-  //           .replace(" ", "");
+        if (transactionLogs && transactionLogs[0]?.includes("Shares")) {
+          const firstLog = transactionLogs[0];
+          const transactiontype = firstLog
+            .substring(firstLog.indexOf("Shares") - 4, firstLog.indexOf("Shares"))
+            .replace(" ", "");
 
-  //         const transaction: TransactionData = {
-  //           type: transactiontype,
-  //           amount: transactionLogs[1]?.substring(transactionLogs[1].indexOf("price: ") + 7),
-  //           subject: transactionLogs[2]?.substring(transactionLogs[2].indexOf("subject: ") + 9),
-  //           buyer: transactionLogs[3]?.substring(transactionLogs[3].indexOf("buyer: ") + 7),
-  //           timestamp: Number(transactionLogs[4]?.substring(transactionLogs[4].indexOf("timestamp: ") + 11)),
-  //           signature: transactionResponse?.transaction.signatures[0] || "",
-  //         };
+          const transaction: TransactionData = {
+            type: transactiontype,
+            amount: transactionLogs[1]?.substring(transactionLogs[1].indexOf("price: ") + 7),
+            subject: transactionLogs[2]?.substring(transactionLogs[2].indexOf("subject: ") + 9),
+            buyer: transactionLogs[3]?.substring(transactionLogs[3].indexOf("buyer: ") + 7),
+            timestamp: Number(transactionLogs[4]?.substring(transactionLogs[4].indexOf("timestamp: ") + 11)),
+            signature: transactionResponse?.transaction.signatures[0] || "",
+          };
 
-  //         // fetch user from db here
-  //         const buyer = await fetchUser(transaction.buyer);
-  //         const subject = playerList.find((player) => player.wallet === transaction.subject);
+          // fetch user from db here
+          const buyer = await fetchUser(transaction.buyer);
+          const subject = playerList.find((player) => player.wallet === transaction.subject);
 
-  //         if (buyer && subject) {
-  //           setMessages((prevMessages) => {
-  //             const transactionMessage: ChatMessage = {
-  //               message: `${
-  //                 transaction.type === "Buy" ? "Bought" : "Sold"
-  //               } @${subject.username.toLocaleUpperCase()} for ${Number(transaction.amount).toFixed(3)}`,
-  //               timestamp: transaction.timestamp * 1000,
-  //               username: buyer.username,
-  //               image: buyer.image,
-  //               source: "system",
-  //             };
+          if (buyer && subject) {
+            setMessages((prevMessages) => {
+              const transactionMessage: ChatMessage = {
+                message: `${buyer.username.toLocaleUpperCase()} ${
+                  transaction.type === "Buy" ? "bought" : "sold"
+                } ${subject.username.toLocaleUpperCase()} for ${Number(transaction.amount).toFixed(3)} Sol`,
+                timestamp: transaction.timestamp * 1000,
+                username: subject.username,
+                image: subject.image,
+                source: "system",
+                type: MessageType.TRANSACTION,
+              };
 
-  //             const newMessages = [...prevMessages, transactionMessage];
-  //             return newMessages.slice(-500);
-  //           });
-  //         }
-  //       }
-  //     },
-  //     "confirmed"
-  //   );
+              const newMessages = [...prevMessages, transactionMessage];
+              return newMessages.slice(-500);
+            });
+          }
+        }
+      },
+      "confirmed"
+    );
 
-  //   return () => {
-  //     connection.removeOnLogsListener(subscriptionId);
-  //   };
-  // }, [program, playerList]);
+    return () => {
+      connection.removeOnLogsListener(subscriptionId);
+    };
+  }, [program, playerList]);
 
   // Automatically scroll to the latest message
   useEffect(() => {
@@ -153,6 +164,7 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
         username: user.username,
         image: user.image,
         source: "sponsor",
+        type: MessageType.USER,
       };
       webSocket.current.send(JSON.stringify({ action: "sendmessage", data: messageData }));
       setInputMessage("");
@@ -191,7 +203,27 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
     }
   };
 
+  const showTradingView = (username: string) => {
+    const player = playerList.find((player) => player.username === username);
+    if (player) {
+      setTradingViewPlayer(player);
+      setShowOverlay(true);
+    }
+  };
+
   const chatMessage = (message: ChatMessage, index: number) => {
+    if (message.type === MessageType.TRANSACTION) {
+      return (
+        <div
+          key={index}
+          className={styles.transactionMessageContainer}
+          onClick={() => showTradingView(message.username)}
+        >
+          <div className={styles.transactionMessageInfo}>{message.message}</div>
+        </div>
+      );
+    }
+
     return (
       <div key={index} className={styles.chatMessageContainer}>
         <div className={styles.chatMessageInfo}>
@@ -227,6 +259,7 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
 
   return (
     <>
+      {showOverlay && tradingViewPlayer && <TradingView player={tradingViewPlayer} setShowOverlay={setShowOverlay} />}
       <button onClick={() => setClosed(!closed)} className={styles.chatCloseButton}>
         <Image src={`/assets/icons/icons-16/${closed ? "open" : "close"}.svg`} alt="close" width={16} height={16} />
         Chat

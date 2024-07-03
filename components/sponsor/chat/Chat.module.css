@@ -184,3 +184,27 @@
   left: 16px;
   transition: all 0.3s ease-in-out;
 }
+
+.transactionMessageContainer {
+  margin-bottom: 2px;
+  padding: 10px 12px;
+  width: 419px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  border-radius: var(--corner4, 4px);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  cursor: pointer;
+}
+
+.transactionMessageInfo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  color: var(--p, #ff61ef);
+  font-size: 12px;
+  line-height: 14px;
+}
