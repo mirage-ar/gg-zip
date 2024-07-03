@@ -143,7 +143,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, sponsorHoldings, showBu
               <p>Buy</p>
               <span>{buyPrice.toFixed(3)}</span>
             </button>
-            <button className={styles.sellButton} disabled={cardHoldings < 1 || transactionPending} onClick={sellCard}>
+            <button className={styles.sellButton} disabled={cardHoldings < 1 || amount > cardHoldings || transactionPending} onClick={sellCard}>
               <p>Sell</p>
               <span>{sellPrice.toFixed(3)}</span>
             </button>
