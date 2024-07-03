@@ -1,0 +1,11 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="icons-24/timer" clip-path="url(#clip0_22910_18103)">
+<path id="Ellipse 1292" d="M12 5.71429V1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 9.53342 1.81185 7.25645 3.18291 5.42174" stroke="#FF61EF" stroke-width="1.4"/>
+<path id="Rectangle 34054" d="M5.52329 5.44741L12.6972 9.03435C14.3294 9.85044 14.6824 12.0258 13.392 13.3161C12.1016 14.6065 9.92632 14.2535 9.11022 12.6213L5.52329 5.44741Z" fill="#FF61EF"/>
+</g>
+<defs>
+<clipPath id="clip0_22910_18103">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs>
+</svg>

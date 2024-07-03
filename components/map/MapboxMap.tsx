@@ -185,7 +185,6 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = 
   };
 
   const showTradingView = (id: string) => {
-    console.log(playerList, id);
     const player = playerListRef.current.find((player) => player.id === id);
     if (player) {
       setTradingViewPlayer(player);

@@ -50,14 +50,14 @@ const GameTimer = () => {
 
   return (
     isHunt &&
-    timeRemaining < GAME_LENGTH &&
     timeRemaining > 0 && (
       <div className={styles.main} style={closed ? { width: "100%" } : { width: "80%" }}>
+        {timeRemaining > GAME_LENGTH && <div className={styles.title}>The hunt will start in</div>}
         <div className={styles.container}>
           <div style={{ fontSize: "32px" }}>
-            <Timer timeRemaining={timeRemaining} hideDays />
+            <Timer timeRemaining={timeRemaining < GAME_LENGTH ? timeRemaining : timeRemaining - GAME_LENGTH} hideDays />
           </div>
-          <Image src="/assets/icons/icons-24/timer.svg" alt="timer icon" width={24} height={24} />
+          <Image src={`/assets/icons/icons-24/timer${timeRemaining > GAME_LENGTH ? "-pink" : ""}.svg`} alt="timer icon" width={24} height={24} />
         </div>
       </div>
     )

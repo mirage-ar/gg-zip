@@ -81,6 +81,48 @@
   text-align: center;
 }
 
+.playerCardRankInfo {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  z-index: 100;
+  background-color: var(--b);
+  left: 110px;
+  top: 60px;
+  color: var(--g);
+  padding: 6px 12px;
+  border-radius: 16px;
+  box-shadow: 0 0 20px var(--g);
+  opacity: 0;
+  transition: opacity ease-in-out .3s;
+  color: var(--w);
+  font-size: 14px;
+}
+
+.playerCardAmountInfo {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  z-index: 100;
+  background-color: var(--b);
+  left: 0px;
+  width: 110px;
+  top: 65px;
+  color: var(--g);
+  padding: 6px 12px;
+  border-radius: 16px;
+  box-shadow: 0 0 20px var(--g);
+  opacity: 0;
+  transition: opacity ease-in-out .3s;
+  color: var(--w);
+  font-size: 14px;
+  font-family: var(--diatype);
+}
+
 .playerCardAmountContainer {
   position: absolute;
   top: 235px;
@@ -214,4 +256,8 @@
   .buyButton:disabled {
     background-color: var(--g3);
     cursor: not-allowed;
+  }
+
+  .show {
+    opacity: 1;
   }

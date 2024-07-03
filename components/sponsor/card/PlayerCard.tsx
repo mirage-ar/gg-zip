@@ -19,6 +19,9 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, sponsorHoldings, showBu
   const [holdingAmountCard, setHoldingAmountCard] = useState<string>("card-0");
   const [amount, setAmount] = useState(1);
 
+  const [showRankInfo, setShowRankInfo] = useState(false);
+  const [showAmountInfo, setShowAmountInfo] = useState(false);
+
   const holdingAmount = player.amount || sponsorHoldings?.find((user) => user.wallet === player.wallet)?.amount;
 
   // This function is used to calculate the color of the card based on the holding amount
@@ -76,9 +79,19 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, sponsorHoldings, showBu
           <Image src="/assets/icons/icons-16/points.svg" alt="points" width={16} height={16} />
         </div>
 
-        <div className={styles.playerCardRank}>{player.rank}</div>
+        <div
+          className={styles.playerCardRank}
+          onMouseEnter={() => setShowRankInfo(true)}
+          onMouseLeave={() => setShowRankInfo(false)}
+        >
+          {player.rank}
+        </div>
+        <div className={`${styles.playerCardRankInfo} ${showRankInfo ? styles.show : {}}`}>Player Rank</div>
 
-        <div className={styles.playerCardAmountContainer}>
+        <div className={styles.playerCardAmountContainer}
+                  onMouseEnter={() => setShowAmountInfo(true)}
+                  onMouseLeave={() => setShowAmountInfo(false)}
+        >
           <Image src="/assets/graphics/ball-white.svg" alt="sphere" width={30} height={30} />
           {holdingAmount && (
             <>
@@ -87,6 +100,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, sponsorHoldings, showBu
                 {holdingAmount}
                 <Image src="/assets/icons/icons-16/card.svg" alt="holding amount" width={16} height={16} />
               </div>
+              <div className={`${styles.playerCardAmountInfo} ${showAmountInfo ? styles.show : {}}`}>Cards Held</div>
             </>
           )}
         </div>

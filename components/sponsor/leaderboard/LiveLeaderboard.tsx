@@ -42,6 +42,8 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredPlayers, setFilteredPlayers] = useState<Player[]>([]);
 
+  const [currentHoverPlayer, setCurrentHoverPlayer] = useState<string | null>(null);
+
   const { transactionPending } = useApplicationContext();
 
   useEffect(() => {
@@ -194,9 +196,21 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
                     <div
                       className={styles.playerInfo}
                       onClick={() => flyToMarker(player.id)}
+                      onMouseEnter={() => {
+                        if (onlineUsers.includes(player.id)) {
+                          setCurrentHoverPlayer(player.id);
+                        }
+                      }}
+                      onMouseLeave={() => setCurrentHoverPlayer(null)}
                       style={onlineUsers.includes(player.id) ? { cursor: "pointer" } : {}}
                     >
-                      <div className={styles.playerRank}>{player.rank || index + 1}</div>
+                      <div className={`${styles.globeIcon} ${currentHoverPlayer === player.id ? styles.show : {}}`}>
+                        <Image src="/assets/icons/icons-16/arrow-left.svg" alt="Arrow Left" width={16} height={16} />
+                        <Image src="/assets/icons/icons-16/globe.svg" alt="Globe Icon" width={16} height={16} />
+                      </div>
+                      <div className={`${styles.playerRank} ${currentHoverPlayer === player.id ? styles.hide : {}}`}>
+                        {player.rank || index + 1}
+                      </div>
                       <div className={styles.playerMarker}>
                         {onlineUsers.includes(player.id) && <div className={styles.onlineMarker} />}
                         <Image
