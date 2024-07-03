@@ -19,6 +19,7 @@ export default function useUser() {
           wallet: wallet,
           points: data.points,
           boxes: data.boxes,
+          gamePoints: data.gamePoints,
         };
       }
       return null;

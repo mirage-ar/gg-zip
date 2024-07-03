@@ -3,11 +3,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 
-import { useUser } from "@/hooks";
+import TradingView from "@/components/sponsor/trade/TradingView";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import type { LocationData, MarkersObject } from "@/types";
+import type { LocationData, MarkersObject, Player } from "@/types";
 import { GAME_API, LOCATION_SOCKET_URL, POLLING_TIME } from "@/utils/constants";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string;
@@ -16,11 +16,20 @@ interface MapboxMapProps {
   mapRef: React.MutableRefObject<mapboxgl.Map | null>;
   markersRef: React.MutableRefObject<MarkersObject>;
   isHomePage?: boolean;
+  playerList?: Player[];
 }
 
-const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = false }) => {
+const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = false, playerList = [] }) => {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const markersSocket = useRef<WebSocket | null>(null);
+
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [tradingViewPlayer, setTradingViewPlayer] = useState<Player | null>(null);
+  const playerListRef = useRef(playerList);
+
+  useEffect(() => {
+    playerListRef.current = playerList;
+  }, [playerList]);
 
   // SETUP MAP
   useEffect(() => {
@@ -165,7 +174,7 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = 
         const el = document.createElement("img");
         el.className = "marker";
         el.src = message.image;
-        el.onclick = () => flyToMarker(message.id);
+        el.onclick = () => showTradingView(message.id);
         // el.src = `/icons/markers/${rand(1, 5)}.svg`;
 
         const newMarker = new mapboxgl.Marker(el).setLngLat([message.longitude, message.latitude]).addTo(map);
@@ -175,20 +184,18 @@ const MapboxMap: React.FC<MapboxMapProps> = ({ mapRef, markersRef, isHomePage = 
     }
   };
 
-  const flyToMarker = (markerId: string) => {
-    const map = mapRef.current;
-    const marker = markersRef.current[markerId];
-    if (marker && map) {
-      map.flyTo({
-        center: marker.getLngLat(),
-        zoom: 15,
-        essential: true,
-      });
+  const showTradingView = (id: string) => {
+    console.log(playerList, id);
+    const player = playerListRef.current.find((player) => player.id === id);
+    if (player) {
+      setTradingViewPlayer(player);
+      setShowOverlay(true);
     }
   };
 
   return (
     <>
+    {showOverlay && tradingViewPlayer && <TradingView player={tradingViewPlayer} setShowOverlay={setShowOverlay} />}
       <div
         ref={mapContainerRef}
         style={{

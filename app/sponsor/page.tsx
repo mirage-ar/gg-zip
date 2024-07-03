@@ -159,7 +159,7 @@ export default function Home() {
       if (publicKey) {
         const user = await fetchUser(publicKey.toBase58());
         if (user) {
-          setSponsorPoints(user.gamePoints);
+          setSponsorPoints(user.gamePoints || 0);
         }
       }
     };
@@ -183,7 +183,7 @@ export default function Home() {
       {gameEnding && <div className={styles.gameEnding} />}
       <Chat playerList={playerList} />
       <div className={styles.main}>
-        <MapboxMap mapRef={mapRef} markersRef={markersRef} />
+        <MapboxMap mapRef={mapRef} markersRef={markersRef} playerList={playerList} />
         <SponsorNavigation page={page} setPage={setPage} closed={closed} setClosed={setClosed} />
 
         {/* ----- OVERLAY ----- */}
