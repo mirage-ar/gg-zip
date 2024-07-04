@@ -187,7 +187,7 @@ const SponsorLeaderboard: React.FC<SponsorLeaderboardProps> = ({ flyToMarker, pl
                 <div key={sponsor.id}>
                   <div className={styles.leaderboardRow}>
                     <div className={styles.sponsorInfo}>
-                      <div className={styles.sponsorRank}>{sponsor.rank || index + 1}</div>
+                      <div className={styles.sponsorRank}>{index + 1}</div>
                       <div className={styles.sponsorMarker}>
                         <Image
                           className={styles.sponsorImage}
