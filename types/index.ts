@@ -19,6 +19,7 @@ export type Sponsor = {
   image: string;
   wallet: string;
   points: number;
+  gamePoints?: number;
   rank?: number;
   holdings?: SponsorHoldings[];
 };
