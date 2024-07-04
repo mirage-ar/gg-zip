@@ -85,69 +85,70 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
     };
   }, []);
 
+  // TODO: remove transactions
   // TRANSACTIONS
   // Connect to Transaction WebSocket
-  useEffect(() => {
-    if (!program) return;
-    if (playerList.length === 0) return;
+  // useEffect(() => {
+  //   if (!program) return;
+  //   if (playerList.length === 0) return;
 
-    const connection = new Connection("https://api.devnet.solana.com", "confirmed");
-    const programId = program.programId;
-    const programPublicKey = new PublicKey(programId);
+  //   const connection = new Connection("https://api.devnet.solana.com", "confirmed");
+  //   const programId = program.programId;
+  //   const programPublicKey = new PublicKey(programId);
 
-    const subscriptionId = connection.onLogs(
-      programPublicKey,
-      async (logs) => {
-        const transactionResponse = await connection.getParsedTransaction(logs.signature);
-        const transactionLogs = transactionResponse?.meta?.logMessages?.filter((message) =>
-          message.includes("Program log")
-        );
+  //   const subscriptionId = connection.onLogs(
+  //     programPublicKey,
+  //     async (logs) => {
+  //       const transactionResponse = await connection.getParsedTransaction(logs.signature);
+  //       const transactionLogs = transactionResponse?.meta?.logMessages?.filter((message) =>
+  //         message.includes("Program log")
+  //       );
 
-        if (transactionLogs && transactionLogs[0]?.includes("Shares")) {
-          const firstLog = transactionLogs[0];
-          const transactiontype = firstLog
-            .substring(firstLog.indexOf("Shares") - 4, firstLog.indexOf("Shares"))
-            .replace(" ", "");
+  //       if (transactionLogs && transactionLogs[0]?.includes("Shares")) {
+  //         const firstLog = transactionLogs[0];
+  //         const transactiontype = firstLog
+  //           .substring(firstLog.indexOf("Shares") - 4, firstLog.indexOf("Shares"))
+  //           .replace(" ", "");
 
-          const transaction: TransactionData = {
-            type: transactiontype,
-            amount: transactionLogs[1]?.substring(transactionLogs[1].indexOf("price: ") + 7),
-            subject: transactionLogs[2]?.substring(transactionLogs[2].indexOf("subject: ") + 9),
-            buyer: transactionLogs[3]?.substring(transactionLogs[3].indexOf("buyer: ") + 7),
-            timestamp: Number(transactionLogs[4]?.substring(transactionLogs[4].indexOf("timestamp: ") + 11)),
-            signature: transactionResponse?.transaction.signatures[0] || "",
-          };
+  //         const transaction: TransactionData = {
+  //           type: transactiontype,
+  //           amount: transactionLogs[1]?.substring(transactionLogs[1].indexOf("price: ") + 7),
+  //           subject: transactionLogs[2]?.substring(transactionLogs[2].indexOf("subject: ") + 9),
+  //           buyer: transactionLogs[3]?.substring(transactionLogs[3].indexOf("buyer: ") + 7),
+  //           timestamp: Number(transactionLogs[4]?.substring(transactionLogs[4].indexOf("timestamp: ") + 11)),
+  //           signature: transactionResponse?.transaction.signatures[0] || "",
+  //         };
 
-          // fetch user from db here
-          const buyer = await fetchUser(transaction.buyer);
-          const subject = playerList.find((player) => player.wallet === transaction.subject);
+  //         // fetch user from db here
+  //         const buyer = await fetchUser(transaction.buyer);
+  //         const subject = playerList.find((player) => player.wallet === transaction.subject);
 
-          if (buyer && subject) {
-            setMessages((prevMessages) => {
-              const transactionMessage: ChatMessage = {
-                message: `${buyer.username.toLocaleUpperCase()} ${
-                  transaction.type === "Buy" ? "bought" : "sold"
-                } ${subject.username.toLocaleUpperCase()} for ${Number(transaction.amount).toFixed(3)} Sol`,
-                timestamp: transaction.timestamp * 1000,
-                username: subject.username,
-                image: subject.image,
-                source: "system",
-                type: MessageType.TRANSACTION,
-              };
+  //         if (buyer && subject) {
+  //           setMessages((prevMessages) => {
+  //             const transactionMessage: ChatMessage = {
+  //               message: `${buyer.username.toLocaleUpperCase()} ${
+  //                 transaction.type === "Buy" ? "bought" : "sold"
+  //               } ${subject.username.toLocaleUpperCase()} for ${Number(transaction.amount).toFixed(3)} Sol`,
+  //               timestamp: transaction.timestamp * 1000,
+  //               username: subject.username,
+  //               image: subject.image,
+  //               source: "system",
+  //               type: MessageType.TRANSACTION,
+  //             };
 
-              const newMessages = [...prevMessages, transactionMessage];
-              return newMessages.slice(-500);
-            });
-          }
-        }
-      },
-      "confirmed"
-    );
+  //             const newMessages = [...prevMessages, transactionMessage];
+  //             return newMessages.slice(-500);
+  //           });
+  //         }
+  //       }
+  //     },
+  //     "confirmed"
+  //   );
 
-    return () => {
-      connection.removeOnLogsListener(subscriptionId);
-    };
-  }, [program, playerList]);
+  //   return () => {
+  //     connection.removeOnLogsListener(subscriptionId);
+  //   };
+  // }, [program, playerList]);
 
   // Automatically scroll to the latest message
   useEffect(() => {
