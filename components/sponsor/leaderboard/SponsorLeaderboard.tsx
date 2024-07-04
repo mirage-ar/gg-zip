@@ -199,7 +199,7 @@ const SponsorLeaderboard: React.FC<SponsorLeaderboardProps> = ({ flyToMarker, pl
                         />
                       </div>
                       <div className={styles.sponsorNameContainer}>
-                        <div className={styles.sponsorName}>{abbreviateString(sponsor.username, 16)}</div>
+                        <div className={styles.sponsorName}>{abbreviateString(sponsor.username, 14)}</div>
                       </div>
                     </div>
                     <div className={styles.sponsorScoreContainer}>{withCommas(sponsor.gamePoints)}</div>
