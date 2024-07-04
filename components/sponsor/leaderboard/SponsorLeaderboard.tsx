@@ -135,8 +135,8 @@ const SponsorLeaderboard: React.FC<SponsorLeaderboardProps> = ({ flyToMarker, pl
       if (pointsSorted !== Sort.NONE) {
         sortedSponsors =
           pointsSorted === Sort.ASCENDING
-            ? sortedSponsors.sort((a, b) => b.points - a.points)
-            : sortedSponsors.sort((a, b) => a.points - b.points);
+            ? sortedSponsors.sort((a, b) => (b.gamePoints || 0) - (a.gamePoints || 0))
+            : sortedSponsors.sort((a, b) => (a.gamePoints || 0) - (b.gamePoints || 0));
       }
 
       sortedSponsors = sortedSponsors.filter((sponsor) =>
@@ -187,18 +187,19 @@ const SponsorLeaderboard: React.FC<SponsorLeaderboardProps> = ({ flyToMarker, pl
                 <div key={sponsor.id}>
                   <div className={styles.leaderboardRow}>
                     <div className={styles.sponsorInfo}>
-                      <div className={styles.sponsorRank}>{index + 1}</div>
+                      {/* TODO: was sponsor.rank ||  */}
+                      <div className={styles.sponsorRank}>{sponsor.rank || index + 1}</div>
                       <div className={styles.sponsorMarker}>
                         <Image
                           className={styles.sponsorImage}
-                          src={sponsor.image}
+                          src={sponsor.image || "/assets/graphics/koji.png"}
                           alt="User Image"
                           width={150}
                           height={150}
                         />
                       </div>
                       <div className={styles.sponsorNameContainer}>
-                        <div className={styles.sponsorName}>@{abbreviateString(sponsor.username, 16)}</div>
+                        <div className={styles.sponsorName}>{abbreviateString(sponsor.username, 16)}</div>
                       </div>
                     </div>
                     <div className={styles.sponsorScoreContainer}>{withCommas(sponsor.gamePoints)}</div>
