@@ -304,6 +304,7 @@ export default function useSolana(playerWalletAddress?: string) {
         return [];
       }
 
+      // FOR SPONSOR LEADERBOARD - REDUCE TO TOP 10
       if (wallet) {
         holdings = holdings.slice(0, 10);
       }
