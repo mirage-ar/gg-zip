@@ -13,6 +13,7 @@ import { PROGRAM_ID } from "@/utils/constants";
 import IDL from "@/solana/idl.json";
 
 import { wait } from "@/utils";
+import { hostname } from "os";
 
 export default function useSolana(playerWalletAddress?: string) {
   const [buyPrice, setBuyPrice] = useState<number>(0);
@@ -288,7 +289,9 @@ export default function useSolana(playerWalletAddress?: string) {
 
       const accounts = await program.account.tokenAccount.all(ownerFilter);
 
-      const holdings: SponsorHoldings[] = accounts.map((account) => {
+      let holdings: SponsorHoldings[];
+
+      holdings = accounts.map((account) => {
         return {
           // @ts-ignore
           wallet: account.account.subject.toBase58(),
@@ -297,12 +300,19 @@ export default function useSolana(playerWalletAddress?: string) {
         };
       });
 
-      for (const holding of holdings) {
-        const playerCardCount = await fetchPlayerCardCount(holding.wallet);
-        if (playerCardCount) {
-          holding.percentage = (holding.amount / playerCardCount) * 100;
-        }
+      if (!holdings.length) {
+        return [];
       }
+
+      if (wallet) {
+        holdings = holdings.slice(0, 10);
+      }
+        for (const holding of holdings) {
+          const playerCardCount = await fetchPlayerCardCount(holding.wallet);
+          if (playerCardCount) {
+            holding.percentage = (holding.amount / playerCardCount) * 100;
+          }
+        }
 
       // UPDATE: Filter out holdings with 0 amount
       return holdings.filter((holding) => holding.amount > 0);
