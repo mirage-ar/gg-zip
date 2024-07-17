@@ -5,6 +5,7 @@ import { User } from "@prisma/client";
 export async function GET(request: Request) {
   console.log("QUERY SPONSORS")
   try {
+    
     // Fetch sponsors 
     const users = await prisma.user.findMany({
       where: {

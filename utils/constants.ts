@@ -10,7 +10,7 @@ export const RPC = "https://solana-devnet.g.alchemy.com/v2/0ciOy1xReMbA60uYcFsnd
 export const PROGRAM_ID = "FeLN737SaQbjDAE7TfTP5QcgmS9zqeoEcYrU4umwZxxb";
 
 export const TRANSACTION_COUNT = 60;
-export const POLLING_TIME = 5000;
+export const POLLING_TIME = 8000;
 
 export const GAME_DATE = {
   year: 2024,
