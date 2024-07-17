@@ -8,7 +8,7 @@ import LiveLeaderboard from "@/components/sponsor/leaderboard/LiveLeaderboard";
 import styles from "./SponsorLeaderboard.module.css";
 
 import { Player, Sort, Sponsor, SponsorHoldings } from "@/types";
-import { abbreviateString, withCommas } from "@/utils";
+import { abbreviateString, rand, withCommas } from "@/utils";
 import SearchBar from "@/components/utility/SearchBar";
 import { useApplicationContext } from "@/state/ApplicationContext";
 import { useSolana } from "@/hooks";
@@ -95,15 +95,15 @@ const SponsorLeaderboard: React.FC<SponsorLeaderboardProps> = ({ flyToMarker, pl
   useEffect(() => {
     const fetchSponsors = async () => {
       try {
-      const response = await fetch(`api/sponsors`);
-      const result = await response.json();
+        const random = rand(1, 1000);
+        const response = await fetch(`api/sponsors/${random}`);
+        const result = await response.json();
 
-      if (!result.success) throw new Error("Failed to fetch sponsors");
+        if (!result.success) throw new Error("Failed to fetch sponsors");
 
-      const sponsors = result.data;
+        const sponsors = result.data;
 
-      setSponsors(sponsors);
-
+        setSponsors(sponsors);
       } catch (error) {
         throw new Error(`Fetch sponsors error: ${error}`);
       }
