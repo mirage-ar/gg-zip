@@ -12,7 +12,8 @@ import { GAME_DATE, GAME_LENGTH } from "@/utils/constants";
 import { useApplicationContext } from "@/state/ApplicationContext";
 
 const fiveMinutes = 5 * 60000;
-const oneHour = 60 * 60000;
+const ONE_HOUR = 60 * 60000;
+const ONE_DAY = 24 * 60 * 60 * 1000;
 
 const GameTimer = () => {
   const pathname = usePathname();
@@ -29,6 +30,7 @@ const GameTimer = () => {
   };
 
   const [timeRemaining, setTimeRemaining] = useState<number>(calculateTimeRemaining());
+  const hideDays = timeRemaining < ONE_DAY;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -55,7 +57,7 @@ const GameTimer = () => {
         {timeRemaining > GAME_LENGTH && <div className={styles.title}>The hunt will start in</div>}
         <div className={styles.container}>
           <div style={{ fontSize: "32px" }}>
-            <Timer timeRemaining={timeRemaining < GAME_LENGTH ? timeRemaining : timeRemaining - GAME_LENGTH} hideDays />
+            <Timer timeRemaining={timeRemaining < GAME_LENGTH ? timeRemaining : timeRemaining - GAME_LENGTH} hideDays={hideDays} />
           </div>
           <Image src={`/assets/icons/icons-24/timer${timeRemaining > GAME_LENGTH ? "-pink" : ""}.svg`} alt="timer icon" width={24} height={24} />
         </div>

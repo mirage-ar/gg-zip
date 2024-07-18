@@ -160,7 +160,7 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
               <Image src="/assets/icons/icons-24/g.svg" alt="Coin Icon" width={24} height={24} />
             </span>
             <span>
-              <Image src="/assets/icons/icons-24/playercards-green.svg" alt="Cards Icon" width={24} height={24} />
+              <Image src="/assets/icons/icons-24/box-opened-green.svg" alt="Box Icon" width={24} height={24} />
             </span>
             <div className={styles.filterIcon} onClick={togglePointsSort}>
               {pointsIcon}
@@ -236,12 +236,8 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
                         </div>
                         <div className={styles.playerScoreContainer}>
                           <div className={styles.playerScore}>{withCommas(player.points)}</div>
-                          {player.cardCount && (
-                            <>
-                              <div className={styles.dot}>•</div>
-                              <div className={styles.playerBoxes}>{withCommas(player.cardCount)}</div>
-                            </>
-                          )}
+                          <div className={styles.dot}>•</div>
+                          <div className={styles.playerBoxes}>{player.boxes}</div>
                         </div>
                       </div>
                     </div>

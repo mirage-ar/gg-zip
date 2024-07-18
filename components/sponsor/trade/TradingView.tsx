@@ -54,7 +54,7 @@ const TradingView: React.FC<TradingViewProps> = ({ player, setShowOverlay }) => 
         <div className={styles.header}>Trade</div>
         <PlayerCard player={playerWithAmount} />
         <div className={styles.playerName}>
-          <Link href={`https://twitter.com/${player.username}`}>@{player.username}</Link>
+          <Link href={`https://twitter.com/${player.username}`} target="new" >@{player.username}</Link>
         </div>
         <div className={styles.spacer} />
 
@@ -112,7 +112,7 @@ const TradingView: React.FC<TradingViewProps> = ({ player, setShowOverlay }) => 
         <div className={styles.buttonContainer}>
           <button className={styles.buyButton} onClick={buyCard} disabled={transactionPending}>
             <p>Buy</p>
-            <span>{buyPrice.toFixed(3)}</span>
+            <span>{(buyPrice * amount).toFixed(3)}</span>
           </button>
           <button
             className={styles.sellButton}
@@ -120,7 +120,7 @@ const TradingView: React.FC<TradingViewProps> = ({ player, setShowOverlay }) => 
             onClick={sellCard}
           >
             <p>Sell</p>
-            <span>{sellPrice.toFixed(3)}</span>
+            <span>{(sellPrice * amount).toFixed(3)}</span>
           </button>
         </div>
       </div>
@@ -161,7 +161,7 @@ const TradingView: React.FC<TradingViewProps> = ({ player, setShowOverlay }) => 
             <p>{player.rank || 0}</p>
             <p>{player.boxes}</p>
             <p>
-              <Link href={`https://twitter.com/${player.username}`}>@{player.username}</Link>
+              <Link href={`https://twitter.com/${player.username}`} target="new">@{player.username}</Link>
             </p>
           </div>
         </div>

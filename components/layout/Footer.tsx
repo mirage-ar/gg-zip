@@ -10,10 +10,10 @@ const Footer: React.FC = () => {
     <>
       <footer className={styles.main}>
         <div className={styles.container}>
-        <Link className={styles.link} href="https://t.me/ggdotzip" target="_blank">
+        <Link className={styles.link} href="https://t.me/ggdotzip" target="new">
             <Image src="/assets/icons/telegram.svg" alt="twitter" width={24} height={24} />
           </Link>
-          <Link className={styles.link} href="https://twitter.com/ggdotzip" target="_blank">
+          <Link className={styles.link} href="https://twitter.com/ggdotzip" target="new">
             <Image src="/assets/icons/x.svg" alt="twitter" width={24} height={24} />
           </Link>
           <Music />

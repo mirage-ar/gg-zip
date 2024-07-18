@@ -124,7 +124,7 @@ export default function Home() {
   const getPageName = (page: Page) => {
     switch (page) {
       case Page.LEADERBOARD:
-        return "Leaderboard";
+        return "Hunter Leaderboard";
       case Page.SPONSORS:
         return "Sponsor Leaderboard";
       case Page.TRANSACTIONS:

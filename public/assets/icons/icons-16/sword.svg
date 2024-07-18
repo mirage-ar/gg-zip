@@ -1,13 +1,9 @@
-<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="icons-16/sword">
-<g id="Group 11250">
-<path id="Rectangle 34042" d="M2.1916 3.60652L0.928909 0.929612L3.60581 2.1923L10.8284 9.41489L9.41419 10.8291L2.1916 3.60652Z" fill="#FF61EF"/>
-<path id="Vector 614" d="M8 12.2432L12.2426 8.00052" stroke="#FF61EF" stroke-width="1.4"/>
-<circle id="Ellipse 1278" cx="11.5356" cy="11.5361" r="1" transform="rotate(-45 11.5356 11.5361)" fill="#FF61EF"/>
-<circle id="Ellipse 1281" cx="7.99991" cy="12.2432" r="1" transform="rotate(-45 7.99991 12.2432)" fill="#FF61EF"/>
-<circle id="Ellipse 1282" cx="12.2426" cy="8" r="1" transform="rotate(-45 12.2426 8)" fill="#FF61EF"/>
-<circle id="Ellipse 1279" cx="12.9497" cy="12.9502" r="1" transform="rotate(-45 12.9497 12.9502)" fill="#FF61EF"/>
-<circle id="Ellipse 1280" cx="14.3639" cy="14.3643" r="1" transform="rotate(-45 14.3639 14.3643)" fill="#FF61EF"/>
-</g>
-</g>
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.09089 5.50495L2.8282 2.82805L5.5051 4.09074L12.7277 11.3133L11.3135 12.7275L4.09089 5.50495Z" fill="#42FF60"/>
+<path d="M9.89941 14.1406L14.1421 9.89798" stroke="#42FF60" stroke-width="1.4"/>
+<circle cx="13.4347" cy="13.4336" r="1" transform="rotate(-45 13.4347 13.4336)" fill="#42FF60"/>
+<circle cx="9.89956" cy="14.1406" r="1" transform="rotate(-45 9.89956 14.1406)" fill="#42FF60"/>
+<circle cx="14.1418" cy="9.89844" r="1" transform="rotate(-45 14.1418 9.89844)" fill="#42FF60"/>
+<circle cx="14.8488" cy="14.8496" r="1" transform="rotate(-45 14.8488 14.8496)" fill="#42FF60"/>
+<circle cx="16.2638" cy="16.2637" r="1" transform="rotate(-45 16.2638 16.2637)" fill="#42FF60"/>
 </svg>
