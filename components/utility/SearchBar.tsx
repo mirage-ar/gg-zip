@@ -5,11 +5,12 @@ import styles from './SearchBar.module.css';
 interface SearchBarProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  width?: number;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery, width }) => {
   return (
-    <div className={styles.searchContainer}>
+    <div className={styles.searchContainer} style={{width: `${width}px`}}>
       <input
         type="text"
         placeholder="SEARCH..."
