@@ -91,7 +91,6 @@ const Transactions: React.FC<TransactionsProps> = ({ playerList, isProfile }) =>
       </div>
 
       <div className={styles.transactions}>
-        {transactions.length === 0 && <p style={{ padding: "24px" }}>Loading...</p>}
         {transactions.map((transaction, index) => {
           const player = playerList.find((player) => player.wallet === transaction.subject);
           if (!player) {

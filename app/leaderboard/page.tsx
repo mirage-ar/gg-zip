@@ -107,8 +107,6 @@ export default function LeaderboardPage() {
         sponsors[i].rank = i + 1;
       }
 
-      console.log(sponsors);
-
       setPlayerList(sponsors);
     } catch (error) {
       console.error("Error fetching sponsor list:", error);
