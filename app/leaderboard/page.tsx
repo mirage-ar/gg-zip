@@ -312,77 +312,79 @@ export default function LeaderboardPage() {
 
             {/* ----- ROWS ----- */}
 
-            {/* ----- LEADERBOARD ------ */}
-            {filteredPlayers.length > 0 &&
-              filteredPlayers.map(
-                (player, index) =>
-                  player.points > 0 &&
-                  (tab === LeaderboardTab.HUNTERS ? player.buyPrice : true) && (
-                    <div key={player.id}>
-                      <div
-                        className={styles.leaderboardRow}
-                        style={
-                          sponsorHoldingsWallets.includes(player.wallet)
-                            ? { backgroundColor: "rgba(66, 255, 96, 0.2)" }
-                            : {}
-                        }
-                      >
-                        <div className={styles.playerInfo}>
-                          <div className={styles.playerRank}>{player.rank}</div>
-                          <div className={styles.playerMarker}>
-                            <Image
-                              className={styles.playerImage}
-                              src={player.image || "/assets/icons/koji.png"}
-                              alt=""
-                              width={150}
-                              height={150}
-                            />
-                          </div>
-                          <div className={styles.playerNameContainer}>
-                            <div className={styles.playerName}>
-                              @{abbreviateString(player.username, 25)}
-                              {sponsorHoldings.find((user) => user.wallet === player.wallet) && (
-                                <div className={styles.sponsorHoldingAmount}>
-                                  {sponsorHoldings.find((user) => user.wallet === player.wallet)?.amount}
-                                  <Image
-                                    src="/assets/icons/icons-16/player-card.svg"
-                                    alt="Check"
-                                    width={16}
-                                    height={16}
-                                  />
-                                  {sponsorHoldings
-                                    .find((user) => user.wallet === player.wallet)
-                                    ?.percentage?.toFixed(1)}
-                                  %{" "}
-                                </div>
-                              )}
+            <div className={styles.leaderboard}>
+              {/* ----- LEADERBOARD ------ */}
+              {filteredPlayers.length > 0 &&
+                filteredPlayers.map(
+                  (player, index) =>
+                    player.points > 0 &&
+                    (tab === LeaderboardTab.HUNTERS ? player.buyPrice : true) && (
+                      <div key={player.id}>
+                        <div
+                          className={styles.leaderboardRow}
+                          style={
+                            sponsorHoldingsWallets.includes(player.wallet)
+                              ? { backgroundColor: "rgba(66, 255, 96, 0.2)" }
+                              : {}
+                          }
+                        >
+                          <div className={styles.playerInfo}>
+                            <div className={styles.playerRank}>{player.rank}</div>
+                            <div className={styles.playerMarker}>
+                              <Image
+                                className={styles.playerImage}
+                                src={player.image || "/assets/icons/koji.png"}
+                                alt=""
+                                width={150}
+                                height={150}
+                              />
+                            </div>
+                            <div className={styles.playerNameContainer}>
+                              <div className={styles.playerName}>
+                                @{abbreviateString(player.username, 25)}
+                                {sponsorHoldings.find((user) => user.wallet === player.wallet) && (
+                                  <div className={styles.sponsorHoldingAmount}>
+                                    {sponsorHoldings.find((user) => user.wallet === player.wallet)?.amount}
+                                    <Image
+                                      src="/assets/icons/icons-16/player-card.svg"
+                                      alt="Check"
+                                      width={16}
+                                      height={16}
+                                    />
+                                    {sponsorHoldings
+                                      .find((user) => user.wallet === player.wallet)
+                                      ?.percentage?.toFixed(1)}
+                                    %{" "}
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div className={styles.playerScoreContainer}>
-                          <div className={styles.playerScore}>{withCommas(player.points)}</div>
-                          {/* <div className={styles.dot}>•</div>
+                          <div className={styles.playerScoreContainer}>
+                            <div className={styles.playerScore}>{withCommas(player.points)}</div>
+                            {/* <div className={styles.dot}>•</div>
                         <div className={styles.playerBoxes}>{player.boxes}</div> */}
-                        </div>
-
-                        {tab === LeaderboardTab.HUNTERS && (
-                          <div className={styles.priceContainer}>
-                            <div className={styles.price}>{withCommas(player.buyPrice?.toFixed(3) || 0)}</div>
-                            <button
-                              className={styles.tradeButton}
-                              disabled={!player.buyPrice || transactionPending}
-                              onClick={() => openTradingView(player)}
-                            >
-                              Trade
-                            </button>
                           </div>
-                        )}
+
+                          {tab === LeaderboardTab.HUNTERS && (
+                            <div className={styles.priceContainer}>
+                              <div className={styles.price}>{withCommas(player.buyPrice?.toFixed(3) || 0)}</div>
+                              <button
+                                className={styles.tradeButton}
+                                disabled={!player.buyPrice || transactionPending}
+                                onClick={() => openTradingView(player)}
+                              >
+                                Trade
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                        {index !== filteredPlayers.length - 1 && <div className={styles.spacer} />}
                       </div>
-                      {index !== filteredPlayers.length - 1 && <div className={styles.spacer} />}
-                    </div>
-                  )
-              )}
+                    )
+                )}
+            </div>
           </div>
         </div>
       </div>

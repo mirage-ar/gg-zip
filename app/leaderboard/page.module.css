@@ -21,7 +21,7 @@
 .container {
   width: 1012px;
   margin-bottom: 32px;
-  min-height: 800px;
+  /* min-height: 800px; */
   background-color: var(--b);
   display: flex;
   flex-direction: column;
@@ -111,10 +111,15 @@
 
 .scrollable {
   overflow-y: auto;
-  flex-grow: 1;
+  /* flex-grow: 1; */
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+
+.leaderboard {
+  flex-grow: 1;
+  min-height: 500px;
 }
 
 .priceHeader {
