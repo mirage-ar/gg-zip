@@ -1,258 +1,138 @@
-.main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* padding: 6rem; */
-  min-height: 100vh;
-}
-
-.map {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+.overlay {
+  position: fixed;
   top: 0;
-  left: 0;
-  filter: blur(2px);
-  z-index: -10000;
+  right: 0;
+  width: 530px;
+  height: 100%;
+  background-color: var(--b);
+  z-index: 100;
+  transition: margin 0.3s ease;
 }
 
-.container {
+.titleBar {
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 100%;
+  padding: 20px;
   gap: 16px;
 }
 
-.mainContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  height: 100vh;
-  color: var(--p);
-  /* clip-path: polygon(3% 0, 100% 0, 100% 88%, 97% 100%, 0 100%, 0 12%); */
-}
-
-.mainContainer p {
-  color: var(--g);
-  font-size: 14px;
-  text-transform: uppercase;
-}
-
-.timerContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  border: 1px solid var(--g);
-  padding: 20px 0;
-  width: 696px;
-  /* clip-path: polygon(3% 0, 100% 0, 100% 88%, 97% 100%, 0 100%, 0 12%); */
-}
-
-.playerContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* gap: 12px; */
-  width: 696px;
-  background-color: var(--g);
-}
-
-.hunterContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  background-color: var(--g);
-
-  padding: 20px 0;
-
-}
-
-.playerContainerMobile {
-  display: none;
-}
-
-.playerSection {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: 12px 24px;
-  gap: 26px;
-}
-
-.playerTitle {
-  font-size: 32px;
+.title {
   font-family: var(--connect);
-  color: var(--b);
+  color: var(--g);
+  font-size: 18px;
+  text-transform: uppercase;
 }
 
-.connectButton {
+.content {
   display: flex;
-  width: 216px;
-  padding: 12px 12px;
+  flex-direction: column;
+  height: 100%;
+}
+
+.componentContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: auto;
+}
+
+.prizeTotal {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius: var(--corner4, 4px);
-  background: var(--b, #000);
-  border: none;
+  padding: 50px 0 32px;
+}
 
-  font-size: 13px;
+.prizeTotalLabel {
+  font-size: 14px;
   color: var(--g);
+  margin-bottom: -18px;
   text-transform: uppercase;
+}
+
+.prizeContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.prizeAmountContainer {
+  margin: 0 -130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.prizeTotalAmount {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-family: var(--connect);
+  font-size: 34px;
+  color: var(--g);
+  gap: 6px;
+  width: 200px;
+}
+
+.navContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 247px;
+  height: 68px;
+  flex-shrink: 0;
+  border-radius: var(--corner4, 4px);
+  background: #1f1f1f;
+  font-family: var(--connect);
+  text-transform: uppercase;
+  color: var(--w);
   cursor: pointer;
 }
 
-.arrows {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-}
-
-.spacer {
-  width: 100%;
-  border-bottom: 2px dotted var(--b);
-}
-
-.progressBar {
-  margin-top: 14px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+.selected {
+  background: var(--g, #42ff60);
   color: var(--b);
-  width: 100%;
-  text-transform: uppercase;
 }
 
-.progressBarTitle {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-.progress {
-  width: 450px;
-  height: 8px;
-  background-color: rgba(0, 0, 0, 0.3);
-  border-radius: 50px;
-  overflow: hidden; /* Ensures the fill does not overflow the rounded corners */
-}
-
-.progressFill {
-  height: 100%; /* Fill the height of the parent */
-  background-color: var(--b); /* The color for the filled part */
-  width: 0%; /* Initial width, will be dynamically adjusted */
-}
-
-@media only screen and (max-width: 768px) {
-  .container {
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .timerContainer {
-    border: none;
-  }
-
-  .playerContainer {
-    display: none;
-  }
-
-  .playerContainerMobile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* gap: 12px; */
-    width: 100%;
-    background-color: var(--g);
-  }
-
-  .progressBarMobile {
-    margin-top: 14px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    color: var(--b);
-    width: 350px;
-    text-transform: uppercase;
-  }
-
-  .goToDesktop {
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    color: var(--b);
-    text-transform: uppercase;
-
-    padding: 12px 24px;
-    width: 50%;
-    border: 1px solid var(--b);
-    border-radius: var(--corner4, 4px);
-
-    margin: 0 0 20px;
-
-  }
-
-  .hunterMobile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .joinButton {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 12px 24px;
-    width: 50%;
-    border: 1px solid var(--b);
-
-    margin: 0 0 20px;
-    border-radius: var(--corner4, 4px);
-    background: var(--b, #000);
-    border: none;
-
-    font-size: 13px;
-    color: var(--g);
-    text-transform: uppercase;
-    cursor: pointer;
-  }
-
-  .progress {
-    width: 350px;
-  }
-}
-
-.graphicTopLeft {
+.gameEnding {
   position: absolute;
-  top: 10%;
-  left: 15%;
+  top: 0;
+  left: 0;
+  width: calc(100vw + 20px);
+  height: calc(100vh + 20px);
+  margin: -10px;
+  z-index: 150000;
+  border: 20px solid var(--p, #ff61ef);
+  filter: blur(10px);
+  pointer-events: none; /* Allows interaction with the content inside the border */
+  animation: strobing 2s infinite;
 }
 
-.graphicTopRight {
-  position: absolute;
-  top: 10%;
-  right: 15%;
+.closeButton {
+  cursor: pointer;
 }
 
-.graphicBottomLeft {
-  position: absolute;
-  bottom: 10%;
-  left: 15%;
+@keyframes strobing {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
-
-.graphicBottomRight {
-  position: absolute;
-  bottom: 10%;
-  right: 15%;
+.transactionsContainer {
+  margin: 0 24px;
 }

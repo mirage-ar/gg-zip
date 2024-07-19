@@ -15,11 +15,10 @@ const Navigation: React.FC = () => {
   const [active, setActive] = useState<number | null>(0);
 
   const items = useMemo(() => [
-    // { id: 0, name: "home", path: "/" },
-    { id: 1, name: "sponsor", path: "/sponsor" },
-    { id: 2, name: "hunter", path: "/mint" },
-    { id: 3, name: "leaderboard", path: "/leaderboard" },
-    { id: 4, name: "how to play", path: "/aboutgg" },
+    { id: 0, name: "sponsor", path: "/" },
+    { id: 1, name: "hunter", path: "/mint" },
+    { id: 2, name: "leaderboard", path: "/leaderboard" },
+    { id: 3, name: "how to play", path: "/aboutgg" },
   ], []);
 
   useEffect(() => {
