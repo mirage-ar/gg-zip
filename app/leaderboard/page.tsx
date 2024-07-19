@@ -44,7 +44,6 @@ export default function LeaderboardPage() {
   const [tradingViewPlayer, setTradingViewPlayer] = useState<Player | null>(null);
   const [filteredPlayers, setFilteredPlayers] = useState<Player[]>([]);
   const [showOverlay, setShowOverlay] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   const { transactionPending } = useApplicationContext();
   const { program, fetchSponsorHoldings, calculateTotalHoldings } = useSolana();
@@ -87,70 +86,70 @@ export default function LeaderboardPage() {
     return playerList;
   };
 
+  const fetchPlayerList = async () => {
+    try {
+      const players = await fetchPlayerData();
+      setPlayerList(players);
+    } catch (error) {
+      console.error("Error fetching player list:", error);
+    }
+  };
+
+  const fetchSponsorList = async () => {
+    try {
+      const random = rand(0, 1000);
+      const response = await fetch(`/api/leaderboard/sponsors/${random}`);
+      const result = await response.json();
+      let sponsors = result.data;
+
+      // set player rank for each player - mutation not ideal
+      for (let i = 0; i < sponsors.length; i++) {
+        sponsors[i].rank = i + 1;
+      }
+
+      console.log(sponsors);
+
+      setPlayerList(sponsors);
+    } catch (error) {
+      console.error("Error fetching sponsor list:", error);
+    }
+  };
+
+  // Fetch sponsor holdings
+  const fetchSponsorHoldingsData = async () => {
+    try {
+      const holdings = await fetchSponsorHoldings();
+      setSponsorHoldings(holdings);
+    } catch (error) {
+      console.error("Error fetching sponsor holdings:", error);
+    }
+  };
+
   useEffect(() => {
-    if (!program) return;
-    // Function to fetch player list
-    const fetchPlayerList = async () => {
-      try {
-        const players = await fetchPlayerData();
-        setPlayerList(players);
-      } catch (error) {
-        console.error("Error fetching player list:", error);
-      }
-    };
-
-    const fetchSponsorList = async () => {
-      try {
-        const random = rand(0, 1000);
-        const response = await fetch(`/api/leaderboard/sponsors/${random}`);
-        const result = await response.json();
-        let sponsors = result.data;
-
-        // set player rank for each player - mutation not ideal
-        for (let i = 0; i < sponsors.length; i++) {
-          sponsors[i].rank = i + 1;
-        }
-
-        console.log(sponsors);
-
-        setPlayerList(sponsors);
-      } catch (error) {
-        console.error("Error fetching sponsor list:", error);
-      }
-    };
-
-    // Fetch sponsor holdings
-    const fetchSponsorHoldingsData = async () => {
-      try {
-        const holdings = await fetchSponsorHoldings();
-        setSponsorHoldings(holdings);
-      } catch (error) {
-        console.error("Error fetching sponsor holdings:", error);
-      }
-    };
-
     const fetchData = async () => {
-        setLoading(true);
       if (tab === LeaderboardTab.HUNTERS) {
         await fetchPlayerList();
         await fetchSponsorHoldingsData();
       } else {
         await fetchSponsorList();
       }
-      setLoading(false);
     };
 
     fetchData();
-
-    const interval = setInterval(() => {
-        if (document.visibilityState === "visible") {
-          fetchData();
-        }
-      }, POLLING_TIME);
-  
-      return () => clearInterval(interval);
-
   }, [program, tab]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (tab === LeaderboardTab.HUNTERS) {
+        await fetchPlayerList();
+        await fetchSponsorHoldingsData();
+      } else {
+        await fetchSponsorList();
+      }
+    };
+
+    fetchData();
+  }, [transactionPending]);
 
   function openTradingView(player: Player) {
     setTradingViewPlayer(player);
@@ -373,7 +372,7 @@ export default function LeaderboardPage() {
                             <div className={styles.price}>{withCommas(player.buyPrice?.toFixed(3) || 0)}</div>
                             <button
                               className={styles.tradeButton}
-                              disabled={!player.buyPrice || transactionPending || loading}
+                              disabled={!player.buyPrice || transactionPending}
                               onClick={() => openTradingView(player)}
                             >
                               Trade

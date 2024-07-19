@@ -32,14 +32,6 @@ export async function POST(request: Request, { params }: { params: { wallet: str
   console.log("UPDATE USER: ", wallet);
 
   try {
-    const userPoints = await prisma.points.findUnique({
-      where: {
-        wallet: wallet,
-      },
-    });
-
-    // TODO: clean this up after next game
-    
     if (!twitterId) {
       const user = await prisma.user.upsert({
         where: {
@@ -48,7 +40,6 @@ export async function POST(request: Request, { params }: { params: { wallet: str
         update: {
           username: username,
           image: image,
-          points: userPoints?.points,
           twitterId: twitterId,
         },
         create: {
@@ -56,7 +47,7 @@ export async function POST(request: Request, { params }: { params: { wallet: str
           twitterId: twitterId,
           image: image,
           wallet: wallet,
-          points: userPoints?.points || 0,
+          points: 0,
         },
       });
 
@@ -94,7 +85,6 @@ export async function POST(request: Request, { params }: { params: { wallet: str
           update: {
             username: username,
             image: image,
-            points: userPoints?.points,
             wallet: wallet,
           },
           create: {
@@ -102,7 +92,7 @@ export async function POST(request: Request, { params }: { params: { wallet: str
             twitterId: twitterId,
             image: image,
             wallet: wallet,
-            points: userPoints?.points || 0,
+            points: 0,
           },
         });
 
@@ -119,7 +109,6 @@ export async function POST(request: Request, { params }: { params: { wallet: str
           update: {
             username: username,
             image: image,
-            points: userPoints?.points,
             twitterId: twitterId,
           },
           create: {
@@ -127,7 +116,7 @@ export async function POST(request: Request, { params }: { params: { wallet: str
             twitterId: twitterId,
             image: image,
             wallet: wallet,
-            points: userPoints?.points || 0,
+            points: 0,
           },
         });
 
