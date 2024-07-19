@@ -238,79 +238,80 @@ export default function LeaderboardPage() {
     <>
       {showOverlay && tradingViewPlayer && <TradingView player={tradingViewPlayer} setShowOverlay={setShowOverlay} />}
       <div className={styles.main}>
-        <div className={styles.title}>Leaderboard</div>
-        <div className={styles.container}>
-          <div className={styles.buttonContainer}>
-            <button
-              className={`${styles.headerButton} ${styles.left} ${
-                tab === LeaderboardTab.HUNTERS ? styles.selected : ""
-              }`}
-              onClick={() => setTab(LeaderboardTab.HUNTERS)}
-            >
-              <Image
-                src={`/assets/icons/icons-24/hunters-${tab === LeaderboardTab.HUNTERS ? "black" : "white"}.svg`}
-                alt="Hunter button"
-                width={24}
-                height={24}
-              />
-              Hunters
-            </button>
-            <button
-              className={`${styles.headerButton} ${styles.right} ${
-                tab === LeaderboardTab.SPONSORS ? styles.selected : ""
-              }`}
-              onClick={() => setTab(LeaderboardTab.SPONSORS)}
-            >
-              <Image
-                src={`/assets/icons/icons-24/case-${tab === LeaderboardTab.SPONSORS ? "black" : "white"}.svg`}
-                alt="Sponsor button"
-                width={24}
-                height={24}
-              />
-              Sponsors
-            </button>
-          </div>
-
-          <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} width={500} />
-
-          {/* ----- HEADER ----- */}
-
-          <div className={styles.header}>
-            <div className={styles.leftColumn}>
-              <span>Rank</span>
-              <span>Name</span>
+        <div className={styles.scrollable}>
+          <div className={styles.title}>Leaderboard</div>
+          <div className={styles.container}>
+            <div className={styles.buttonContainer}>
+              <button
+                className={`${styles.headerButton} ${styles.left} ${
+                  tab === LeaderboardTab.HUNTERS ? styles.selected : ""
+                }`}
+                onClick={() => setTab(LeaderboardTab.HUNTERS)}
+              >
+                <Image
+                  src={`/assets/icons/icons-24/hunters-${tab === LeaderboardTab.HUNTERS ? "black" : "white"}.svg`}
+                  alt="Hunter button"
+                  width={24}
+                  height={24}
+                />
+                Hunters
+              </button>
+              <button
+                className={`${styles.headerButton} ${styles.right} ${
+                  tab === LeaderboardTab.SPONSORS ? styles.selected : ""
+                }`}
+                onClick={() => setTab(LeaderboardTab.SPONSORS)}
+              >
+                <Image
+                  src={`/assets/icons/icons-24/case-${tab === LeaderboardTab.SPONSORS ? "black" : "white"}.svg`}
+                  alt="Sponsor button"
+                  width={24}
+                  height={24}
+                />
+                Sponsors
+              </button>
             </div>
 
-            <div className={styles.centerColumn}>
-              <span className={styles.headerRowElement}>
-                Total
-                <Image src="/assets/icons/icons-24/g.svg" alt="Coin Icon" width={24} height={24} />
-                <div className={styles.filterIcon} onClick={togglePointsSort}>
-                  {pointsIcon}
-                </div>
-              </span>
+            <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} width={500} />
 
-              {/* <span className={styles.headerRowElement}>
+            {/* ----- HEADER ----- */}
+
+            <div className={styles.header}>
+              <div className={styles.leftColumn}>
+                <span>Rank</span>
+                <span>Name</span>
+              </div>
+
+              <div className={styles.centerColumn}>
+                <span className={styles.headerRowElement}>
+                  Total
+                  <Image src="/assets/icons/icons-24/g.svg" alt="Coin Icon" width={24} height={24} />
+                  <div className={styles.filterIcon} onClick={togglePointsSort}>
+                    {pointsIcon}
+                  </div>
+                </span>
+
+                {/* <span className={styles.headerRowElement}>
               Total
               <Image src="/assets/icons/icons-24/box-opened-green.svg" alt="Box Icon" width={24} height={24} />
             </span> */}
+              </div>
+
+              {tab === LeaderboardTab.HUNTERS && (
+                <div className={styles.rightColumn}>
+                  <div className={styles.priceHeader}>
+                    <span>Price</span>
+                    <Image src="/assets/icons/icons-24/solana.svg" alt="Solana Icon" width={24} height={24} />
+                  </div>
+                  <div className={styles.filterIcon} onClick={togglePriceSort}>
+                    {priceIcon}
+                  </div>
+                </div>
+              )}
             </div>
 
-            {tab === LeaderboardTab.HUNTERS && (
-              <div className={styles.rightColumn}>
-                <div className={styles.priceHeader}>
-                  <span>Price</span>
-                  <Image src="/assets/icons/icons-24/solana.svg" alt="Solana Icon" width={24} height={24} />
-                </div>
-                <div className={styles.filterIcon} onClick={togglePriceSort}>
-                  {priceIcon}
-                </div>
-              </div>
-            )}
-          </div>
+            {/* ----- ROWS ----- */}
 
-          {/* ----- ROWS ----- */}
-          <div className={styles.scrollable}>
             {/* ----- LEADERBOARD ------ */}
             {filteredPlayers.length > 0 &&
               filteredPlayers.map(
