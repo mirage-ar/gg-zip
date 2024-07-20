@@ -18,7 +18,7 @@ const Navigation: React.FC = () => {
     { id: 0, name: "sponsor", path: "/" },
     { id: 1, name: "hunter", path: "/mint" },
     { id: 2, name: "leaderboard", path: "/leaderboard" },
-    { id: 3, name: "about", path: "/aboutgg" },
+    { id: 3, name: "how to play", path: "/howto" },
   ], []);
 
   useEffect(() => {
