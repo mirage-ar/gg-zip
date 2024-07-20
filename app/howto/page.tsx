@@ -104,14 +104,6 @@ export default function HowToPage() {
                 </p>
               </div>
 
-              <div className={styles.numberTitle}>1. Join Game</div>
-              <div className={styles.text}>
-                <p>
-                  Join the game by signing in with your wallet online. You will then have access to the chat, the map,
-                  and the trading dashboard.
-                </p>
-              </div>
-
               <div className={styles.numberTitle}>2. Trade Cards</div>
               <div className={styles.text}>
                 <p>
