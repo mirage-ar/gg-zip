@@ -20,7 +20,7 @@ const GameTimer = () => {
 
   const { closed, setGameEnding } = useApplicationContext();
 
-  const isHunt = pathname === "/hunt" || pathname === "/sponsor";
+  const isHunt = pathname === "/hunt" || pathname === "/";
 
   // Calculate initial time remaining immediately
   const calculateTimeRemaining = () => {
