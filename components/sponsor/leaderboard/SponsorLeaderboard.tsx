@@ -99,6 +99,8 @@ const SponsorLeaderboard: React.FC<SponsorLeaderboardProps> = ({ flyToMarker, pl
         const response = await fetch(`api/sponsors/${random}`);
         const result = await response.json();
 
+        console.log("result", result);
+
         if (!result.success) throw new Error("Failed to fetch sponsors");
 
         const sponsors = result.data;
@@ -183,7 +185,7 @@ const SponsorLeaderboard: React.FC<SponsorLeaderboardProps> = ({ flyToMarker, pl
         {filteredSponsors.length > 0 &&
           filteredSponsors.map(
             (sponsor, index) =>
-              sponsor.points > 0 && (
+              sponsor.gamePoints && sponsor.gamePoints > 0 && (
                 <div key={sponsor.id}>
                   <div className={styles.leaderboardRow}>
                     <div className={styles.sponsorInfo}>
