@@ -61,7 +61,7 @@ export default function HowToPage() {
 
           {/* VIDEO */}
           <div className={styles.video}>
-            <video width="941" height="525" controls preload="true" poster="/assets/vide/about-cover.gif">
+            <video width="941" height="525" controls autoPlay preload="true" poster="/assets/vide/about-cover.gif">
               <source
                 src="https://public-assets-74c056c6-d21c-4e1a-83a5-04eba22798fe.s3.amazonaws.com/about.mp4"
                 type="video/mp4"
