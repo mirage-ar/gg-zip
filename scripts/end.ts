@@ -27,21 +27,21 @@ async function getHunters(): Promise<Hunter[]> {
 }
 
 async function end() {
-  const prismaUsers = await prisma.user.findMany();
-  for (const user of prismaUsers) {
-    const points = user.inGamePoints + user.points;
+  // const prismaUsers = await prisma.user.findMany();
+  // for (const user of prismaUsers) {
+  //   const points = user.inGamePoints + user.points;
 
-    try {
-      await prisma.user.update({
-        where: { id: user.id },
-        data: {
-          points: points,
-        },
-      });
-    } catch (error) {
-      console.error("Error updating game points for user:", error);
-    }
-  }
+  //   try {
+  //     await prisma.user.update({
+  //       where: { id: user.id },
+  //       data: {
+  //         points: points,
+  //       },
+  //     });
+  //   } catch (error) {
+  //     console.error("Error updating game points for user:", error);
+  //   }
+  // }
 
   const hunters = await getHunters();
 

@@ -15,10 +15,10 @@ export const POLLING_TIME = 8000;
 export const GAME_DATE = {
   year: 2024,
   month: 7,
-  day: 20,
+  day: 26,
 };
 
-export const GAME_TIME = 12;
+export const GAME_TIME = 17;
 export const GAME_LENGTH = 60 * 60 * 1000;
 export const PLAYER_COUNT = 150;
 
