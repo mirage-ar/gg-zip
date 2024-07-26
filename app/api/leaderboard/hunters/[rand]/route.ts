@@ -11,6 +11,9 @@ export async function GET(request: Request) {
         points: {
           gt: 0,
         },
+        boxes: {
+          gt: 0,
+        },
         twitterId: {
           not: null,
         }
