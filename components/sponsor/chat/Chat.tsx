@@ -171,10 +171,6 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
       setInputMessage("");
     } else {
       console.error("Failed to send message: User not found.");
-
-      // show onboarding if no user
-      // TODO: test this with new wallet
-      setShowOnboarding(true);
     }
   };
 

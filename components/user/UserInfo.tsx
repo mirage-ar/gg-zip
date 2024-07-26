@@ -10,10 +10,11 @@ import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 
 import { useApplicationContext } from "@/state/ApplicationContext";
 import { formatWalletAddress, formatPoints } from "@/utils";
+import { Page } from "@/types";
 
 const UserInfo: React.FC = () => {
 
-  const { globalUser: user, closed, setShowOnboarding } = useApplicationContext();
+  const { globalUser: user, closed, setPage } = useApplicationContext();
 
 
   const { publicKey } = useWallet();
@@ -35,7 +36,7 @@ const UserInfo: React.FC = () => {
 
   return (
     <div className={styles.main} style={closed ? { marginRight: "70px" } : {}}>
-      <div className={styles.userDetails} onClick={() => setShowOnboarding(true)}>
+      <div className={styles.userDetails} onClick={() => setPage(Page.PROFILE)}>
         {/* --- WALLET ADDRESS --- */}
         {publicKey ? (
           <div>{formatWalletAddress(publicKey.toBase58())}</div>

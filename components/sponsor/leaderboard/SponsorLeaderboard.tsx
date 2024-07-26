@@ -113,7 +113,7 @@ const SponsorLeaderboard: React.FC<SponsorLeaderboardProps> = ({ flyToMarker, pl
 
     fetchSponsors();
 
-    // SPONSOR LEADERBOARD IS NOT LIVE !! too many alchemy requests
+    // SPONSOR LEADERBOARD IS NOT LIVE !! too many requests
     // const interval = setInterval(() => {
     //   if (document.visibilityState === "visible") {
     //     fetchSponsors();

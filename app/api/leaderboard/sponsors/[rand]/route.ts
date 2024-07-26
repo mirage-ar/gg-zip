@@ -19,8 +19,6 @@ export async function GET(request: Request) {
       },
     });
 
-    console.log(users);
-
     // sort users by points
     // users.sort((a: User, b: User) => b.points - a.points);
 

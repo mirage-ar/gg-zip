@@ -32,7 +32,6 @@ const Onboarding: React.FC = () => {
       setUsername(`#${new Date().getTime().toString().substring(8)}`);
       setPreview(null);
     }
-
   }, [publicKey, globalUser]);
 
   // Function to stop event propagation
@@ -98,15 +97,13 @@ const Onboarding: React.FC = () => {
     }
   };
 
-  const attemptToClose = () => {
-    if (pathname !== "/") {
-      setShowOnboarding(false);
-    }
-  }
+  const close = () => {
+    setShowOnboarding(false);
+  };
 
   return (
     showOnboarding && (
-      <div className={styles.main} onClick={attemptToClose}>
+      <div className={styles.main} onClick={close}>
         <div className={styles.container} onClick={handleContainerClick}>
           <h4>EDIT PROFILE</h4>
           <div className={styles.profilePhotoContainer}>

@@ -31,7 +31,6 @@ import { GAME_API, POLLING_TIME } from "@/utils/constants";
 
 export default function Home() {
   const [tab, setTab] = useState(Tab.LEADERBOARD);
-  const [page, setPage] = useState(Page.LEADERBOARD);
   const [totalHoldings, setTotalHoldings] = useState<number>(0);
   const [playerList, setPlayerList] = useState<Player[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
@@ -41,7 +40,7 @@ export default function Home() {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<MarkersObject>({});
 
-  const { closed, setClosed, gameEnding } = useApplicationContext();
+  const { closed, setClosed, gameEnding, page, setPage } = useApplicationContext();
   const { program, fetchSponsorHoldings, calculateTotalHoldings } = useSolana();
   const { publicKey } = useWallet();
   const { fetchUser } = useUser();

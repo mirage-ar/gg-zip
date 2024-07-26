@@ -88,11 +88,7 @@ export default function HowToPage() {
                 <Image src="/assets/graphics/howto/sponsor.png" alt="Graphic" width={73} height={236} />
                 <div className={styles.subText}>Objective</div>
                 <div className={styles.bottomText}>
-                  Make as much G and SOL as
-                  <br />
-                  you can by trading Hunter
-                  <br />
-                  player cards.
+                  Make as much G and SOL as you can by trading Hunter player cards.
                 </div>
               </div>
 
@@ -217,11 +213,7 @@ export default function HowToPage() {
           </div>
 
           <div className={styles.section}>
-            <h2>
-              How long
-              <br />
-              do games last?
-            </h2>
+            <h2>How long do games last?</h2>
             <div className={styles.infoContainer}>
               <Image src="/assets/graphics/howto/left-bracket.svg" alt="Graphic" width={14} height={74} />
               <div className={styles.infoText}>Each game session lasts approximately one hour.</div>
@@ -230,11 +222,7 @@ export default function HowToPage() {
           </div>
 
           <div className={styles.section}>
-            <h2>
-              What are
-              <br />
-              player cards?
-            </h2>
+            <h2>What are player cards?</h2>
             <div className={styles.infoContainer}>
               <Image src="/assets/graphics/howto/left-bracket.svg" alt="Graphic" width={14} height={74} />
               <div className={styles.infoText}>
@@ -247,11 +235,7 @@ export default function HowToPage() {
           </div>
 
           <div className={styles.section}>
-            <h2>
-              How do Sponsors earn
-              <br />
-              (via Player Cards)?
-            </h2>
+            <h2>How do Sponsors earn (via Player Cards)?</h2>
             <div className={styles.infoContainer}>
               <Image src="/assets/graphics/howto/left-bracket.svg" alt="Graphic" width={14} height={74} />
               <div className={styles.infoText}>
@@ -263,11 +247,7 @@ export default function HowToPage() {
           </div>
 
           <div className={styles.section}>
-            <h2>
-              Can I trade my player
-              <br />
-              cards?
-            </h2>
+            <h2>Can I trade my player cards?</h2>
             <div className={styles.infoContainer}>
               <Image src="/assets/graphics/howto/left-bracket.svg" alt="Graphic" width={14} height={74} />
               <div className={styles.infoText}>
@@ -279,11 +259,7 @@ export default function HowToPage() {
           </div>
 
           <div className={styles.section}>
-            <h2>
-              What happens during the
-              <br />
-              weekly games?
-            </h2>
+            <h2>What happens during the weekly games?</h2>
             <div className={styles.infoContainer}>
               <Image src="/assets/graphics/howto/left-bracket.svg" alt="Graphic" width={14} height={74} />
               <div className={styles.infoText}>
