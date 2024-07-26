@@ -101,6 +101,20 @@ export enum Powerup {
   MAGNETISM = "magnet",
 }
 
+export enum TransactionType {
+  BUY = "BUY",
+  SELL = "SELL",
+  MINT = "MINT",
+  WITHDRAW = "WITHDRAW",
+}
+
+export type TransactionDetails = {
+  type: TransactionType;
+  pending: boolean;
+  error?: boolean;
+  errorMessage?: string;
+}
+
 // ---------- DEPRECATED ----------
 export type LeaderboardItem = {
   id: string;

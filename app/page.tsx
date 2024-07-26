@@ -37,13 +37,32 @@ export default function Home() {
   const [sponsorHoldings, setSponsorHoldings] = useState<SponsorHoldings[]>([]);
   const [sponsorPoints, setSponsorPoints] = useState<number>(0);
 
+  const [transactionSuccess, setTransactionSuccess] = useState(false);
+  const [pageLoaded, setPageLoaded] = useState(false);
+
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<MarkersObject>({});
 
-  const { closed, setClosed, gameEnding, page, setPage } = useApplicationContext();
+  const { closed, setClosed, gameEnding, page, setPage, transactionDetails } = useApplicationContext();
   const { program, fetchSponsorHoldings, calculateTotalHoldings } = useSolana();
   const { publicKey } = useWallet();
   const { fetchUser } = useUser();
+
+  useEffect(() => {
+    setPageLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (transactionDetails && !transactionDetails?.pending && !transactionDetails?.error && pageLoaded) {
+      setTransactionSuccess(true);
+    }
+
+    const timeOut = setTimeout(() => {
+      setTransactionSuccess(false);
+    }, 3000);
+
+    return () => clearTimeout(timeOut);
+  }, [transactionDetails]);
 
   const fetchPlayerData = async (profile: boolean, sponsorHoldings: string[]): Promise<Player[]> => {
     const response = await fetch(`${GAME_API}/leaderboard`);
@@ -178,6 +197,7 @@ export default function Home() {
     <>
       {/* ----- MAIN ----- */}
       {gameEnding && <div className={styles.gameEnding} />}
+      {transactionSuccess && <div className={styles.transactionSuccess} />}
       <Chat playerList={playerList} />
       <div className={styles.main}>
         <MapboxMap mapRef={mapRef} markersRef={markersRef} playerList={playerList} />

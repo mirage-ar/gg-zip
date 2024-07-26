@@ -314,3 +314,30 @@
   opacity: 1;
   left: 0;
 }
+
+
+.transactionSuccess {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100vw + 20px);
+  height: calc(100vh + 20px);
+  margin: -10px;
+  z-index: 150000;
+  border: 20px solid var(--g, #ff61ef);
+  filter: blur(10px);
+  pointer-events: none; /* Allows interaction with the content inside the border */
+  animation: strobing 2s infinite;
+}
+
+@keyframes strobing {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

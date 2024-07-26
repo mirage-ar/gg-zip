@@ -222,3 +222,19 @@
   /* width: 474px; */
   width: 241px;
 }
+
+.buttonTextContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(235px - 24px);
+}
+
+.errorMessage {
+  width: 241px;
+  padding: 16px 0 0;
+  color: var(--r);
+  color: var(--r, #ff3030);
+  text-align: center;
+  font-size: 14px;
+}

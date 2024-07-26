@@ -45,10 +45,29 @@ export default function LeaderboardPage() {
   const [filteredPlayers, setFilteredPlayers] = useState<Player[]>([]);
   const [showOverlay, setShowOverlay] = useState(false);
 
-  const { transactionPending } = useApplicationContext();
+  const { transactionDetails } = useApplicationContext();
   const { program, fetchSponsorHoldings, calculateTotalHoldings } = useSolana();
 
+  const [transactionSuccess, setTransactionSuccess] = useState(false);
+  const [pageLoaded, setPageLoaded] = useState(false);
+
   const sponsorHoldingsWallets = sponsorHoldings.map((holding) => holding.wallet);
+
+  useEffect(() => {
+    setPageLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (transactionDetails && !transactionDetails?.pending && !transactionDetails?.error && pageLoaded) {
+      setTransactionSuccess(true);
+    }
+
+    const timeOut = setTimeout(() => {
+      setTransactionSuccess(false);
+    }, 3000);
+
+    return () => clearTimeout(timeOut);
+  }, [transactionDetails]);
 
   const fetchPlayerData = async (): Promise<Player[]> => {
     const random = rand(0, 1000);
@@ -147,7 +166,7 @@ export default function LeaderboardPage() {
     };
 
     fetchData();
-  }, [transactionPending]);
+  }, [transactionDetails]);
 
   function openTradingView(player: Player) {
     setTradingViewPlayer(player);
@@ -236,6 +255,7 @@ export default function LeaderboardPage() {
 
   return (
     <>
+      {transactionSuccess && <div className={styles.transactionSuccess} />}
       {showOverlay && tradingViewPlayer && <TradingView player={tradingViewPlayer} setShowOverlay={setShowOverlay} />}
       <div className={styles.main}>
         <div className={styles.scrollable}>
@@ -372,7 +392,7 @@ export default function LeaderboardPage() {
                               <div className={styles.price}>{withCommas(player.buyPrice?.toFixed(3) || 0)}</div>
                               <button
                                 className={styles.tradeButton}
-                                disabled={!player.buyPrice || transactionPending}
+                                disabled={!player.buyPrice || transactionDetails?.pending}
                                 onClick={() => openTradingView(player)}
                               >
                                 Trade

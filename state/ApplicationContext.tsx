@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { createContext, useContext } from "react";
 import { usePathname } from "next/navigation";
-import { Page, Player } from "@/types";
+import { Page, Player, TransactionDetails } from "@/types";
 import { useWallet } from "@solana/wallet-adapter-react";
 
 interface ApplicationContext {
-  transactionPending: boolean;
-  setTransactionPending: (transactionPending: boolean) => void;
+  transactionDetails: TransactionDetails | null;
+  setTransactionDetails: (transactionDetails: TransactionDetails | null) => void;
   closed: boolean;
   setClosed: (closed: boolean) => void;
   showOnboarding: boolean;
@@ -20,8 +20,8 @@ interface ApplicationContext {
 }
 
 const defaultContext: ApplicationContext = {
-  transactionPending: false,
-  setTransactionPending: () => {},
+  transactionDetails: null,
+  setTransactionDetails: () => {},
   closed: false,
   setClosed: () => {},
   showOnboarding: false,
@@ -37,10 +37,10 @@ const defaultContext: ApplicationContext = {
 const Context = createContext(defaultContext);
 
 export function ApplicationProvider({ children }: { children: React.ReactNode }) {
-  const [transactionPending, setTransactionPending] = useState<boolean>(false);
   const [closed, setClosed] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [page, setPage] = useState(Page.LEADERBOARD);
+  const [transactionDetails, setTransactionDetails] = useState<TransactionDetails | null>(null);
 
   // IMPORTANT: global user is used to sync user info and sponsor navigation // onboarding
   const [globalUser, setGlobalUser] = useState<Player | null>(null);
@@ -82,8 +82,8 @@ export function ApplicationProvider({ children }: { children: React.ReactNode })
   }, [publicKey]);
 
   const value: ApplicationContext = {
-    transactionPending,
-    setTransactionPending,
+    transactionDetails,
+    setTransactionDetails,
     closed,
     setClosed,
     showOnboarding,

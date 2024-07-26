@@ -1,13 +1,13 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, use } from "react";
 import * as anchor from "@project-serum/anchor";
 import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
-import { SystemProgram, PublicKey, Transaction } from "@solana/web3.js";
+import { SystemProgram, PublicKey } from "@solana/web3.js";
 import { useApplicationContext } from "@/state/ApplicationContext";
 import { bnToNumber, getBuyPrice, getSellPrice } from "@/solana";
 import BN from "bn.js";
 
-import type { Player, SponsorHoldings } from "@/types";
+import { Player, SponsorHoldings, TransactionType } from "@/types";
 import { PROGRAM_ID } from "@/utils/constants";
 
 import IDL from "@/solana/idl.json";
@@ -24,7 +24,7 @@ export default function useSolana(playerWalletAddress?: string) {
   const anchorWallet = useAnchorWallet();
   const { connection } = useConnection();
 
-  const { setTransactionPending } = useApplicationContext();
+  const { transactionDetails, setTransactionDetails } = useApplicationContext();
 
   const program = useMemo(() => {
     if (anchorWallet) {
@@ -63,7 +63,11 @@ export default function useSolana(playerWalletAddress?: string) {
     }
 
     try {
-      setTransactionPending(true);
+      setTransactionDetails({
+        type: TransactionType.BUY,
+        pending: true,
+      });
+
       const subjectPublicKey = new PublicKey(playerWalletAddress);
       const subjectBuffer = subjectPublicKey.toBuffer();
 
@@ -77,11 +81,6 @@ export default function useSolana(playerWalletAddress?: string) {
       const [protocolPda] = await findProgramAddressSync([Buffer.from("PROTOCOL")], program.programId);
       const [potPda] = await findProgramAddressSync([Buffer.from("POT")], program.programId);
 
-      // const {
-      //   context: { slot: minContextSlot },
-      //   value: { blockhash, lastValidBlockHeight },
-      // } = await connection.getLatestBlockhashAndContext();
-
       const transaction = await program.methods
         .buyShares(subjectPublicKey, new anchor.BN(amount))
         .accounts({
@@ -94,15 +93,36 @@ export default function useSolana(playerWalletAddress?: string) {
         })
         .rpc();
 
-      // const signature = await sendTransaction(transaction, connection, { minContextSlot });
-      // console.log(signature);
-      // const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
-      console.log(transaction);
+      const latestBlockhash = await connection.getLatestBlockhash();
+
+      const confirmed = await connection.confirmTransaction(
+        {
+          signature: transaction,
+          blockhash: latestBlockhash.blockhash,
+          lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+        },
+        "confirmed"
+      );
+
+      setTransactionDetails({
+        type: TransactionType.BUY,
+        pending: false,
+      });
+
+      console.log("Transaction: ", transaction);
+      console.log("Confirmed: ", confirmed);
     } catch (error) {
       console.error("buyPlayerCard", error);
+
+      setTransactionDetails({
+        type: TransactionType.BUY,
+        pending: false,
+        error: true,
+        errorMessage: "Something went wrong. Please try again.",
+      });
+
       throw new Error("Failed to buy player card");
     } finally {
-      setTransactionPending(false);
     }
   }
 
@@ -112,7 +132,11 @@ export default function useSolana(playerWalletAddress?: string) {
     }
 
     try {
-      setTransactionPending(true);
+      setTransactionDetails({
+        type: TransactionType.SELL,
+        pending: true,
+      });
+
       const subjectPublicKey = new PublicKey(playerWalletAddress);
       const subjectBuffer = subjectPublicKey.toBuffer();
 
@@ -143,15 +167,35 @@ export default function useSolana(playerWalletAddress?: string) {
         })
         .rpc();
 
-      // const signature = await sendTransaction(transaction, connection, { minContextSlot });
-      // const confirmation = await connection.confirmTransaction({ blockhash, lastValidBlockHeight, signature });
+      const latestBlockhash = await connection.getLatestBlockhash();
+
+      const confirmed = await connection.confirmTransaction(
+        {
+          signature: transaction,
+          blockhash: latestBlockhash.blockhash,
+          lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+        },
+        "confirmed"
+      );
+
+      setTransactionDetails({
+        type: TransactionType.SELL,
+        pending: false,
+      });
 
       console.log("Transaction: ", transaction);
+      console.log("Confirmed: ", confirmed);
     } catch (error) {
+      setTransactionDetails({
+        type: TransactionType.SELL,
+        pending: false,
+        error: true,
+        errorMessage: "Something went wrong. Please try again.",
+      });
+
       console.error("sellPlayerCard", error);
       throw new Error("Failed to sell player card");
     } finally {
-      setTransactionPending(false);
     }
   }
 
@@ -161,7 +205,11 @@ export default function useSolana(playerWalletAddress?: string) {
     }
 
     try {
-      setTransactionPending(true);
+      setTransactionDetails({
+        type: TransactionType.MINT,
+        pending: true,
+      });
+
       const subjectPublicKey = publicKey;
       const subjectBuffer = subjectPublicKey.toBuffer();
 
@@ -192,7 +240,10 @@ export default function useSolana(playerWalletAddress?: string) {
       // @ts-ignore
       return { success: false, message: error?.message || "Failed to mint player card" };
     } finally {
-      setTransactionPending(false);
+      setTransactionDetails({
+        type: TransactionType.MINT,
+        pending: false,
+      });
     }
   }
 
@@ -308,12 +359,12 @@ export default function useSolana(playerWalletAddress?: string) {
       if (wallet) {
         holdings = holdings.slice(0, 10);
       }
-        for (const holding of holdings) {
-          const playerCardCount = await fetchPlayerCardCount(holding.wallet);
-          if (playerCardCount) {
-            holding.percentage = (holding.amount / playerCardCount) * 100;
-          }
+      for (const holding of holdings) {
+        const playerCardCount = await fetchPlayerCardCount(holding.wallet);
+        if (playerCardCount) {
+          holding.percentage = (holding.amount / playerCardCount) * 100;
         }
+      }
 
       // UPDATE: Filter out holdings with 0 amount
       return holdings.filter((holding) => holding.amount > 0);
@@ -394,7 +445,11 @@ export default function useSolana(playerWalletAddress?: string) {
     }
 
     try {
-      setTransactionPending(true);
+      setTransactionDetails({
+        type: TransactionType.WITHDRAW,
+        pending: true,
+      });
+
       const subjectPublicKey = publicKey;
       const subjectBuffer = subjectPublicKey.toBuffer();
 
@@ -412,7 +467,10 @@ export default function useSolana(playerWalletAddress?: string) {
     } catch (error) {
       console.error("withdrawFromMint", error);
     } finally {
-      setTransactionPending(false);
+      setTransactionDetails({
+        type: TransactionType.WITHDRAW,
+        pending: false,
+      });
     }
   }
 
