@@ -6,7 +6,9 @@ export const GET_MESSAGES_URL = "https://messages.koji.im";
 export const UPLOAD_API = "https://uploads.koji.im";
 export const GAME_API = "https://api.koji.im";
 
-export const RPC = "https://solana-mainnet.g.alchemy.com/v2/Ysh4YNos8gA_eIlRj23m4HY52JHuQgVW";
+// export const RPC = "https://solana-mainnet.g.alchemy.com/v2/Ysh4YNos8gA_eIlRj23m4HY52JHuQgVW";
+
+export const RPC = "https://mainnet.helius-rpc.com/?api-key=ea86c080-5223-4bbb-a21a-b610c509b119";
 
 export const PROGRAM_ID = "FeLN737SaQbjDAE7TfTP5QcgmS9zqeoEcYrU4umwZxxb";
 

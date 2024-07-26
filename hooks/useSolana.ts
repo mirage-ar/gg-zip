@@ -93,16 +93,16 @@ export default function useSolana(playerWalletAddress?: string) {
         })
         .rpc();
 
-      const latestBlockhash = await connection.getLatestBlockhash();
+      // const latestBlockhash = await connection.getLatestBlockhash();
 
-      const confirmed = await connection.confirmTransaction(
-        {
-          signature: transaction,
-          blockhash: latestBlockhash.blockhash,
-          lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
-        },
-        "confirmed"
-      );
+      // const confirmed = await connection.confirmTransaction(
+      //   {
+      //     signature: transaction,
+      //     blockhash: latestBlockhash.blockhash,
+      //     lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+      //   },
+      //   "confirmed"
+      // );
 
       setTransactionDetails({
         type: TransactionType.BUY,
@@ -110,7 +110,7 @@ export default function useSolana(playerWalletAddress?: string) {
       });
 
       console.log("Transaction: ", transaction);
-      console.log("Confirmed: ", confirmed);
+      // console.log("Confirmed: ", confirmed);
     } catch (error) {
       console.error("buyPlayerCard", error);
 
@@ -167,16 +167,16 @@ export default function useSolana(playerWalletAddress?: string) {
         })
         .rpc();
 
-      const latestBlockhash = await connection.getLatestBlockhash();
+      // const latestBlockhash = await connection.getLatestBlockhash();
 
-      const confirmed = await connection.confirmTransaction(
-        {
-          signature: transaction,
-          blockhash: latestBlockhash.blockhash,
-          lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
-        },
-        "confirmed"
-      );
+      // const confirmed = await connection.confirmTransaction(
+      //   {
+      //     signature: transaction,
+      //     blockhash: latestBlockhash.blockhash,
+      //     lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+      //   },
+      //   "confirmed"
+      // );
 
       setTransactionDetails({
         type: TransactionType.SELL,
@@ -184,7 +184,7 @@ export default function useSolana(playerWalletAddress?: string) {
       });
 
       console.log("Transaction: ", transaction);
-      console.log("Confirmed: ", confirmed);
+      // console.log("Confirmed: ", confirmed);
     } catch (error) {
       setTransactionDetails({
         type: TransactionType.SELL,
