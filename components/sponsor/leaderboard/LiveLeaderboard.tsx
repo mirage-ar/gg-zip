@@ -44,7 +44,7 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
 
   const [currentHoverPlayer, setCurrentHoverPlayer] = useState<string | null>(null);
 
-  const { transactionDetails } = useApplicationContext();
+  // const { transactionDetails } = useApplicationContext();
 
   useEffect(() => {
     // Function to apply sorting and filtering
@@ -248,7 +248,7 @@ const LiveLeaderboard: React.FC<LiveLeaderboardProps> = ({
                           <div className={styles.price}>{withCommas(player.buyPrice?.toFixed(3) || 0)}</div>
                           <button
                             className={styles.tradeButton}
-                            disabled={!player.buyPrice || transactionDetails?.pending || transactionDetails?.error}
+                            disabled={!player.buyPrice}
                             onClick={() => openTradingView(player)}
                           >
                             Trade
