@@ -20,7 +20,6 @@ export async function GET(request: Request) {
         points: 'desc',
       },
     });
-
     // sort users by points
     // users.sort((a: User, b: User) => b.points - a.points);
 

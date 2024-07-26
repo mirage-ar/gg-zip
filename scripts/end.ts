@@ -71,43 +71,11 @@ async function end() {
           points: {
             increment: user.gamePoints,
           },
-          gamePoints: 0,
+          // gamePoints: 0,
         },
       });
     } catch (error) {
       console.error("Error updating game points for user:", error);
-    }
-  }
-
-  // Get all users' ranks based on updated points
-  const rankResults: RankResult[] = await prisma.$queryRaw`
-    SELECT id, RANK() OVER (ORDER BY points DESC) as rank
-    FROM "User"
-  `;
-
-  const rankMap: { [key: string]: number } = {};
-  rankResults.forEach((result: RankResult) => {
-    rankMap[result.id] = result.rank;
-  });
-
-  // Update rank for each hunter
-  // TODO: update this to be for ALL USERS, not just hunters
-  for (const hunter of hunters) {
-    try {
-      const user = await prisma.user.findUnique({
-        where: { twitterId: hunter.id },
-      });
-
-      if (user) {
-        await prisma.user.update({
-          where: { twitterId: hunter.id },
-          data: {
-            rank: rankMap[user.id],
-          },
-        });
-      }
-    } catch (error) {
-      console.error("Error updating rank for hunter:", error);
     }
   }
 }
