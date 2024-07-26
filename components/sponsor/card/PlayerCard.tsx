@@ -14,7 +14,7 @@ interface PlayerCardProps {
 
 const PlayerCard: React.FC<PlayerCardProps> = ({ player, sponsorHoldings, showButtons }) => {
   const { cardHoldings, sellPrice, buyPrice, buyPlayerCard, sellPlayerCard } = useSolana(player.wallet);
-  const { transactionPending } = useApplicationContext();
+  const { transactionDetails } = useApplicationContext();
 
   const [holdingAmountCard, setHoldingAmountCard] = useState<string>("card-0");
   const [amount, setAmount] = useState(1);
@@ -44,10 +44,10 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, sponsorHoldings, showBu
   };
 
   useEffect(() => {
-    if (!transactionPending) {
+    if (!transactionDetails?.pending) {
       setAmount(1);
     }
-  }, [transactionPending]);
+  }, [transactionDetails]);
 
   useEffect(() => {
     setHoldingAmountCard(
@@ -139,11 +139,11 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, sponsorHoldings, showBu
             </div>
           </div>
           <div className={styles.playerCardButtons}>
-            <button className={styles.buyButton} onClick={buyCard} disabled={transactionPending}>
+            <button className={styles.buyButton} onClick={buyCard} disabled={transactionDetails?.pending}>
               <p>Buy</p>
               <span>{buyPrice.toFixed(3)}</span>
             </button>
-            <button className={styles.sellButton} disabled={cardHoldings < 1 || amount > cardHoldings || transactionPending} onClick={sellCard}>
+            <button className={styles.sellButton} disabled={cardHoldings < 1 || amount > cardHoldings || transactionDetails?.pending} onClick={sellCard}>
               <p>Sell</p>
               <span>{sellPrice.toFixed(3)}</span>
             </button>

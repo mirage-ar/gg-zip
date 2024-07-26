@@ -30,7 +30,7 @@ const Profile: React.FC<ProfileProps> = ({ playerList, sponsorHoldings }) => {
 
   const { publicKey } = useWallet();
   const { getPlayerMintAccount, withdrawFromMint } = useSolana();
-  const { transactionPending } = useApplicationContext();
+  const { transactionDetails } = useApplicationContext();
 
   // SO WE DON'T HAVE TO FETCH IN DB EVERY POLLING TIME
   const [heldPlayerCards, setHeldPlayerCards] = useState<Player[]>([]);
@@ -50,7 +50,7 @@ const Profile: React.FC<ProfileProps> = ({ playerList, sponsorHoldings }) => {
 
   useEffect(() => {
     if (!publicKey) return;
-    if (transactionPending) return;
+    if (transactionDetails?.pending) return;
     const fetchMintAccount = async () => {
       const mintAccount = await getPlayerMintAccount(publicKey.toBase58());
       setMintAccount(mintAccount);
@@ -63,7 +63,7 @@ const Profile: React.FC<ProfileProps> = ({ playerList, sponsorHoldings }) => {
 
     fetchMintAccount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [publicKey, transactionPending]);
+  }, [publicKey, transactionDetails]);
 
   // TODO: clean this up
   // LIVE HELD CARDS
@@ -175,7 +175,7 @@ const Profile: React.FC<ProfileProps> = ({ playerList, sponsorHoldings }) => {
                   <div className={styles.withdrawContainer}>
                     <span>{lamportsToSol(mintAccount.balance).toFixed(2)}</span>
                     <Image src="/assets/icons/icons-24/solana.svg" alt="solana" width={24} height={24} />
-                    <button disabled={transactionPending} onClick={withdrawFromMint} className={styles.withdrawButton}>
+                    <button disabled={transactionDetails?.pending} onClick={withdrawFromMint} className={styles.withdrawButton}>
                       Withdraw
                     </button>
                   </div>
