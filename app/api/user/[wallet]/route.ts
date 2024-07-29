@@ -33,17 +33,21 @@ export async function POST(request: Request, { params }: { params: { wallet: str
   console.log("UPDATE USER: ", wallet);
 
   try {
-    const existingUserByTwitterId = await prisma.user.findUnique({
-      where: {
-        twitterId: twitterId,
-      },
-    });
-
+    // Find the user by wallet
     const existingUserByWallet = await prisma.user.findUnique({
       where: {
         wallet: wallet,
       },
     });
+
+    // Find the user by twitterId, if it's not null
+    const existingUserByTwitterId = twitterId
+      ? await prisma.user.findUnique({
+          where: {
+            twitterId: twitterId,
+          },
+        })
+      : null;
 
     if (existingUserByTwitterId && existingUserByWallet) {
       // Both users exist, update the user with twitterId and the new wallet
@@ -74,7 +78,7 @@ export async function POST(request: Request, { params }: { params: { wallet: str
 
       return new Response(JSON.stringify({ success: true, data: user }), { status: 200 });
     } else if (!existingUserByTwitterId && existingUserByWallet) {
-      // Only the user with wallet exists, update it with the new twitterId
+      // Only the user with wallet exists, update it with the new twitterId (if provided)
       const user = await prisma.user.update({
         where: {
           wallet: wallet,
@@ -82,7 +86,7 @@ export async function POST(request: Request, { params }: { params: { wallet: str
         data: {
           username: username,
           image: image,
-          twitterId: twitterId,
+          twitterId: twitterId || existingUserByWallet.twitterId, // Keep the existing twitterId if not provided
         },
       });
 

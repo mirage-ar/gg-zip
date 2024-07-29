@@ -29,7 +29,7 @@ const Onboarding: React.FC = () => {
       setUsername(globalUser.username);
       setPreview(globalUser.image);
     } else {
-      setUsername(`#${new Date().getTime().toString().substring(8)}`);
+      setUsername(`user${new Date().getTime().toString().substring(8)}`);
       setPreview(null);
     }
   }, [publicKey, globalUser]);
@@ -40,6 +40,7 @@ const Onboarding: React.FC = () => {
   };
 
   const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    setError(null);
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       const resizedImage = await resizeImage(file);
@@ -49,6 +50,7 @@ const Onboarding: React.FC = () => {
   };
 
   const handleUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setError(null);
     const newValue = event.target.value;
     const isValid = /^[a-zA-Z0-9]*$/.test(newValue);
 
@@ -94,6 +96,8 @@ const Onboarding: React.FC = () => {
         setLoading(false);
         setShowOnboarding(false);
       };
+    } else {
+      setError("Please upload an image.");
     }
   };
 
@@ -150,7 +154,7 @@ const Onboarding: React.FC = () => {
             {error && <div className={styles.error}>{error}</div>}
           </div>
           <div className={styles.saveContainer}>
-            <button disabled={loading || !!error || !preview} className={styles.saveButton} onClick={handleSave}>
+            <button disabled={loading || !!error} className={styles.saveButton} onClick={handleSave}>
               {loading ? "..." : "SAVE"}
             </button>
           </div>
