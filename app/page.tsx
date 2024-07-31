@@ -3,6 +3,7 @@
 // COMPONENT IMPORTS
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import MapboxMap from "@/components/map/MapboxMap";
 import LiveLeaderboard from "@/components/sponsor/leaderboard/LiveLeaderboard";
 import Chat from "@/components/sponsor/chat/Chat";
@@ -47,9 +48,20 @@ export default function Home() {
   const { program, fetchSponsorHoldings, calculateTotalHoldings } = useSolana();
   const { publicKey } = useWallet();
   const { fetchUser } = useUser();
+  const router = useRouter();
+
+  const isMobileDevice = () => {
+    return /Mobi|Android/i.test(navigator.userAgent);
+  };
 
   useEffect(() => {
     setPageLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (isMobileDevice()) {
+      router.push("/howto");
+    }
   }, []);
 
   useEffect(() => {

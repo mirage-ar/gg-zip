@@ -237,7 +237,7 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
               {message.username}
             </p>
             <Image
-              src={`/assets/icons/icons-16/${message.source === "hunter" ? "sword" : "case"}.svg`}
+              src={`/assets/icons/icons-16/${message.source === "hunter" ? "runner" : "case"}.svg`}
               alt="sponsor case"
               width={16}
               height={16}
