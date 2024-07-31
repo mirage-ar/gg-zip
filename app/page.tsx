@@ -3,7 +3,7 @@
 // COMPONENT IMPORTS
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import MapboxMap from "@/components/map/MapboxMap";
 import LiveLeaderboard from "@/components/sponsor/leaderboard/LiveLeaderboard";
 import Chat from "@/components/sponsor/chat/Chat";
@@ -49,18 +49,27 @@ export default function Home() {
   const { publicKey } = useWallet();
   const { fetchUser } = useUser();
   const router = useRouter();
+  
+  useEffect(() => {
+    setPageLoaded(true);
+  }, []);
 
   const isMobileDevice = () => {
     return /Mobi|Android/i.test(navigator.userAgent);
   };
 
-  useEffect(() => {
-    setPageLoaded(true);
-  }, []);
+  const hasRedirected = () => {
+    return localStorage.getItem("redirected") === "true";
+  };
+  
+  const setRedirected = () => {
+    localStorage.setItem("redirected", "true");
+  };
 
   useEffect(() => {
-    if (isMobileDevice()) {
+    if (isMobileDevice() && !hasRedirected()) {
       router.push("/howto");
+      setRedirected();
     }
   }, []);
 
