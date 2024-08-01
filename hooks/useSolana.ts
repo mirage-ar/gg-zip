@@ -81,6 +81,8 @@ export default function useSolana(playerWalletAddress?: string) {
       const [protocolPda] = await findProgramAddressSync([Buffer.from("PROTOCOL")], program.programId);
       const [potPda] = await findProgramAddressSync([Buffer.from("POT")], program.programId);
 
+      const block = await connection.getLatestBlockhash("confirmed");
+
       const transaction = await program.methods
         .buyShares(subjectPublicKey, new anchor.BN(amount))
         .accounts({
@@ -91,7 +93,16 @@ export default function useSolana(playerWalletAddress?: string) {
           pot: potPda,
           systemProgram: SystemProgram.programId,
         })
-        .rpc();
+        .rpc({ skipPreflight: true, commitment: "confirmed" });
+
+      const result = await connection.confirmTransaction(
+        {
+          signature: transaction,
+          blockhash: block.blockhash,
+          lastValidBlockHeight: block.lastValidBlockHeight,
+        },
+        "confirmed"
+      );
 
       // const latestBlockhash = await connection.getLatestBlockhash();
 
@@ -155,6 +166,8 @@ export default function useSolana(playerWalletAddress?: string) {
         value: { blockhash, lastValidBlockHeight },
       } = await connection.getLatestBlockhashAndContext();
 
+      const block = await connection.getLatestBlockhash("confirmed");
+
       const transaction = await program.methods
         .sellShares(subjectPublicKey, new anchor.BN(amount))
         .accounts({
@@ -165,7 +178,16 @@ export default function useSolana(playerWalletAddress?: string) {
           pot: potPda,
           systemProgram: SystemProgram.programId,
         })
-        .rpc();
+        .rpc({ skipPreflight: true, commitment: "confirmed" });
+
+      const result = await connection.confirmTransaction(
+        {
+          signature: transaction,
+          blockhash: block.blockhash,
+          lastValidBlockHeight: block.lastValidBlockHeight,
+        },
+        "confirmed"
+      );
 
       // const latestBlockhash = await connection.getLatestBlockhash();
 
