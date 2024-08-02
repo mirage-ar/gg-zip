@@ -46,32 +46,35 @@ async function end() {
   const hunters = await getHunters();
 
   // First, update points for each hunter
-  for (const hunter of hunters) {
-    try {
-      await prisma.user.update({
-        where: { twitterId: hunter.id },
-        data: {
-          points: {
-            increment: hunter.points,
-          },
-        },
-      });
-    } catch (error) {
-      console.error("Error updating points for hunter:", error);
-    }
-  }
+  // for (const hunter of hunters) {
+  //   try {
+  //     await prisma.user.update({
+  //       where: { twitterId: hunter.id },
+  //       data: {
+  //         points: {
+  //           increment: hunter.points,
+  //         },
+  //       },
+  //     });
+  //   } catch (error) {
+  //     console.error("Error updating points for hunter:", error);
+  //   }
+  // }
 
-  const allUsers = await prisma.user.findMany();
+  const allUsers = await prisma.user.findMany({
+    where: {
+      gamePoints: {
+        gt: 0,
+      },
+    },
+  });
 
   for (const user of allUsers) {
     try {
       await prisma.user.update({
         where: { id: user.id },
         data: {
-          points: {
-            increment: user.gamePoints,
-          },
-          // gamePoints: 0,
+          gamePoints: 0,
         },
       });
     } catch (error) {
