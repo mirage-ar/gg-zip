@@ -49,36 +49,8 @@ export async function POST(request: Request, { params }: { params: { wallet: str
         })
       : null;
 
-    if (existingUserByTwitterId && existingUserByWallet) {
-      // Both users exist, update the user with twitterId and the new wallet
-      const user = await prisma.user.update({
-        where: {
-          twitterId: twitterId,
-        },
-        data: {
-          username: username,
-          image: image,
-          wallet: wallet,
-        },
-      });
-
-      return new Response(JSON.stringify({ success: true, data: user }), { status: 200 });
-    } else if (existingUserByTwitterId && !existingUserByWallet) {
-      // Only the user with twitterId exists, update it with the new wallet
-      const user = await prisma.user.update({
-        where: {
-          twitterId: twitterId,
-        },
-        data: {
-          username: username,
-          image: image,
-          wallet: wallet,
-        },
-      });
-
-      return new Response(JSON.stringify({ success: true, data: user }), { status: 200 });
-    } else if (!existingUserByTwitterId && existingUserByWallet) {
-      // Only the user with wallet exists, update it with the new twitterId (if provided)
+    // If user with the given wallet exists, update it with the new twitterId
+    if (existingUserByWallet) {
       const user = await prisma.user.update({
         where: {
           wallet: wallet,
@@ -86,25 +58,41 @@ export async function POST(request: Request, { params }: { params: { wallet: str
         data: {
           username: username,
           image: image,
-          twitterId: twitterId || existingUserByWallet.twitterId, // Keep the existing twitterId if not provided
+          twitterId: twitterId || existingUserByWallet.twitterId, // Update twitterId if provided, otherwise keep the existing one
         },
       });
 
       return new Response(JSON.stringify({ success: true, data: user }), { status: 200 });
-    } else {
-      // Neither user exists, create a new user
-      const user = await prisma.user.create({
-        data: {
-          username: username,
-          twitterId: twitterId,
-          image: image,
-          wallet: wallet,
-          points: 0,
-        },
-      });
-
-      return new Response(JSON.stringify({ success: true, data: user }), { status: 201 });
     }
+
+    // If user with the given twitterId exists, update it with the new wallet
+    if (existingUserByTwitterId) {
+      const user = await prisma.user.update({
+        where: {
+          twitterId: twitterId,
+        },
+        data: {
+          username: username,
+          image: image,
+          wallet: wallet,
+        },
+      });
+
+      return new Response(JSON.stringify({ success: true, data: user }), { status: 200 });
+    }
+
+    // Neither user exists, create a new user
+    const user = await prisma.user.create({
+      data: {
+        username: username,
+        twitterId: twitterId,
+        image: image,
+        wallet: wallet,
+        points: 0,
+      },
+    });
+
+    return new Response(JSON.stringify({ success: true, data: user }), { status: 201 });
   } catch (error) {
     console.error("Error updating user:", error);
     return new Response(JSON.stringify({ success: false, message: "Error updating user" }), { status: 500 });
