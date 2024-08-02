@@ -243,6 +243,8 @@ export default function useSolana(playerWalletAddress?: string) {
       //   value: { blockhash, lastValidBlockHeight },
       // } = await connection.getLatestBlockhashAndContext();
 
+      const block = await connection.getLatestBlockhash("confirmed");
+
       const transaction = await program.methods
         .mint()
         .accounts({
@@ -251,7 +253,16 @@ export default function useSolana(playerWalletAddress?: string) {
           protocol: protocolPda,
           systemProgram: SystemProgram.programId,
         })
-        .rpc();
+        .rpc({ skipPreflight: true, commitment: "confirmed" });
+
+        const result = await connection.confirmTransaction(
+          {
+            signature: transaction,
+            blockhash: block.blockhash,
+            lastValidBlockHeight: block.lastValidBlockHeight,
+          },
+          "confirmed"
+        );
 
       // const signature = await sendTransaction(transaction, connection, { minContextSlot });
       // console.log(signature);
