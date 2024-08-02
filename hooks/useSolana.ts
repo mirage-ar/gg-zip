@@ -477,13 +477,24 @@ export default function useSolana(playerWalletAddress?: string) {
 
       const [mintPda] = await findProgramAddressSync([Buffer.from("MINT"), subjectBuffer], program.programId);
 
+      const block = await connection.getLatestBlockhash("confirmed");
+
       const transaction = await program.methods
         .withdrawFromMint()
         .accounts({
           authority: publicKey,
           mint: mintPda,
         })
-        .rpc();
+        .rpc({ skipPreflight: true, commitment: "confirmed" });
+
+      const result = await connection.confirmTransaction(
+        {
+          signature: transaction,
+          blockhash: block.blockhash,
+          lastValidBlockHeight: block.lastValidBlockHeight,
+        },
+        "confirmed"
+      );
 
       console.log(transaction);
     } catch (error) {
