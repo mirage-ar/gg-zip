@@ -31,3 +31,8 @@
   line-height: 16px; /* 114.286% */
   text-transform: uppercase;
 }
+
+.gameOver {
+  color: var(--p);
+  font-family: var(--connect);
+}

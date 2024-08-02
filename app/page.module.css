@@ -151,3 +151,39 @@
 .transactionsContainer {
   margin: 0 24px;
 }
+
+.lastGameContainer {
+  width: 100%;
+  margin: 32px 0 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lastGameTitle {
+  font-family: var(--connect);
+  color: var(--g);
+  font-size: 34px;
+  text-transform: uppercase;
+}
+
+.lastGameSubline {
+  font-size: 18px;
+  font-family: var(--connect);
+  color: var(--g);
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: top;
+  gap: 2px;
+}
+
+.pink {
+  color: var(--p);
+}
+
+.grey {
+  color: var(--g3, #373737);
+}

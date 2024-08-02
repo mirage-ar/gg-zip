@@ -17,6 +17,8 @@ interface ApplicationContext {
   setGlobalUser: (globalUser: Player | null) => void;
   gameEnding: boolean;
   setGameEnding: (gameEnding: boolean) => void;
+  gameOver: boolean;
+  setGameOver: (gameOver: boolean) => void;
 }
 
 const defaultContext: ApplicationContext = {
@@ -32,6 +34,8 @@ const defaultContext: ApplicationContext = {
   setGlobalUser: () => {},
   gameEnding: false,
   setGameEnding: () => {},
+  gameOver: false,
+  setGameOver: () => {},
 };
 
 const Context = createContext(defaultContext);
@@ -45,6 +49,7 @@ export function ApplicationProvider({ children }: { children: React.ReactNode })
   // IMPORTANT: global user is used to sync user info and sponsor navigation // onboarding
   const [globalUser, setGlobalUser] = useState<Player | null>(null);
   const [gameEnding, setGameEnding] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
 
   const pathname = usePathname();
 
@@ -94,6 +99,8 @@ export function ApplicationProvider({ children }: { children: React.ReactNode })
     setGlobalUser,
     gameEnding,
     setGameEnding,
+    gameOver,
+    setGameOver,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

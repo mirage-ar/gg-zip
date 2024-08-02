@@ -18,7 +18,7 @@ const ONE_DAY = 24 * 60 * 60 * 1000;
 const GameTimer = () => {
   const pathname = usePathname();
 
-  const { closed, setGameEnding } = useApplicationContext();
+  const { closed, setGameEnding, setGameOver } = useApplicationContext();
 
   const isHunt = pathname === "/hunt" || pathname === "/";
 
@@ -42,6 +42,7 @@ const GameTimer = () => {
 
       if (timeRemaining <= 0) {
         setGameEnding(false);
+        setGameOver(true);
         clearInterval(interval);
       }
     }, 1000);
@@ -50,20 +51,45 @@ const GameTimer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeRemaining, pathname]);
 
-  return (
-    isHunt &&
-    timeRemaining > 0 && (
-      <div className={styles.main} style={closed ? { width: "100%" } : { width: "80%" }}>
-        {timeRemaining > GAME_LENGTH && <div className={styles.title}>The hunt will start in</div>}
-        <div className={styles.container}>
-          <div style={{ fontSize: "32px" }}>
-            <Timer timeRemaining={timeRemaining < GAME_LENGTH ? timeRemaining : timeRemaining - GAME_LENGTH} hideDays={hideDays} />
+  if (timeRemaining > 0) {
+    return (
+      isHunt && (
+        <div className={styles.main} style={closed ? { width: "100%" } : { width: "80%" }}>
+          {timeRemaining > GAME_LENGTH && <div className={styles.title}>The hunt will start in</div>}
+          <div className={styles.container}>
+            <div style={{ fontSize: "32px" }}>
+              <Timer
+                timeRemaining={timeRemaining < GAME_LENGTH ? timeRemaining : timeRemaining - GAME_LENGTH}
+                hideDays={hideDays}
+              />
+            </div>
+            <Image
+              src={`/assets/icons/icons-24/timer${timeRemaining > GAME_LENGTH ? "-pink" : ""}.svg`}
+              alt="timer icon"
+              width={24}
+              height={24}
+            />
           </div>
-          <Image src={`/assets/icons/icons-24/timer${timeRemaining > GAME_LENGTH ? "-pink" : ""}.svg`} alt="timer icon" width={24} height={24} />
         </div>
-      </div>
-    )
-  );
+      )
+    );
+  } else {
+    return (
+      isHunt && (
+        <div className={styles.main} style={closed ? { width: "100%" } : { width: "80%" }}>
+          <div className={styles.container}>
+            <div className={styles.gameOver} style={{ fontSize: "32px" }}>GAME OVER</div>
+            <Image
+              src={`/assets/icons/icons-24/timer${timeRemaining > GAME_LENGTH ? "-pink" : ""}.svg`}
+              alt="timer icon"
+              width={24}
+              height={24}
+            />
+          </div>
+        </div>
+      )
+    );
+  }
 };
 
 export default GameTimer;

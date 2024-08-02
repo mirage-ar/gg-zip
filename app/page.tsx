@@ -44,12 +44,12 @@ export default function Home() {
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<MarkersObject>({});
 
-  const { closed, setClosed, gameEnding, page, setPage, transactionDetails } = useApplicationContext();
+  const { closed, setClosed, gameEnding, gameOver, page, setPage, transactionDetails } = useApplicationContext();
   const { program, fetchSponsorHoldings, calculateTotalHoldings } = useSolana();
   const { publicKey } = useWallet();
   const { fetchUser } = useUser();
   const router = useRouter();
-  
+
   useEffect(() => {
     setPageLoaded(true);
   }, []);
@@ -61,7 +61,7 @@ export default function Home() {
   const hasRedirected = () => {
     return localStorage.getItem("redirected") === "true";
   };
-  
+
   const setRedirected = () => {
     localStorage.setItem("redirected", "true");
   };
@@ -284,6 +284,20 @@ export default function Home() {
                     height={24}
                   />
                   Your Cards
+                </div>
+              </div>
+            )}
+
+            {/* ----- Last Game Title ----- */}
+            {page === Page.LEADERBOARD && gameOver && (
+              <div className={styles.lastGameContainer}>
+                <div className={styles.lastGameTitle}>Last Game Results</div>
+                <div className={styles.lastGameSubline}>
+                  <span className={styles.grey}>(</span>
+                  <span>Trading:&nbsp;</span>
+                  <span className={styles.pink}>Live</span>
+                  <Image src="/assets/icons/green-dot.svg" alt="Dot" width={4} height={4} />
+                  <span className={styles.grey}>)</span>
                 </div>
               </div>
             )}
