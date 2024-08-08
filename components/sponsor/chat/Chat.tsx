@@ -18,7 +18,7 @@ import { Connection, PublicKey } from "@solana/web3.js";
 import useSolana from "@/hooks/useSolana";
 
 interface ChatProps {
-  playerList: Player[];
+  playerList?: Player[];
 }
 
 enum MessageType {
@@ -201,7 +201,7 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
   };
 
   const showTradingView = (username: string) => {
-    const player = playerList.find((player) => player.username === username);
+    const player = playerList?.find((player) => player.username === username);
     if (player) {
       setTradingViewPlayer(player);
       setShowOverlay(true);
@@ -224,7 +224,7 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
     return (
       <div key={index} className={styles.chatMessageContainer}>
         <div className={styles.chatMessageInfo}>
-          <div className={`${styles.chatMessageImageContainer} ${playerList.find((player) => player.username === message.username) ? styles.clickable : {}}`} onClick={() => showTradingView(message.username)}>
+          <div className={`${styles.chatMessageImageContainer} ${playerList?.find((player) => player.username === message.username) ? styles.clickable : {}}`} onClick={() => showTradingView(message.username)}>
             <Image
               src={message.image}
               alt={message.username}

@@ -418,10 +418,10 @@ export default function useSolana(playerWalletAddress?: string) {
       const [mintPda] = await findProgramAddressSync([Buffer.from("MINT"), subjectBuffer], program.programId);
 
       // Fetch the account info for the mint PDA
-      const accountInfo = await program.provider.connection.getAccountInfo(mintPda);
-
+      const playerAccount = await program.account.mintAccount.fetch(mintPda);
+      
       // If accountInfo is not null, the account exists
-      return accountInfo !== null;
+      return playerAccount !== null;
     } catch (error) {
       console.error("isMinted", error);
       return false;

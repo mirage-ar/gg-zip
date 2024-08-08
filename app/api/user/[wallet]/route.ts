@@ -30,7 +30,7 @@ export async function POST(request: Request, { params }: { params: { wallet: str
   const data = await request.json();
   const { username, image, twitterId } = data;
 
-  console.log("UPDATE USER: ", wallet);
+  console.log("UPDATE USER: ", wallet, data);
 
   try {
     // Find the user by wallet
@@ -49,8 +49,8 @@ export async function POST(request: Request, { params }: { params: { wallet: str
         })
       : null;
 
-    // If user with the given wallet exists, update it with the new twitterId
-    if (existingUserByWallet) {
+    // Update regular user
+    if ((existingUserByWallet && !existingUserByTwitterId) || (existingUserByWallet?.twitterId === existingUserByTwitterId?.twitterId)) {
       const user = await prisma.user.update({
         where: {
           wallet: wallet,
@@ -58,7 +58,31 @@ export async function POST(request: Request, { params }: { params: { wallet: str
         data: {
           username: username,
           image: image,
-          twitterId: twitterId || existingUserByWallet.twitterId, // Update twitterId if provided, otherwise keep the existing one
+        },
+      });
+
+      return new Response(JSON.stringify({ success: true, data: user }), { status: 200 });
+    }
+
+    // If user with the given wallet exists, update it with the new twitterId
+    if (existingUserByWallet && existingUserByTwitterId) {
+      // delete the user with the existing twitterId
+      await prisma.user.delete({
+        where: {
+          twitterId: twitterId,
+        },
+      });
+
+      const user = await prisma.user.update({
+        where: {
+          wallet: wallet,
+        },
+        data: {
+          username: username,
+          image: image,
+          twitterId: existingUserByTwitterId.twitterId,
+          // COMBINE USERS POINTS
+          points: existingUserByTwitterId.points + existingUserByWallet.points,
         },
       });
 

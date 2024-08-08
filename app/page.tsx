@@ -30,7 +30,7 @@ import { useSolana, useUser } from "@/hooks";
 import { withCommas } from "@/utils";
 import { GAME_API, POLLING_TIME } from "@/utils/constants";
 
-export default function Home() {
+export default function Sponsor() {
   const [tab, setTab] = useState(Tab.LEADERBOARD);
   const [totalHoldings, setTotalHoldings] = useState<number>(0);
   const [playerList, setPlayerList] = useState<Player[]>([]);

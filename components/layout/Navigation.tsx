@@ -14,19 +14,20 @@ const Navigation: React.FC = () => {
 
   const [active, setActive] = useState<number | null>(0);
 
-  const items = useMemo(() => [
-    { id: 0, name: "sponsor", path: "/" },
-    { id: 1, name: "hunter", path: "/mint" },
-    { id: 2, name: "leaderboard", path: "/leaderboard" },
-    { id: 3, name: "how to play", path: "/howto" },
-  ], []);
+  const items = useMemo(
+    () => [
+      { id: 0, name: "sponsor", path: "/" },
+      { id: 1, name: "mint", path: "/mint" },
+      { id: 2, name: "leaderboard", path: "/leaderboard" },
+      { id: 3, name: "how to play", path: "/howto" },
+    ],
+    []
+  );
 
   useEffect(() => {
     items.forEach((item) => {
       if (url.includes(item.name)) {
         setActive(item.id);
-      } else if (url.includes("claimdrop") || url.includes("analyze")) {
-        setActive(0);
       }
     });
   }, [items, url]);
