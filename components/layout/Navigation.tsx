@@ -17,7 +17,7 @@ const Navigation: React.FC = () => {
   const items = useMemo(
     () => [
       { id: 0, name: "sponsor", path: "/" },
-      { id: 1, name: "mint", path: "/mint" },
+      { id: 1, name: "hunter", path: "/hunter" },
       { id: 2, name: "leaderboard", path: "/leaderboard" },
       { id: 3, name: "how to play", path: "/howto" },
     ],
