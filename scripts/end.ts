@@ -32,6 +32,7 @@ async function end() {
 
   // First, update points for each hunter
   for (const hunter of hunters) {
+    console.log(hunter.points);
     try {
       await prisma.user.update({
         where: { twitterId: hunter.id },
