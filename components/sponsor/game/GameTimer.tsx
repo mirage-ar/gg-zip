@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Timer from "@/components/utility/Timer";
+import Calendar from "@/components/utility/Calendar";
 
 import styles from "./GameTimer.module.css";
 
@@ -16,6 +17,7 @@ const ONE_HOUR = 60 * 60000;
 const ONE_DAY = 24 * 60 * 60 * 1000;
 
 const GameTimer = () => {
+  const [showCalendar, setShowCalendar] = useState(false);
   const pathname = usePathname();
 
   const { closed, setGameEnding, setGameOver } = useApplicationContext();
@@ -54,23 +56,35 @@ const GameTimer = () => {
   if (timeRemaining > 0) {
     return (
       isHunt && (
-        <div className={styles.main} style={closed ? { width: "100%" } : { width: "80%" }}>
-          {timeRemaining > GAME_LENGTH && <div className={styles.title}>The hunt will start in</div>}
-          <div className={styles.container}>
-            <div style={{ fontSize: "32px" }}>
-              <Timer
-                timeRemaining={timeRemaining < GAME_LENGTH ? timeRemaining : timeRemaining - GAME_LENGTH}
-                hideDays={hideDays}
+        <>
+          {showCalendar && <Calendar setShowCalendar={setShowCalendar} />}
+          <div className={styles.main} style={closed ? { width: "100%" } : { width: "80%" }}>
+            {timeRemaining > GAME_LENGTH && <div className={styles.title}>The hunt will start in</div>}
+            <div className={styles.container}>
+              <div style={{ fontSize: "32px" }}>
+                <Timer
+                  timeRemaining={timeRemaining < GAME_LENGTH ? timeRemaining : timeRemaining - GAME_LENGTH}
+                  hideDays={hideDays}
+                />
+              </div>
+              <Image
+                src={`/assets/icons/icons-24/timer${timeRemaining > GAME_LENGTH ? "-pink" : ""}.svg`}
+                alt="timer icon"
+                width={24}
+                height={24}
+              />
+              <Image src={`/assets/icons/spacer-22.svg`} alt="spacer" width={2} height={22} />
+              <Image
+                src={`/assets/icons/icons-24/calendar.svg`}
+                alt="calendar icon"
+                width={24}
+                height={24}
+                onClick={() => setShowCalendar(true)}
+                style={{ cursor: "pointer" }}
               />
             </div>
-            <Image
-              src={`/assets/icons/icons-24/timer${timeRemaining > GAME_LENGTH ? "-pink" : ""}.svg`}
-              alt="timer icon"
-              width={24}
-              height={24}
-            />
           </div>
-        </div>
+        </>
       )
     );
   } else {
@@ -78,7 +92,9 @@ const GameTimer = () => {
       isHunt && (
         <div className={styles.main} style={closed ? { width: "100%" } : { width: "80%" }}>
           <div className={styles.container}>
-            <div className={styles.gameOver} style={{ fontSize: "32px" }}>GAME OVER</div>
+            <div className={styles.gameOver} style={{ fontSize: "32px" }}>
+              GAME OVER
+            </div>
             <Image
               src={`/assets/icons/icons-24/timer${timeRemaining > GAME_LENGTH ? "-pink" : ""}.svg`}
               alt="timer icon"
