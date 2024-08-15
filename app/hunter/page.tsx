@@ -118,7 +118,7 @@ export default function Mint() {
 
     setLoading(true);
     const result = await mintPlayerCard();
-    console.log(result)
+    console.log(result);
 
     if (!result.success) {
       setLoading(false);
@@ -154,7 +154,11 @@ export default function Mint() {
             </video>
           )}
           <div className={styles.header}>
-            <span>Mint Player Card</span>
+            <div>
+              Mint Player Card
+              <br />
+              Price: 0.25 SOL
+            </div>
             {error && <div className={styles.error}>{error}</div>}
           </div>
           <div className={styles.cardContainer}>
