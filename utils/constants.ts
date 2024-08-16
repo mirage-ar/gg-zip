@@ -24,7 +24,7 @@ export const GAME_DATE = {
   day: 17,
 };
 
-export const GAME_TIME = 10;
+export const GAME_TIME = 12;
 export const GAME_LENGTH = 45 * 60 * 1000;
 export const PLAYER_COUNT = 150;
 
