@@ -141,7 +141,7 @@ export default function Mint() {
   }, [step]);
 
   const connectTwiiter = async () => {
-    signIn("twitter", { callbackUrl: "/mint" });
+    signIn("twitter", { callbackUrl: "/hunter" });
   };
 
   return (
