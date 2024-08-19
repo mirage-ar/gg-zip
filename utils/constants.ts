@@ -20,8 +20,8 @@ export const POLLING_TIME = 8000;
 
 export const GAME_DATE = {
   year: 2024,
-  month: 22,
-  day: 17,
+  month: 8,
+  day: 22,
 };
 
 export const GAME_TIME = 10;
