@@ -25,7 +25,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ setShowCalendar }) => {
           </p>
         </div>
         <div className={styles.body}>
-          <Image src={`/assets/images/shedule.png`} alt="shedule" width={559} height={330} />
+          <Image src={`/assets/images/schedule.png`} alt="shedule" width={559} height={330} />
         </div>
       </div>
     </div>
