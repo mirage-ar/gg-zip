@@ -224,7 +224,7 @@ const Chat: React.FC<ChatProps> = ({ playerList }) => {
     return (
       <div key={index} className={styles.chatMessageContainer}>
         <div className={styles.chatMessageInfo}>
-          <div className={`${styles.chatMessageImageContainer} ${playerList?.find((player) => player.username === message.username) ? styles.clickable : {}}`} onClick={() => showTradingView(message.username)}>
+          <div className={`${styles.chatMessageImageContainer} ${playerList?.find((player) => player.username === message.username) ? styles.clickable : {}}`}>
             <Image
               src={message.image}
               alt={message.username}
