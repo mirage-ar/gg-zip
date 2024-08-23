@@ -67,7 +67,7 @@ const GameTimer = () => {
                   hideDays={hideDays}
                 />
               </div>
-              <Image
+              {/* <Image
                 src={`/assets/icons/icons-24/timer${timeRemaining > GAME_LENGTH ? "-pink" : ""}.svg`}
                 alt="timer icon"
                 width={24}
@@ -81,7 +81,7 @@ const GameTimer = () => {
                 height={24}
                 onClick={() => setShowCalendar(true)}
                 style={{ cursor: "pointer" }}
-              />
+              /> */}
             </div>
           </div>
         </>
