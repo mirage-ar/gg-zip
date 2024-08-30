@@ -28,4 +28,4 @@ export const GAME_TIME = 12;
 export const GAME_LENGTH = 45 * 60 * 1000;
 export const PLAYER_COUNT = 150;
 
-export const PAUSE = false;
+export const PAUSE = true;
