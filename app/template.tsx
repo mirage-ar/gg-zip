@@ -31,9 +31,9 @@ export default function Template({ children }: { children: React.ReactNode }) {
           <WalletModalProvider>
             <ApplicationProvider>
               {children}
-              <UserInfo />
+              {/* <UserInfo /> */}
               <Onboarding />
-              <GameTimer />
+              {/* <GameTimer /> */}
             </ApplicationProvider>
           </WalletModalProvider>
         </WalletProvider>
