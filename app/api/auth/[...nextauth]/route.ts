@@ -23,7 +23,7 @@ const OPTIONS = {
 
   callbacks: {
     async redirect({ url, baseUrl }: any) {
-      return baseUrl + "/hunter";
+      return baseUrl + "/hunter"; 
     },
 
     async jwt({ token, user }: any) {
