@@ -1,6 +1,3 @@
-import * as anchor from "@project-serum/anchor";
-import prisma from "@/utils/prisma";
-
 import { Connection, PublicKey, Keypair, Transaction } from "@solana/web3.js";
 import {
   getAssociatedTokenAddress,
@@ -10,11 +7,9 @@ import {
 } from "@solana/spl-token";
 import bs58 from "bs58"; // Base58 library
 
-import { RPC, PROGRAM_ID, TOKEN_MINT_ADDRESS } from "@/utils/constants";
+import { RPC, TOKEN_MINT_ADDRESS } from "@/utils/constants";
 
 import IDL from "@/solana/idl.json";
-
-import { rand } from "@/utils";
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
 
@@ -25,7 +20,7 @@ const base58PrivateKey = PRIVATE_KEY;
 const secretKey = bs58.decode(base58PrivateKey);
 const payer = Keypair.fromSecretKey(secretKey);
 
-async function sendTokens(points: number, wallet: string) {
+async function sendTokens(points: number, wallet: string): Promise<string> {
   // Send SPL Token
   const recipientPublicKey = new PublicKey(wallet);
   const tokenMint = new PublicKey(TOKEN_MINT_ADDRESS);
@@ -66,8 +61,13 @@ async function sendTokens(points: number, wallet: string) {
 
   // Send and confirm the transaction
   const signature = await connection.sendTransaction(transaction, [payer]);
-  await connection.confirmTransaction(signature);
-  console.log("Transaction successful:", signature);
+
+  // Do not wait for confirmation, just log the result in the background
+  connection.confirmTransaction(signature)
+    .then(() => console.log("Transaction confirmed:", signature))
+    .catch((err) => console.error("Transaction confirmation error:", err));
+
+  return signature;
 }
 
 export async function POST(request: Request) {
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
   const { subject, points } = data;
 
   // Send tokens to the subject
-  await sendTokens(points, subject);
+  const signature = await sendTokens(points, subject);
 
   return Response.json({ success: true });
 }
