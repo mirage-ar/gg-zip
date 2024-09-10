@@ -75,7 +75,7 @@ export function ApplicationProvider({ children }: { children: React.ReactNode })
       setGlobalUser(null);
       // do not show onboarding on mint page
       if (pathname !== "/mint") {
-        setShowOnboarding(true);
+        // setShowOnboarding(true);
       }
     }
   };

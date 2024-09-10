@@ -1,71 +1,75 @@
 import * as anchor from "@project-serum/anchor";
-import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
-import { Connection, PublicKey } from "@solana/web3.js";
-
 import prisma from "@/utils/prisma";
+
+import { Connection, PublicKey, Keypair, Transaction } from "@solana/web3.js";
+import {
+  getAssociatedTokenAddress,
+  createTransferInstruction,
+  createAssociatedTokenAccountInstruction,
+  TOKEN_PROGRAM_ID,
+} from "@solana/spl-token";
+import bs58 from "bs58"; // Base58 library
 
 import { RPC, PROGRAM_ID } from "@/utils/constants";
 
 import IDL from "@/solana/idl.json";
 
-function bnToNumber(bn: any): number {
-  if (!bn) {
-    console.warn('Attempted to convert an undefined or null value to number');
-    return 0;
+import { rand } from "@/utils";
+
+const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
+
+// SOLANA CONNECTION AND WALLET SETUP
+const connection = new Connection(RPC);
+
+const base58PrivateKey = PRIVATE_KEY;
+const secretKey = bs58.decode(base58PrivateKey);
+const payer = Keypair.fromSecretKey(secretKey);
+
+const TOKEN_MINT_ADDRESS = "H3qypRDCHBuCbCAunqpu52cyc7qFHorrzby7Grvbpump"; // TODO: update to correct token address
+
+async function sendTokens(points: number, wallet: string) {
+  // Send SPL Token
+  const recipientPublicKey = new PublicKey(wallet);
+  const tokenMint = new PublicKey(TOKEN_MINT_ADDRESS);
+
+  // Get or create associated token accounts for payer and recipient
+  const recipientTokenAccount = await getAssociatedTokenAddress(tokenMint, recipientPublicKey);
+  const payerTokenAccount = await getAssociatedTokenAddress(tokenMint, payer.publicKey);
+
+  // Transfer tokens from payer to recipient
+  const amountToSend = points * 1000000; // Adjust for 6 decimals
+
+  const transaction = new Transaction();
+
+  // Ensure the recipient has an associated token account
+  const recipientAccountInfo = await connection.getAccountInfo(recipientTokenAccount);
+  if (!recipientAccountInfo) {
+    transaction.add(
+      createAssociatedTokenAccountInstruction(
+        payer.publicKey, // Payer funding the account creation
+        recipientTokenAccount, // Associated token account
+        recipientPublicKey, // The recipient's public key
+        tokenMint // Mint address
+      )
+    );
   }
-  
-  // Check if bn is an instance of anchor.BN and has a toNumber method
-  if (bn instanceof anchor.BN && typeof bn.toNumber === 'function') {
-    try {
-      return bn.toNumber();
-    } catch (error) {
-      console.error('Failed to convert BN to number:', error);
-      return 0;
-    }
-  } else {
-    console.warn('Provided value is not an anchor.BN object');
-    return 0;
-  }
-}
 
+  // Create transfer instruction
+  transaction.add(
+    createTransferInstruction(
+      payerTokenAccount, // Sender token account
+      recipientTokenAccount, // Recipient token account
+      payer.publicKey, // Owner of the sender's account
+      amountToSend, // Amount in smallest token units
+      [], // Signers if necessary
+      TOKEN_PROGRAM_ID // SPL Token Program ID
+    )
+  );
 
-async function getTotalShares(program: anchor.Program, wallet: string): Promise<number> {
-  try {
-    const walletPublicKey = new PublicKey(wallet);
-    const walletBuffer = walletPublicKey.toBuffer();
-
-    const [mintPda, mintBump] = await findProgramAddressSync([Buffer.from("MINT"), walletBuffer], program.programId);
-
-    const playerAccount = await program.account.mintAccount.fetch(mintPda);
-    const playerCardCount = bnToNumber(playerAccount.amount);
-
-    return playerCardCount || 0;
-  } catch (error) {
-    console.error("Error get total shares:", error);
-    return 0;
-  }
-}
-
-async function getSponsorAccounts(program: anchor.Program, wallet: string) {
-  try {
-    const subjectFilter = [
-      {
-        memcmp: {
-          offset: 40, // 8 bytes discriminator + 32 bytes owner
-          bytes: wallet,
-        },
-      },
-    ];
-
-    const accounts = await program.account.tokenAccount.all(subjectFilter);
-
-    console.log("Wallet:", wallet);
-    console.log("Accounts:", accounts);
-
-    return accounts;
-  } catch (error) {
-    console.error("Error get sponsor accounts:", error);
-  }
+  // Send and confirm the transaction
+  const signature = await connection.sendTransaction(transaction, [payer]);
+  await connection.confirmTransaction(signature);
+  console.log("Transaction successful:", signature);
 }
 
 export async function POST(request: Request) {
@@ -84,56 +88,6 @@ export async function POST(request: Request) {
   const provider = new anchor.AnchorProvider(connection, MockWallet, anchor.AnchorProvider.defaultOptions());
   // @ts-ignore
   const program = new anchor.Program(IDL, programId, provider);
-
-  const allSponsorAccounts = await getSponsorAccounts(program, subject);
-
-  const filteredSponsorAccounts = allSponsorAccounts?.filter((account) => {
-    return bnToNumber(account.account.amount) > 0;
-  });
-
-  const totalShares = await getTotalShares(program, subject);
-
-  const promises = (filteredSponsorAccounts || []).map(async (account) => {
-    const wallet: string = (account.account.owner as anchor.web3.PublicKey).toBase58();
-    const sponsorAccount = account.account;
-
-    if (!sponsorAccount) {
-      return Response.json({ success: false, message: "Sponsor account not found" });
-    }
-
-    if (!sponsorAccount.amount) {
-      console.log("Sponsor not holding any shares - shouldn't be possible");
-      return Response.json({ success: false, message: "Sponsor has 0 holding" });
-    }
-
-    try {
-      const sponsorShares = bnToNumber(sponsorAccount.amount);
-      console.log("Sponsor shares: ", sponsorShares);
-      const sponsorPercentage = sponsorShares / totalShares;
-      console.log("Sponsor percentage: ", sponsorPercentage);
-      const pointsToGive = points * 3 * sponsorPercentage;
-      console.log("Points to give: ", pointsToGive);
-
-      try {
-        await prisma.user.update({
-          where: {
-            wallet: wallet,
-          },
-          data: {
-            gamePoints: {
-              increment: pointsToGive,
-            },
-          },
-        });
-      } catch (error) {
-        console.error("No user record to update");
-      }
-    } catch (error) {
-      console.error("Error: ", error);
-    }
-  });
-
-  await Promise.all(promises);
 
   return Response.json({ success: true });
 }
