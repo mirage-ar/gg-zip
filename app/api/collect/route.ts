@@ -10,7 +10,7 @@ import {
 } from "@solana/spl-token";
 import bs58 from "bs58"; // Base58 library
 
-import { RPC, PROGRAM_ID } from "@/utils/constants";
+import { RPC, PROGRAM_ID, TOKEN_MINT_ADDRESS } from "@/utils/constants";
 
 import IDL from "@/solana/idl.json";
 
@@ -24,8 +24,6 @@ const connection = new Connection(RPC);
 const base58PrivateKey = PRIVATE_KEY;
 const secretKey = bs58.decode(base58PrivateKey);
 const payer = Keypair.fromSecretKey(secretKey);
-
-const TOKEN_MINT_ADDRESS = "H3qypRDCHBuCbCAunqpu52cyc7qFHorrzby7Grvbpump"; // TODO: update to correct token address
 
 async function sendTokens(points: number, wallet: string) {
   // Send SPL Token
@@ -76,18 +74,8 @@ export async function POST(request: Request) {
   const data = await request.json();
   const { subject, points } = data;
 
-  const connection = new Connection(RPC);
-  const programId = new PublicKey(PROGRAM_ID);
-
-  const MockWallet = {
-    signTransaction: () => Promise.reject(),
-    signAllTransactions: () => Promise.reject(),
-    publicKey: new PublicKey(subject),
-  };
-
-  const provider = new anchor.AnchorProvider(connection, MockWallet, anchor.AnchorProvider.defaultOptions());
-  // @ts-ignore
-  const program = new anchor.Program(IDL, programId, provider);
+  // Send tokens to the subject
+  await sendTokens(points, subject);
 
   return Response.json({ success: true });
 }
