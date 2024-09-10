@@ -60,7 +60,7 @@ async function sendTokens(points: number, wallet: string) {
       payer.publicKey, // Owner of the sender's account
       amountToSend, // Amount in smallest token units
       [], // Signers if necessary
-      TOKEN_PROGRAM_ID // SPL Token Program ID
+      TOKEN_PROGRAM_ID // SPL Token Program ID - testing
     )
   );
 
