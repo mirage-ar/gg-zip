@@ -36,3 +36,10 @@
   color: var(--p);
   font-family: var(--connect);
 }
+
+
+@media only screen and (max-width: 768px) {
+.main {
+  display: none;
+}
+}

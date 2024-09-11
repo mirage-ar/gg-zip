@@ -7,7 +7,6 @@ export const UPLOAD_API = "https://uploads.koji.im";
 export const GAME_API = "https://api.koji.im";
 
 // export const RPC = "https://solana-mainnet.g.alchemy.com/v2/Sl-oMviUvRv1ztohIeigvqa7j7aOkZEz";
-
 export const RPC = "https://mainnet.helius-rpc.com/?api-key=ea86c080-5223-4bbb-a21a-b610c509b119";
 
 // DEVNET
@@ -15,19 +14,20 @@ export const RPC = "https://mainnet.helius-rpc.com/?api-key=ea86c080-5223-4bbb-a
 
 export const PROGRAM_ID = "FeLN737SaQbjDAE7TfTP5QcgmS9zqeoEcYrU4umwZxxb";
 
-export const TOKEN_MINT_ADDRESS = "65aQzL2woQ7hAP5Ka95d4aXqkUxDySjVMivmNPDfpump"; // TODO: update to correct token address
+// TODO: update to correct token address
+export const TOKEN_MINT_ADDRESS = "65aQzL2woQ7hAP5Ka95d4aXqkUxDySjVMivmNPDfpump";
 
 export const TRANSACTION_COUNT = 60;
 export const POLLING_TIME = 8000;
 
 export const GAME_DATE = {
   year: 2024,
-  month: 8,
-  day: 24,
+  month: 9,
+  day: 13,
 };
 
-export const GAME_TIME = 12;
+export const GAME_TIME = 10;
 export const GAME_LENGTH = 45 * 60 * 1000;
 export const PLAYER_COUNT = 150;
 
-export const PAUSE = true;
+export const PAUSE = false;

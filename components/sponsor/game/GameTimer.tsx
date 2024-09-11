@@ -22,7 +22,8 @@ const GameTimer = () => {
 
   const { closed, setGameEnding, setGameOver } = useApplicationContext();
 
-  const isHunt = pathname === "/hunt" || pathname === "/";
+  const isShown = pathname === "/hunt" || pathname === "/";
+  const isHome = pathname === "/";
 
   // Calculate initial time remaining immediately
   const calculateTimeRemaining = () => {
@@ -55,11 +56,11 @@ const GameTimer = () => {
 
   if (timeRemaining > 0) {
     return (
-      isHunt && (
+      isShown && (
         <>
           {showCalendar && <Calendar setShowCalendar={setShowCalendar} />}
-          <div className={styles.main} style={closed ? { width: "100%" } : { width: "80%" }}>
-            {timeRemaining > GAME_LENGTH && <div className={styles.title}>The hunt will start in</div>}
+          <div className={styles.main} style={closed || isHome ? { width: "100%" } : { width: "80%" }}>
+            {timeRemaining > GAME_LENGTH && <div className={styles.title}>The game will start in</div>}
             <div className={styles.container}>
               <div style={{ fontSize: "32px" }}>
                 <Timer
@@ -67,13 +68,13 @@ const GameTimer = () => {
                   hideDays={hideDays}
                 />
               </div>
-              {/* <Image
+              <Image
                 src={`/assets/icons/icons-24/timer${timeRemaining > GAME_LENGTH ? "-pink" : ""}.svg`}
                 alt="timer icon"
                 width={24}
                 height={24}
               />
-              <Image src={`/assets/icons/spacer-22.svg`} alt="spacer" width={2} height={22} />
+              {/* <Image src={`/assets/icons/spacer-22.svg`} alt="spacer" width={2} height={22} />
               <Image
                 src={`/assets/icons/icons-24/calendar.svg`}
                 alt="calendar icon"
@@ -89,7 +90,7 @@ const GameTimer = () => {
     );
   } else {
     return (
-      isHunt && (
+      isShown && (
         <div className={styles.main} style={closed ? { width: "100%" } : { width: "80%" }}>
           <div className={styles.container}>
             <div className={styles.gameOver} style={{ fontSize: "32px" }}>

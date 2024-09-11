@@ -33,7 +33,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
               {children}
               {/* <UserInfo /> */}
               <Onboarding />
-              {/* <GameTimer /> */}
+              <GameTimer />
             </ApplicationProvider>
           </WalletModalProvider>
         </WalletProvider>

@@ -83,11 +83,11 @@ ul li:hover::before {
   color: var(--g);
 }
 
-@media only screen and (max-width: 600px) {
+/* @media only screen and (max-width: 600px) {
   ul li::before {
     display: none;
   }
-}
+} */
 
 h1 {
   color: var(--g);
