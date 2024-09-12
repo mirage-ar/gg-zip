@@ -30,6 +30,15 @@
   text-transform: uppercase;
 }
 
+.section h4 {
+  text-align: left;
+  margin: 20px;
+}
+
+.section p {
+  margin: 20px;
+}
+
 .longContainer {
   margin-top: 32px;
   display: flex;

@@ -24,10 +24,10 @@ const UserInfo: React.FC = () => {
         <button className={styles.connectWallet} onClick={() => setVisible(true)}>
           Connect Wallet
         </button>
-        <div className={styles.userPointsContainer}>
+        {/* <div className={styles.userPointsContainer}>
           <div className={styles.placeholder}>000000</div>
           <Image src="/assets/icons/icons-24/g.svg" alt="points icon" width={24} height={24} />
-        </div>
+        </div> */}
       </div>
     );
   }
