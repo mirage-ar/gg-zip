@@ -14,7 +14,7 @@ export const RPC = "https://mainnet.helius-rpc.com/?api-key=ea86c080-5223-4bbb-a
 
 export const PROGRAM_ID = "FeLN737SaQbjDAE7TfTP5QcgmS9zqeoEcYrU4umwZxxb";
 
-// TODO: update to correct token address
+// WYA Token
 export const TOKEN_MINT_ADDRESS = "4Az2rwqFJCa7XPtRnrCNM9tc7UJDw6DMK91q1KPzpump";
 
 export const TRANSACTION_COUNT = 60;

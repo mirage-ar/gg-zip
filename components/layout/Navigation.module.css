@@ -28,10 +28,19 @@
   display: none;
 }
 
-/* @media only screen and (max-width: 600px) {
+@media only screen and (max-width: 600px) {
 
   .main {
     width: 100vw;
+  }
+
+  .logo {
+    margin: -20px 0 0 -5px;
+  }
+
+  .logoImage {
+    width: 120px;
+    height: 120px;
   }
 
   .list {
@@ -40,7 +49,7 @@
   
   .mobileNav {
     display: block;
-    margin: 80px 16px;
+    margin: 40px 16px;
     position: fixed;
     top: 0;
     right: 0;
@@ -49,4 +58,4 @@
     gap: 16px;
   }
 
-} */
+}

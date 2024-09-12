@@ -1,0 +1,136 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.mintContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+
+  padding: 32px 85px;
+
+  border-radius: var(--corner4, 4px);
+  background: var(--bg);
+  box-shadow: 0px 0px 24px 0px #42ff60;
+
+  gap: 20px;
+}
+
+.title {
+  color: var(--g);
+  text-align: center;
+  font-family: var(--diatype);
+  font-size: 46px;
+  line-height: 100%; /* 46px */
+  text-transform: uppercase;
+
+  padding-bottom: 12px;
+}
+
+.subtitle {
+  color: var(--g);
+  text-align: center;
+  font-family: var(--diatype);
+  font-size: 18px;
+  line-height: 18px; /* 100% */
+  text-transform: uppercase;
+}
+
+.playerCardTitle {
+  margin-top: 12px;
+  color: var(--g, #42ff60);
+  text-align: center;
+  font-size: 18px;
+  line-height: 18px; /* 100% */
+  text-transform: uppercase;
+}
+
+.stepsContainer {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 39px;
+  margin-top: 20px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.stepNumber {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--w, #faf5e9);
+  text-align: center;
+  font-size: 14px;
+  border: 1px solid var(--g4);
+  border-radius: 50%;
+}
+
+.selected {
+  border: 1px solid var(--g);
+  color: var(--g);
+}
+
+.stepButton {
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--b);
+  width: 301px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: var(--corner4, 4px);
+  background: var(--g, #42ff60);
+  text-transform: uppercase;
+  /* box-shadow: 0 0 20px var(--p); */
+  border: none;
+  cursor: pointer;
+}
+
+.stepButton:disabled {
+  background-color: var(--g3);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.next {
+  color: var(--g4);
+  border: 1px solid var(--g4);
+  background: var(--b);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.finished {
+  color: var(--w);
+  border: 1px solid var(--g4);
+  background: var(--b);
+  box-shadow: none;
+  cursor: inherit;
+}
+
+.error {
+  color: #d81313;
+}
+
+@media only screen and (max-width: 600px) {
+  .main {
+    margin: 80px 0;
+    height: auto;
+  }
+}

@@ -56,7 +56,7 @@ export default function Home() {
             className={styles.button}
             onMouseOver={() => setHover(true)}
             onMouseOut={() => setHover(false)}
-            onClick={() => router.push("/hunter")}
+            onClick={() => router.push("/mint")}
           >
             <div className={styles.buttonGraphic}></div>
             Enter the Game

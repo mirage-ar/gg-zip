@@ -13,9 +13,7 @@ import { formatWalletAddress, formatPoints } from "@/utils";
 import { Page } from "@/types";
 
 const UserInfo: React.FC = () => {
-
   const { globalUser: user, closed, setPage } = useApplicationContext();
-
 
   const { publicKey } = useWallet();
   const { setVisible } = useWalletModal();
@@ -64,17 +62,17 @@ const UserInfo: React.FC = () => {
             <Image src={user.image} alt="user icon" width={32} height={32} />
           </div>
         )}
-
-        {/* --- USER POINTS --- */}
       </div>
-      <div className={styles.userPointsContainer}>
+
+      {/* --- USER POINTS --- */}
+      {/* <div className={styles.userPointsContainer}>
         {user?.points ? (
           <div className={styles.userPoints}>{formatPoints(user.points)}</div>
         ) : (
           <div className={styles.placeholder}>000000</div>
         )}
         <Image src="/assets/icons/icons-24/g.svg" alt="points icon" width={24} height={24} />
-      </div>
+      </div> */}
     </div>
   );
 };

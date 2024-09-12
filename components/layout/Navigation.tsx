@@ -35,7 +35,7 @@ const Navigation: React.FC = () => {
     <nav className={styles.main}>
       <div className={styles.logo}>
         <Link href="/">
-          <Image src="/assets/icons/logo-animated.gif" alt="logo" priority width={160} height={160} />
+          <Image className={styles.logoImage} src="/assets/icons/logo-animated.gif" alt="logo" priority width={160} height={160} />
         </Link>
       </div>
       <ul className={styles.list}>
