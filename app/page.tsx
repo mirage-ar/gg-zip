@@ -26,6 +26,8 @@ export default function Home() {
 
   const router = useRouter();
 
+  const [hover, setHover] = useState(false);
+
   const { publicKey } = useWallet();
   const { setVisible } = useWalletModal();
 
@@ -35,6 +37,9 @@ export default function Home() {
         <div className={styles.map}>
           <MapboxMap mapRef={mapRef} markersRef={markersRef} isHomePage />
         </div>
+
+        {!hover && <div className={styles.coins} />}
+        {hover && <div className={styles.coinsHover} />}
 
         <div className={styles.mainContainer}>
           <div className={styles.title}>Go outside, collect memecoins worldwide!</div>
@@ -47,7 +52,12 @@ export default function Home() {
             height={48}
           />
 
-          <div className={styles.button} onClick={() => router.push("/hunter")}>
+          <div
+            className={styles.button}
+            onMouseOver={() => setHover(true)}
+            onMouseOut={() => setHover(false)}
+            onClick={() => router.push("/hunter")}
+          >
             <div className={styles.buttonGraphic}></div>
             Enter the Game
             <div className={styles.buttonGraphicRight}></div>

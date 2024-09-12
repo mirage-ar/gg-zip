@@ -15,7 +15,7 @@ export const RPC = "https://mainnet.helius-rpc.com/?api-key=ea86c080-5223-4bbb-a
 export const PROGRAM_ID = "FeLN737SaQbjDAE7TfTP5QcgmS9zqeoEcYrU4umwZxxb";
 
 // TODO: update to correct token address
-export const TOKEN_MINT_ADDRESS = "65aQzL2woQ7hAP5Ka95d4aXqkUxDySjVMivmNPDfpump";
+export const TOKEN_MINT_ADDRESS = "4Az2rwqFJCa7XPtRnrCNM9tc7UJDw6DMK91q1KPzpump";
 
 export const TRANSACTION_COUNT = 60;
 export const POLLING_TIME = 8000;

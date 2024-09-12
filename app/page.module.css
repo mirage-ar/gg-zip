@@ -12,8 +12,32 @@
   height: 100%;
   top: 0;
   left: 0;
-  filter: blur(2px);
+  /* filter: blur(2px); */
   z-index: -10000;
+}
+
+.coins {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: -1000;
+  background: url("/assets/images/coins/coins.png") no-repeat;
+  background-size: auto; /* Prevent the image from scaling */
+  background-position: center; /* Center the image both horizontally and vertically */
+}
+
+.coinsHover {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: -1000;
+  background: url("/assets/images/coins/coins-hover.png") no-repeat;
+  background-size: auto; /* Prevent the image from scaling */
+  background-position: center; /* Center the image both horizontally and vertically */
 }
 
 .container {
