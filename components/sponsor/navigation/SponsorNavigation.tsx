@@ -42,7 +42,7 @@ const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, cl
         </button>
 
         {/* SPONSORS BUTTON */}
-        <button
+        {/* <button
           className={styles.navButton}
           onClick={() => handlePageChange(Page.SPONSORS)}
           style={page === Page.SPONSORS ? { backgroundColor: "#42FF60" } : {}}
@@ -53,7 +53,7 @@ const SponsorNavigation: React.FC<SponsorNavigationProps> = ({ page, setPage, cl
             width={24}
             height={24}
           />
-        </button>
+        </button> */}
 
         {/* TRANSACTIONS BUTTON */}
         <button
